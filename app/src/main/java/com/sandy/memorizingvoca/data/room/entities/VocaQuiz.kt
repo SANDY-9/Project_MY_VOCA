@@ -8,6 +8,7 @@ data class VocaQuiz(
     val day: Int,
     val wrongCount: Int,
     val totalCount: Int = 50,
+    val date: String,
     @PrimaryKey(autoGenerate = true)
     val quizId: Int = 0,
 )
