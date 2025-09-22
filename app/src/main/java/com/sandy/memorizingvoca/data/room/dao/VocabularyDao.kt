@@ -29,7 +29,7 @@ interface VocabularyDao {
         "SELECT * FROM voca_list " +
                 "WHERE day = :day"
     )
-    suspend fun getVocaList(day: Int): List<Vocabulary>
+    fun getVocaList(day: Int): Flow<List<Vocabulary>>
 
     @Query(
         "SELECT * FROM voca_list " +
