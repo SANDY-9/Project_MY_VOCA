@@ -1,4 +1,4 @@
-package com.sandy.memorizingvoca
+package com.sandy.memorizingvoca.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,10 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,30 +18,41 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val myAppState = rememberMyAppState()
             MemorizingVocaTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                MainApp(
+                    appState = myAppState,
+                    startDestination = "splash",
+                )
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+private fun MainApp(
+    appState: MyAppState,
+    startDestination: Any,
+    modifier: Modifier = Modifier,
+) {
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+    ) { innerPadding ->
+        MyAppNavGraph(
+            modifier = modifier.padding(innerPadding),
+            navController = appState.navController,
+            startDestination = startDestination,
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    MemorizingVocaTheme {
-        Greeting("Android")
-    }
+private fun MainAppPreview() {
+    MainApp(
+        appState = MyAppState(
+            navController = rememberNavController(),
+        ),
+        startDestination = "splash",
+    )
 }
