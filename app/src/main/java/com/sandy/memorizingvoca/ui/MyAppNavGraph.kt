@@ -9,6 +9,8 @@ import com.sandy.memorizingvoca.ui.feature.home.navigation.homeScreen
 import com.sandy.memorizingvoca.ui.feature.home.navigation.navigateToHome
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.SplashRoute
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.splashScreen
+import com.sandy.memorizingvoca.ui.feature.voca_list.navigation.navigateToList
+import com.sandy.memorizingvoca.ui.feature.voca_list.navigation.vocaListScreen
 
 @Composable
 internal fun MyAppNavGraph(
@@ -33,6 +35,13 @@ internal fun MyAppNavGraph(
 
         homeScreen(
             onAppFinish = onAppFinish,
+            onDayItemClick = { day ->
+                navController.navigateToList(day)
+            }
+        )
+
+        vocaListScreen(
+            onVocaItemClick = {}
         )
     }
 }
