@@ -4,11 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.sandy.memorizingvoca.ui.feature.splash.navigation.splashScreen
 
 @Composable
 internal fun MyAppNavGraph(
     navController: NavHostController,
     startDestination: Any,
+    onAppFinish: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -16,6 +18,9 @@ internal fun MyAppNavGraph(
         navController = navController,
         startDestination = startDestination
     ) {
-
+        splashScreen(
+            onAppFinish = onAppFinish,
+            onComplete = {},
+        )
     }
 }

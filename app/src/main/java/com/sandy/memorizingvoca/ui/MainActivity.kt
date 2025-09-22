@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.sandy.memorizingvoca.ui.feature.splash.navigation.SplashRoute
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +23,8 @@ class MainActivity : ComponentActivity() {
             MemorizingVocaTheme {
                 MainApp(
                     appState = myAppState,
-                    startDestination = "splash",
+                    startDestination = SplashRoute,
+                    onAppFinish = ::finishAffinity,
                 )
             }
         }
@@ -33,6 +35,7 @@ class MainActivity : ComponentActivity() {
 private fun MainApp(
     appState: MyAppState,
     startDestination: Any,
+    onAppFinish: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -42,6 +45,7 @@ private fun MainApp(
             modifier = modifier.padding(innerPadding),
             navController = appState.navController,
             startDestination = startDestination,
+            onAppFinish = onAppFinish,
         )
     }
 }
@@ -54,5 +58,6 @@ private fun MainAppPreview() {
             navController = rememberNavController(),
         ),
         startDestination = "splash",
+        onAppFinish = {},
     )
 }
