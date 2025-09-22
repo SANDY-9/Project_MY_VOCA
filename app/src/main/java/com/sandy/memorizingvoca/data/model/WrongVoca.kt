@@ -1,11 +1,11 @@
-package com.sandy.memorizingvoca.data.room.entities
+package com.sandy.memorizingvoca.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "voca_wrong")
 data class WrongVoca(
-    val quizId: Int,
+    val quizDate: String,
     val vocaId: Int,
     @PrimaryKey(autoGenerate = true)
     val wrongVocaId: Int = 0,

@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.sandy.memorizingvoca.data.room.entities.Vocabulary
+import com.sandy.memorizingvoca.data.model.Vocabulary
 import kotlinx.coroutines.flow.Flow
 
 @Dao

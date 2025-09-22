@@ -1,4 +1,4 @@
-package com.sandy.memorizingvoca.data.room.entities
+package com.sandy.memorizingvoca.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

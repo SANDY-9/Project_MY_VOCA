@@ -1,6 +1,6 @@
 package com.sandy.memorizingvoca.data.repository
 
-import com.sandy.memorizingvoca.data.room.entities.Vocabulary
+import com.sandy.memorizingvoca.data.model.Vocabulary
 import kotlinx.coroutines.flow.Flow
 
 interface BookmarkRepository {
