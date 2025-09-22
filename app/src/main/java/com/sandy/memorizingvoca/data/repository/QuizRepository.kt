@@ -5,7 +5,6 @@ import com.sandy.memorizingvoca.data.model.VocaQuiz
 interface QuizRepository {
     suspend fun addNewQuizResult(
         day: Int,
-        wrongCount: Int,
         totalCount: Int,
         vararg wrongVocaId: Int,
     )

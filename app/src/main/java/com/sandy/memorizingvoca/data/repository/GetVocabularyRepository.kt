@@ -7,5 +7,4 @@ interface GetVocabularyRepository {
     suspend fun getVocaDayList(): List<Int>
     fun getVocaList(day: Int): Flow<List<Vocabulary>>
     suspend fun getVocabulary(vocaId: Int): Vocabulary
-    fun getWrongVocaList(quizDate: String): Flow<List<Vocabulary>>
 }
