@@ -6,9 +6,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.sandy.memorizingvoca.data.room.entities.VocaQuiz
-import com.sandy.memorizingvoca.data.room.entities.Vocabulary
-import com.sandy.memorizingvoca.data.room.entities.WrongVoca
+import com.sandy.memorizingvoca.data.model.VocaQuiz
+import com.sandy.memorizingvoca.data.model.Vocabulary
+import com.sandy.memorizingvoca.data.model.WrongVoca
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuizDao {
@@ -22,9 +23,9 @@ interface QuizDao {
     suspend fun deleteQuiz(quiz: VocaQuiz)
     @Query(
         "DELETE FROM voca_wrong " +
-                "WHERE quizId = :quizId"
+                "WHERE quizDate = :quizDate"
     )
-    suspend fun deleteWrongVoca(quizId: Int)
+    suspend fun deleteWrongVoca(quizDate: String)
 
     @Query(
         "SELECT * FROM voca_quiz " +
@@ -33,13 +34,19 @@ interface QuizDao {
     )
     suspend fun getQuizList(day: Int): List<VocaQuiz>
 
+    @Query(
+        "SELECT * FROM voca_quiz " +
+                "WHERE date = :quizDate "
+    )
+    suspend fun getQuiz(quizDate: String): VocaQuiz
+
     @Transaction
     @Query(
         "SELECT v.* FROM voca_list v " +
                 "INNER JOIN voca_wrong w " +
                 "ON v.vocaId = w.vocaId " +
-                "WHERE w.quizId = :quizId"
+                "WHERE w.quizDate = :quizDate"
     )
-    suspend fun getWrongVocaList(quizId: Int): List<Vocabulary>
+    fun getWrongVocaList(quizDate: String): Flow<List<Vocabulary>>
 
 }
