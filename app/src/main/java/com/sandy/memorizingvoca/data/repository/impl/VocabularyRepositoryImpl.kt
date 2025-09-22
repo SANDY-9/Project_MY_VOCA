@@ -11,6 +11,9 @@ class VocabularyRepositoryImpl @Inject constructor(
     private val dao: VocabularyDao,
 ): VocabularyRepository {
     override suspend fun addVocabularyList(vocaList: List<Vocabulary>) = withContext(Dispatchers.IO) {
-        dao.addVocabularyList(vocaList)
+        val isNotExistData = dao.getAllDays().isEmpty()
+        if(isNotExistData) {
+            dao.addVocabularyList(vocaList)
+        }
     }
 }
