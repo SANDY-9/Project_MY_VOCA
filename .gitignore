@@ -33,3 +33,4 @@ google-services.json
 # Android Profiling
 *.hprof
 app/src/main/assets/voca.txt
+app/src/main/res/font
