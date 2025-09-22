@@ -13,10 +13,12 @@ object SplashRoute
 fun NavController.navigateToSplash(navOptions: NavOptions) = navigate(route = SplashRoute, navOptions)
 
 fun NavGraphBuilder.splashScreen(
+    onComplete: () -> Unit,
     onAppFinish: () -> Unit,
 ) {
     composable<SplashRoute> {
         SplashRoute(
+            onDownloadComplete = onComplete,
             onAppFinish = onAppFinish,
         )
     }
