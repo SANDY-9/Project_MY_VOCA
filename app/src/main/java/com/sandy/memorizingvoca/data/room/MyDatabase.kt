@@ -9,7 +9,7 @@ import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.data.model.WrongVoca
 
 @Database(entities = [Vocabulary::class, VocaQuiz::class, WrongVoca::class], version = 1)
-abstract class AppDatabase : RoomDatabase() {
+abstract class MyDatabase : RoomDatabase() {
     abstract fun vocabularyDao(): VocabularyDao
     abstract fun quizDao(): QuizDao
 }
