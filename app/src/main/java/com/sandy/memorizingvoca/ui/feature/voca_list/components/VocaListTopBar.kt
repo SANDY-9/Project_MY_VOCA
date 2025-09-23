@@ -26,6 +26,9 @@ import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 internal fun VocaListTopBar(
     day: Int,
     onNavigateBack: () -> Unit,
+    onNavigateFull: () -> Unit,
+    onNavigateQuiz1: () -> Unit,
+    onNavigateQuiz2: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier
@@ -50,10 +53,28 @@ internal fun VocaListTopBar(
             letterSpacing = (-0.1).sp,
         )
         TextButton (
-            onClick = onNavigateBack,
+            onClick = onNavigateFull,
         ) {
             Text(
-                text = "Quiz",
+                text = "Full",
+                fontFamily = PyeoginGothic,
+                color = Pink100,
+            )
+        }
+        TextButton (
+            onClick = onNavigateQuiz1,
+        ) {
+            Text(
+                text = "Quiz1",
+                fontFamily = PyeoginGothic,
+                color = Pink100,
+            )
+        }
+        TextButton (
+            onClick = onNavigateQuiz2,
+        ) {
+            Text(
+                text = "Quiz2",
                 fontFamily = PyeoginGothic,
                 color = Pink100,
             )
@@ -68,5 +89,8 @@ private fun VocaListTopBarPreview() {
     VocaListTopBar(
         day = 1,
         onNavigateBack = {},
+        onNavigateFull = {},
+        onNavigateQuiz1 = {},
+        onNavigateQuiz2 = {}
     )
 }

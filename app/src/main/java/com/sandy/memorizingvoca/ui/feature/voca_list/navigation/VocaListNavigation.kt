@@ -20,12 +20,18 @@ fun NavController.navigateToList(
 }
 
 fun NavGraphBuilder.vocaListScreen(
-    onNavigateBack: () -> Unit = {},
-    onVocaItemClick: (Int) -> Unit = {},
+    onNavigateBack: () -> Unit,
+    onNavigateFull: () -> Unit,
+    onNavigateQuiz1: () -> Unit,
+    onNavigateQuiz2: () -> Unit,
+    onVocaItemClick: (Int) -> Unit,
 ) {
     composable<VocaListRoute> {
         VocaListRoute (
             onNavigateBack = onNavigateBack,
+            onNavigateFull = onNavigateFull,
+            onNavigateQuiz1 = onNavigateQuiz1,
+            onNavigateQuiz2 = onNavigateQuiz2,
             onItemClick = onVocaItemClick,
         )
     }

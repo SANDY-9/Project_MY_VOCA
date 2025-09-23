@@ -41,6 +41,10 @@ internal fun MyAppNavGraph(
         )
 
         vocaListScreen(
+            onNavigateBack = navController::navigateUp,
+            onNavigateFull = {},
+            onNavigateQuiz1 = {},
+            onNavigateQuiz2 = {},
             onVocaItemClick = {}
         )
     }
