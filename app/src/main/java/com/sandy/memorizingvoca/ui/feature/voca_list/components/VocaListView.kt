@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.common.VocaSimpleListCard
+import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
 internal fun VocaListView(
@@ -17,6 +18,7 @@ internal fun VocaListView(
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val ttsManager = rememberTTSManager()
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 16.dp)
@@ -26,7 +28,10 @@ internal fun VocaListView(
                 word = voca.word,
                 meaning = voca.meaning,
                 highlighted = voca.highlighted,
-                onClick = { onItemClick(voca.vocaId) }
+                onClick = { onItemClick(voca.vocaId) },
+                onSpeak = {
+                    ttsManager.speak(voca.word)
+                }
             )
         }
     }
@@ -69,6 +74,6 @@ private fun VocaListViewPreview() {
                 meaning = "ing 하는 데 어려움[곤란]을 겪다"
             )
         ),
-        onItemClick = {}
+        onItemClick = {},
     )
 }

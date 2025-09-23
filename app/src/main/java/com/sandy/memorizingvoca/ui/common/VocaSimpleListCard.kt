@@ -8,13 +8,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -27,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.Pink10
 import com.sandy.memorizingvoca.ui.theme.Pink80
@@ -37,6 +34,7 @@ fun VocaSimpleListCard(
     meaning: String,
     highlighted: Boolean,
     onClick: () -> Unit,
+    onSpeak: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val highlightColor = remember {
@@ -63,6 +61,7 @@ fun VocaSimpleListCard(
                 )
                 Spacer(modifier = modifier.width(4.dp))
                 Icon(
+                    modifier = modifier.noRippleClickable(onClick = onSpeak),
                     imageVector = Icons.Rounded.PlayArrow,
                     contentDescription = null,
                     tint = Pink80,
@@ -91,5 +90,6 @@ private fun Preview() {
         meaning = "① -을 생각해 내다 ② -을 해결하다[알아내다] ③ -을 계산[산출]하다 ④ 운동하다 ⑤ (일이) 잘 풀리다",
         highlighted = false,
         onClick = {},
+        onSpeak = {},
     )
 }
