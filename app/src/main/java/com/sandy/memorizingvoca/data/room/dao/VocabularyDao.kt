@@ -47,6 +47,6 @@ interface VocabularyDao {
         "SELECT * FROM voca_list " +
                 "WHERE vocaId = :vocaId"
     )
-    suspend fun getVocabulary(vocaId: Int): Vocabulary
+    fun getVocabulary(vocaId: Int): Flow<Vocabulary>
 
 }

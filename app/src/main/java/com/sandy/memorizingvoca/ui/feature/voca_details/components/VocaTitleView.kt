@@ -24,26 +24,30 @@ import com.sandy.memorizingvoca.ui.theme.Pink10
 
 @Composable
 internal fun VocaTitleView(
-    voca: Vocabulary,
+    vocabulary: Vocabulary?,
     modifier: Modifier = Modifier,
-) {
+) = vocabulary?.let { voca ->
     val highlightColor = if (voca.highlighted) Pink10 else Color.Transparent
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(
-            modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
         ) {
             Text(
-                modifier = modifier.alignByBaseline().background(
-                    color = highlightColor,
-                    shape = RectangleShape
-                ),
+                modifier = modifier
+                    .alignByBaseline()
+                    .background(
+                        color = highlightColor,
+                        shape = RectangleShape
+                    ),
                 text = voca.word,
                 fontWeight = FontWeight.Black,
                 fontSize = 32.sp,
 
-            )
+                )
             Spacer(modifier = modifier.width(8.dp))
             Text(
                 modifier = modifier.alignByBaseline(),
@@ -53,7 +57,9 @@ internal fun VocaTitleView(
         }
         Spacer(modifier = modifier.height(8.dp))
         Text(
-            modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             text = voca.meaning,
             fontWeight = FontWeight.Normal,
         )
@@ -68,7 +74,7 @@ internal fun VocaTitleView(
 @Preview
 private fun VocaTitleViewPreview() {
     VocaTitleView(
-        voca = Vocabulary(
+        vocabulary = Vocabulary(
             vocaId = 4,
             day = 1,
             word = "dictate",

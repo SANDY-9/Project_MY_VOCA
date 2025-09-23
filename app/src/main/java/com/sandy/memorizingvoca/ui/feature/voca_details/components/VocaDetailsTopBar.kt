@@ -25,12 +25,13 @@ import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
 internal fun VocaDetailsTopBar(
-    day: Int,
+    day: Int?,
     onNavigateBack: () -> Unit,
     onHighLightChange: () -> Unit,
     onBookmarkChange: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val title = "Day " + if(day != null) String.format("%02d", day) else ""
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -49,7 +50,7 @@ internal fun VocaDetailsTopBar(
         }
         Text(
             modifier = modifier.weight(1f),
-            text = "Day " + String.format("%02d", day),
+            text = title,
             fontFamily = PyeoginGothic,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
