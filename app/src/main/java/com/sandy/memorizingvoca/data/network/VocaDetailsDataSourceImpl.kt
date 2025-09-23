@@ -66,7 +66,7 @@ class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
         doc: Document,
         limit: Int = 3,
     ): List<ExampleSentence> {
-        return doc.select(EXAMPLE_LIST_SELECT_QUERY).take(limit).map {
+        return doc.select(EXAMPLE_LIST_SELECT_QUERY).shuffled().take(limit).map {
             val emphWords = it.select(EMPH_WORD_SELECT_QUERY).map { it.text() }
             val sentence = it.selectFirst(ENGLISH_SENTENCE_SELECT_QUERY)?.text() ?: ""
             val mean = it.selectFirst(KOREAN_MEAN_SELECT_QUERY)?.text() ?: ""

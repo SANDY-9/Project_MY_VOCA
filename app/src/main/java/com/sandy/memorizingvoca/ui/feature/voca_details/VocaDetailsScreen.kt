@@ -1,11 +1,13 @@
 package com.sandy.memorizingvoca.ui.feature.voca_details
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
@@ -13,6 +15,7 @@ import com.sandy.memorizingvoca.data.model.VocabularyDetails
 import com.sandy.memorizingvoca.data.model.Word
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaDetailsTitleView
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaDetailsTopBar
+import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaExampleView
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaFamilyView
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaGrammarView
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
@@ -43,6 +46,7 @@ private fun VocaDetailsScreen(
 ) {
     LazyColumn (
         modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(bottom = 24.dp)
     ) {
         stickyHeader {
             VocaDetailsTopBar(
@@ -72,6 +76,9 @@ private fun VocaDetailsScreen(
             VocaFamilyView(
                 title = "유의어",
                 item = details?.similarWord ?: emptyList(),
+            )
+            VocaExampleView(
+                item = details?.exampleList ?: emptyList(),
             )
         }
     }
