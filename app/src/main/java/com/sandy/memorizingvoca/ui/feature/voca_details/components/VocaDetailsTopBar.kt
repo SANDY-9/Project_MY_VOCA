@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.voca_details.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,6 +39,7 @@ internal fun VocaDetailsTopBar(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
+            .background(color = MaterialTheme.colorScheme.surface)
             .padding(end = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

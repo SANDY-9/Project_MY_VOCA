@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,7 +32,7 @@ internal fun VocaDetailsTitleView(
 )  {
     val highlightColor = if (highlighted) Pink80 else Color.Transparent
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.surface),
     ) {
         Row(
             modifier = modifier
@@ -64,6 +65,7 @@ internal fun VocaDetailsTitleView(
                 .padding(horizontal = 16.dp),
             text = meaning,
             fontWeight = FontWeight.Normal,
+            fontSize = 16.sp
         )
         Spacer(modifier = modifier.height(16.dp))
         HorizontalDivider(

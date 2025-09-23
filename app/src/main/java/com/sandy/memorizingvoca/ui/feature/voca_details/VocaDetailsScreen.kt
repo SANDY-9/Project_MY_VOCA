@@ -9,8 +9,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
+import com.sandy.memorizingvoca.data.model.VocabularyDetails
+import com.sandy.memorizingvoca.data.model.Word
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaDetailsTitleView
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaDetailsTopBar
+import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaGrammarView
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
 @Composable
@@ -19,9 +22,10 @@ internal fun VocaDetailsRoute(
     viewModel: VocaDetailsViewModel = hiltViewModel(),
 ) {
     val voca by viewModel.voca.collectAsStateWithLifecycle()
-    val vocaDetails by viewModel.vocaDetails.collectAsStateWithLifecycle()
+    val vocaDetails by viewModel.details.collectAsStateWithLifecycle()
     VocaDetailsScreen(
         voca = voca,
+        details = vocaDetails,
         onNavigateBack = onNavigateBack,
         onHighlightChange = viewModel::updateHighlight,
         onBookmarkChange = viewModel::updateBookmark,
@@ -30,6 +34,7 @@ internal fun VocaDetailsRoute(
 @Composable
 private fun VocaDetailsScreen(
     voca: Vocabulary?,
+    details: VocabularyDetails?,
     onNavigateBack: () -> Unit,
     onHighlightChange: (Boolean) -> Unit,
     onBookmarkChange: (Boolean) -> Unit,
@@ -52,7 +57,9 @@ private fun VocaDetailsScreen(
             )
         }
         item {
-
+            VocaGrammarView(
+                item = details?.grammar ?: emptyMap()
+            )
         }
     }
 
@@ -68,6 +75,57 @@ private fun VocaDetailsScreenPreview() {
                 day = 1,
                 word = "dictate",
                 meaning = "[동] ① 명령하다, 지시하다 ② 받아쓰게 하다, 구술하다 [명] 명령, 지시[주로 pl.]",
+            ),
+            details = VocabularyDetails(
+                word = "dictate",
+                grammar = mapOf(
+                    "동사" to listOf(
+                        Word(
+                            word = "earnest",
+                            mean = "기본"
+                        ),
+                        Word(
+                            word = "earnested",
+                            mean = "과거"
+                        ),
+                        Word(
+                            word = "earnested",
+                            mean = "과거분사"
+                        ),
+                        Word(
+                            word = "earnesting",
+                            mean = "현재분사"
+                        ),
+                        Word(
+                            word = "earnests",
+                            mean = "3인칭단수"
+                        ),
+                    ),
+                    "명사" to listOf(
+                        Word(
+                            word = "earnest",
+                            mean = "기본"
+                        ),
+                    ),
+                    "형용사" to listOf(
+                        Word(
+                            word = "earnest",
+                            mean = "기본"
+                        ),
+                        Word(
+                            word = "more earnest, earnester",
+                            mean = "비교급"
+                        ),
+                        Word(
+                            word = "most earnest, earnestest",
+                            mean = "최상급"
+                        ),
+                    )
+                ),
+                wordFamily = emptyList(),
+                similarWord = emptyList(),
+                oppositeWord = emptyList(),
+                exampleList = emptyList(),
             ),
             onNavigateBack = {},
             onHighlightChange = {},

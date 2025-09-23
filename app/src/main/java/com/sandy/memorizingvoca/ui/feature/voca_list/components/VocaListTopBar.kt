@@ -31,10 +31,12 @@ internal fun VocaListTopBar(
     onNavigateQuiz2: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier
+    Row(
+        modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
-        verticalAlignment = Alignment.CenterVertically,) {
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         IconButton(
             onClick = onNavigateBack,
         ) {
