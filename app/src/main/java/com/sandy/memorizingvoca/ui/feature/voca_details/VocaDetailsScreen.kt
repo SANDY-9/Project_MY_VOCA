@@ -9,8 +9,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
+import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaDetailsTitleView
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaDetailsTopBar
-import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaTitleView
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
 @Composable
@@ -21,11 +21,17 @@ internal fun VocaDetailsRoute(
     val voca by viewModel.voca.collectAsStateWithLifecycle()
     VocaDetailsScreen(
         voca = voca,
+        onNavigateBack = onNavigateBack,
+        onHighlightChange = viewModel::updateHighlight,
+        onBookmarkChange = viewModel::updateBookmark,
     )
 }
 @Composable
 private fun VocaDetailsScreen(
-    voca: Vocabulary? = null,
+    voca: Vocabulary?,
+    onNavigateBack: () -> Unit,
+    onHighlightChange: (Boolean) -> Unit,
+    onBookmarkChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn (
@@ -33,13 +39,15 @@ private fun VocaDetailsScreen(
     ) {
         stickyHeader {
             VocaDetailsTopBar(
-                day = voca?.day,
-                onNavigateBack = {},
-                onHighLightChange = {},
-                onBookmarkChange = {},
+                voca = voca,
+                onNavigateBack = onNavigateBack,
+                onHighlightChange = onHighlightChange,
+                onBookmarkChange = onBookmarkChange,
             )
-            VocaTitleView(
-                vocabulary = voca,
+            VocaDetailsTitleView(
+                word = voca?.word ?: "",
+                meaning = voca?.meaning ?: "",
+                highlighted = voca?.highlighted ?: false,
             )
         }
         item {
@@ -53,6 +61,16 @@ private fun VocaDetailsScreen(
 @Preview
 private fun VocaDetailsScreenPreview() {
     MemorizingVocaTheme {
-        VocaDetailsScreen()
+        VocaDetailsScreen(
+            voca = Vocabulary(
+                vocaId = 4,
+                day = 1,
+                word = "dictate",
+                meaning = "[동] ① 명령하다, 지시하다 ② 받아쓰게 하다, 구술하다 [명] 명령, 지시[주로 pl.]",
+            ),
+            onNavigateBack = {},
+            onHighlightChange = {},
+            onBookmarkChange = {},
+        )
     }
 }

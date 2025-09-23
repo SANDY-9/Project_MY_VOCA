@@ -19,19 +19,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.common.VocaBookmarkButton
 import com.sandy.memorizingvoca.ui.common.VocaHighlightButton
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
 internal fun VocaDetailsTopBar(
-    day: Int?,
+    voca: Vocabulary?,
     onNavigateBack: () -> Unit,
-    onHighLightChange: () -> Unit,
-    onBookmarkChange: () -> Unit,
+    onHighlightChange: (Boolean) -> Unit,
+    onBookmarkChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val title = "Day " + if(day != null) String.format("%02d", day) else ""
+    val title = "Day " + if(voca?.day != null) String.format("%02d", voca.day) else ""
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -57,13 +58,13 @@ internal fun VocaDetailsTopBar(
             letterSpacing = (-0.1).sp,
         )
         VocaHighlightButton(
-            highlighted = false,
-            onHighlightChange = {},
+            highlighted = voca?.highlighted ?: false,
+            onHighlightChange = onHighlightChange,
         )
         Spacer(modifier = modifier.width(8.dp))
         VocaBookmarkButton(
-            bookmarked = false,
-            onBookmarkChange = {},
+            bookmarked = voca?.bookmarked ?: false,
+            onBookmarkChange = onBookmarkChange,
         )
     }
 }
@@ -72,9 +73,14 @@ internal fun VocaDetailsTopBar(
 @Preview
 private fun VocaListTopBarPreview() {
     VocaDetailsTopBar(
-        day = 1,
+        voca = Vocabulary(
+            vocaId = 5,
+            day = 1,
+            word = "have trouble[difficulty] (in)",
+            meaning = "ing 하는 데 어려움[곤란]을 겪다"
+        ),
         onNavigateBack = {},
-        onHighLightChange = {},
+        onHighlightChange = {},
         onBookmarkChange = {},
     )
 }

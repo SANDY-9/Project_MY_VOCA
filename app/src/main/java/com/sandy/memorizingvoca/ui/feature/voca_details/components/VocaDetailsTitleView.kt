@@ -18,16 +18,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.theme.Gray30
-import com.sandy.memorizingvoca.ui.theme.Pink10
+import com.sandy.memorizingvoca.ui.theme.Pink80
 
 @Composable
-internal fun VocaTitleView(
-    vocabulary: Vocabulary?,
+internal fun VocaDetailsTitleView(
+    word: String,
+    meaning: String,
+    highlighted: Boolean,
+    pron: String = "",
     modifier: Modifier = Modifier,
-) = vocabulary?.let { voca ->
-    val highlightColor = if (voca.highlighted) Pink10 else Color.Transparent
+)  {
+    val highlightColor = if (highlighted) Pink80 else Color.Transparent
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -43,7 +45,7 @@ internal fun VocaTitleView(
                         color = highlightColor,
                         shape = RectangleShape
                     ),
-                text = voca.word,
+                text = word,
                 fontWeight = FontWeight.Black,
                 fontSize = 32.sp,
 
@@ -60,7 +62,7 @@ internal fun VocaTitleView(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            text = voca.meaning,
+            text = meaning,
             fontWeight = FontWeight.Normal,
         )
         Spacer(modifier = modifier.height(16.dp))
@@ -73,12 +75,9 @@ internal fun VocaTitleView(
 @Composable
 @Preview
 private fun VocaTitleViewPreview() {
-    VocaTitleView(
-        vocabulary = Vocabulary(
-            vocaId = 4,
-            day = 1,
-            word = "dictate",
-            meaning = "[동] ① 명령하다, 지시하다 ② 받아쓰게 하다, 구술하다 [명] 명령, 지시[주로 pl.]",
-        ),
+    VocaDetailsTitleView(
+        word = "dictate",
+        meaning = "[동] ① 명령하다, 지시하다 ② 받아쓰게 하다, 구술하다 [명] 명령, 지시[주로 pl.]",
+        highlighted = true,
     )
 }
