@@ -7,6 +7,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.sandy.memorizingvoca.ui.feature.home.navigation.homeScreen
 import com.sandy.memorizingvoca.ui.feature.home.navigation.navigateToHome
+import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.navigateToQuiz1
+import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.quiz1Screen
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.SplashRoute
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.splashScreen
 import com.sandy.memorizingvoca.ui.feature.voca_details.navigation.navigateToDetails
@@ -45,7 +47,7 @@ internal fun MyAppNavGraph(
         vocaListScreen(
             onNavigateBack = navController::navigateUp,
             onNavigateFull = {},
-            onNavigateQuiz1 = {},
+            onNavigateQuiz1 = navController::navigateToQuiz1,
             onNavigateQuiz2 = {},
             onVocaItemClick = { vocaId ->
                 navController.navigateToDetails(vocaId)
@@ -55,5 +57,10 @@ internal fun MyAppNavGraph(
         vocaDetailsScreen (
             onNavigateBack = navController::navigateUp,
         )
+
+        quiz1Screen(
+            onNavigateBack = navController::navigateUp,
+        )
+
     }
 }
