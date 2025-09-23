@@ -37,9 +37,8 @@ fun VocaSimpleListCard(
     onSpeak: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val highlightColor = remember {
-        if (highlighted) Pink10 else Color.Transparent
-    }
+
+    val highlightColor = if (highlighted) Pink10 else Color.Transparent
     Column(
         modifier = modifier.background(
             color = highlightColor,
