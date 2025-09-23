@@ -1,10 +1,12 @@
 package com.sandy.memorizingvoca.data.network
 
+import android.util.Log
 import com.sandy.memorizingvoca.data.model.ExampleSentence
 import com.sandy.memorizingvoca.data.model.VocabularyDetails
 import com.sandy.memorizingvoca.data.model.Word
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 import javax.inject.Inject
 
 class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
@@ -67,7 +69,7 @@ class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
         limit: Int = 3,
     ): List<ExampleSentence> {
         return doc.select(EXAMPLE_LIST_SELECT_QUERY).shuffled().take(limit).map {
-            val emphWords = it.select(EMPH_WORD_SELECT_QUERY).map { it.text() }
+            val emphWords = it.select(EMPH_WORD_SELECT_QUERY).map { it.text() }.combine()
             val sentence = it.selectFirst(ENGLISH_SENTENCE_SELECT_QUERY)?.text() ?: ""
             val mean = it.selectFirst(KOREAN_MEAN_SELECT_QUERY)?.text() ?: ""
             ExampleSentence(
@@ -75,6 +77,17 @@ class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
                 mean = mean,
                 emphWords = emphWords,
             )
+        }
+    }
+
+    private fun List<String>.combine(): List<String> {
+        return fold(mutableListOf()) { acc, word ->
+            if (word.length == 1 && acc.isNotEmpty()) {
+                acc[acc.lastIndex] = acc.last() + word
+            } else {
+                acc.add(word)
+            }
+            acc
         }
     }
 
