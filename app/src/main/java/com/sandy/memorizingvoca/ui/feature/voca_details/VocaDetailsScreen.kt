@@ -19,6 +19,7 @@ internal fun VocaDetailsRoute(
     viewModel: VocaDetailsViewModel = hiltViewModel(),
 ) {
     val voca by viewModel.voca.collectAsStateWithLifecycle()
+    val vocaDetails by viewModel.vocaDetails.collectAsStateWithLifecycle()
     VocaDetailsScreen(
         voca = voca,
         onNavigateBack = onNavigateBack,

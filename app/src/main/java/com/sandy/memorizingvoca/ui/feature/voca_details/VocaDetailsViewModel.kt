@@ -1,17 +1,25 @@
 package com.sandy.memorizingvoca.ui.feature.voca_details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.sandy.memorizingvoca.data.model.Vocabulary
+import com.sandy.memorizingvoca.data.model.VocabularyDetails
 import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetVocabularyRepository
 import com.sandy.memorizingvoca.data.repository.HighlightRepository
 import com.sandy.memorizingvoca.ui.feature.voca_details.navigation.VocaDetailsRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,11 +32,25 @@ internal class VocaDetailsViewModel @Inject constructor(
 ): ViewModel() {
 
     private val vocaId = savedStateHandle.toRoute<VocaDetailsRoute>().vocaId
-    val voca = getVocabularyRepository.getVocabularyDetails(vocaId).stateIn(
+    val voca = getVocabularyRepository.getVocabulary(vocaId).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
         initialValue = null,
     )
+
+    private val _details = MutableStateFlow<VocabularyDetails?>(null)
+    val details = _details.asStateFlow()
+
+    init {
+        voca.onEach {
+            it?.run {
+                val details = getVocabularyRepository.getVocabularyDetails(word)
+                _details.update { details }
+            }
+        }.catch {
+            Log.e("[NETWORK_ERROR]", "${it.message}" )
+        }.launchIn(viewModelScope)
+    }
 
     fun updateHighlight(highlighted: Boolean) = voca.value?.let {
         viewModelScope.launch {
@@ -89,3 +111,8 @@ internal class VocaDetailsViewModel @Inject constructor(
     }
 
 }
+
+data class Grammar(
+    val sort: String,
+    val words: Map<String, String>
+)
