@@ -1,12 +1,10 @@
 package com.sandy.memorizingvoca.data.network
 
-import android.util.Log
 import com.sandy.memorizingvoca.data.model.ExampleSentence
 import com.sandy.memorizingvoca.data.model.VocabularyDetails
 import com.sandy.memorizingvoca.data.model.Word
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
 import javax.inject.Inject
 
 class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
@@ -37,8 +35,16 @@ class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
         val url = WORD_SEARCH_URL + word
         val path = Jsoup.connect(url).get()
             .select(PATH_FIND_QUERY)
-            .first { it.text() == word }.select(A_TAG).attr(HREF_ATTR)
+            .first {
+                it.text().compare() == word.compare()
+            }
+            .select(A_TAG)
+            .attr(HREF_ATTR)
         return Jsoup.connect(WORD_BASE_URL + path).get()
+    }
+
+    private fun String.compare(): String {
+        return replace(" ", "").replace("-","")
     }
 
     private fun extractGrammar(doc: Document): Map<String, List<Word>> {
