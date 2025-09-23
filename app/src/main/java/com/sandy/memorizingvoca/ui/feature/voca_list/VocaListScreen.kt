@@ -17,7 +17,7 @@ import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 internal fun VocaListRoute(
     onNavigateBack: () -> Unit,
     onNavigateFull: () -> Unit,
-    onNavigateQuiz1: () -> Unit,
+    onNavigateQuiz1: (Int) -> Unit,
     onNavigateQuiz2: () -> Unit,
     onItemClick: (Int) -> Unit,
     viewModel: VocaListViewModel = hiltViewModel(),
@@ -40,7 +40,7 @@ private fun VocaListScreen(
     vocaList: List<Vocabulary>,
     onNavigateBack: () -> Unit,
     onNavigateFull: () -> Unit,
-    onNavigateQuiz1: () -> Unit,
+    onNavigateQuiz1: (Int) -> Unit,
     onNavigateQuiz2: () -> Unit,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,

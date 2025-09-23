@@ -8,12 +8,13 @@ import com.sandy.memorizingvoca.ui.feature.quiz1.Quiz1Route
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Quiz1Route
+data class Quiz1Route(val day: Int)
 
 fun NavController.navigateToQuiz1(
+    day: Int,
     navOptions: NavOptions? = null,
 ) {
-    navigate(route = Quiz1Route, navOptions)
+    navigate(route = Quiz1Route(day), navOptions)
 }
 
 fun NavGraphBuilder.quiz1Screen(

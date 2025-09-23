@@ -39,9 +39,7 @@ internal fun MyAppNavGraph(
 
         homeScreen(
             onAppFinish = onAppFinish,
-            onDayItemClick = { day ->
-                navController.navigateToList(day)
-            }
+            onDayItemClick = navController::navigateToList
         )
 
         vocaListScreen(
@@ -49,9 +47,7 @@ internal fun MyAppNavGraph(
             onNavigateFull = {},
             onNavigateQuiz1 = navController::navigateToQuiz1,
             onNavigateQuiz2 = {},
-            onVocaItemClick = { vocaId ->
-                navController.navigateToDetails(vocaId)
-            }
+            onVocaItemClick = navController::navigateToDetails
         )
 
         vocaDetailsScreen (
