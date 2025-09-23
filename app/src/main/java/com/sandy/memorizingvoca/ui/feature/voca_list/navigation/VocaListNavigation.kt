@@ -23,9 +23,7 @@ fun NavGraphBuilder.vocaListScreen(
     onVocaItemClick: (Int) -> Unit = {},
 ) {
     composable<VocaListRoute> {
-        val args = it.toRoute<VocaListRoute>()
         VocaListRoute (
-            day = args.day,
             onItemClick = onVocaItemClick,
         )
     }
