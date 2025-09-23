@@ -1,5 +1,7 @@
 package com.sandy.memorizingvoca.data.di
 
+import com.sandy.memorizingvoca.data.network.VocaDetailsDataSource
+import com.sandy.memorizingvoca.data.network.VocaDetailsDataSourceImpl
 import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetQuizRepository
 import com.sandy.memorizingvoca.data.repository.GetVocabularyRepository
@@ -50,5 +52,10 @@ abstract class DataModule {
     abstract fun bindsVocabularyRepository(
         impl: VocabularyRepositoryImpl
     ): VocabularyRepository
+
+    @Binds
+    abstract fun bindsVocaDetailsDataSource(
+        impl: VocaDetailsDataSourceImpl
+    ): VocaDetailsDataSource
 
 }
