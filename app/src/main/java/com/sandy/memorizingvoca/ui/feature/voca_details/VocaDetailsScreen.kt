@@ -13,6 +13,7 @@ import com.sandy.memorizingvoca.data.model.VocabularyDetails
 import com.sandy.memorizingvoca.data.model.Word
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaDetailsTitleView
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaDetailsTopBar
+import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaFamilyView
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaGrammarView
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
@@ -58,7 +59,19 @@ private fun VocaDetailsScreen(
         }
         item {
             VocaGrammarView(
-                item = details?.grammar ?: emptyMap()
+                item = details?.grammar ?: emptyMap(),
+            )
+            VocaFamilyView(
+                title = "파생어",
+                item = details?.wordFamily ?: emptyList(),
+            )
+            VocaFamilyView(
+                title = "반의어",
+                item = details?.oppositeWord ?: emptyList(),
+            )
+            VocaFamilyView(
+                title = "유의어",
+                item = details?.similarWord ?: emptyList(),
             )
         }
     }
@@ -122,9 +135,36 @@ private fun VocaDetailsScreenPreview() {
                         ),
                     )
                 ),
-                wordFamily = emptyList(),
-                similarWord = emptyList(),
-                oppositeWord = emptyList(),
+                wordFamily = listOf(
+                    Word(
+                        word = "withdrawal",
+                        mean = "탈퇴, 철수, 철회, 인출, 금단 증상"
+                    ),
+                    Word(
+                        word = "serious",
+                        mean = "심각한, 진지한, 정말, 중대한, 어려운"
+                    ),
+                ),
+                similarWord = listOf(
+                    Word(
+                        word = "withdrawal",
+                        mean = "탈퇴, 철수, 철회, 인출, 금단 증상"
+                    ),
+                    Word(
+                        word = "serious",
+                        mean = "심각한, 진지한, 정말, 중대한, 어려운"
+                    ),
+                ),
+                oppositeWord = listOf(
+                    Word(
+                        word = "withdrawal",
+                        mean = "탈퇴, 철수, 철회, 인출, 금단 증상"
+                    ),
+                    Word(
+                        word = "serious",
+                        mean = "심각한, 진지한, 정말, 중대한, 어려운"
+                    ),
+                ),
                 exampleList = emptyList(),
             ),
             onNavigateBack = {},
