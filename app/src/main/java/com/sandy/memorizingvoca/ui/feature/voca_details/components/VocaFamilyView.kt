@@ -25,10 +25,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Word
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.theme.Pink100
 import com.sandy.memorizingvoca.ui.theme.Pink40
 import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape4
+import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
 internal fun VocaFamilyView(
@@ -36,6 +38,7 @@ internal fun VocaFamilyView(
     item: List<Word>,
     modifier: Modifier = Modifier,
 ) {
+    val ttsManager = rememberTTSManager()
     if(item.isNotEmpty()) {
         Column(
             modifier = modifier
@@ -57,6 +60,9 @@ internal fun VocaFamilyView(
                 WordItem(
                     word = it.word,
                     mean = it.mean,
+                    onSpeak = {
+                        ttsManager.speak(it.word)
+                    }
                 )
             }
         }
@@ -67,6 +73,7 @@ internal fun VocaFamilyView(
 private fun WordItem(
     word: String,
     mean: String,
+    onSpeak: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -83,6 +90,7 @@ private fun WordItem(
             )
             Spacer(modifier = modifier.width(8.dp))
             Text(
+                modifier = modifier.noRippleClickable(onClick = onSpeak),
                 text = word,
                 fontWeight = FontWeight.Medium,
                 fontSize = 18.sp,

@@ -19,6 +19,7 @@ import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaExampleVi
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaFamilyView
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaGrammarView
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
 internal fun VocaDetailsRoute(

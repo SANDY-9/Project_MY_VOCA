@@ -19,8 +19,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.Pink80
+import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
 internal fun VocaDetailsTitleView(
@@ -30,6 +32,7 @@ internal fun VocaDetailsTitleView(
     pron: String = "",
     modifier: Modifier = Modifier,
 )  {
+    val ttsManager = rememberTTSManager()
     val highlightColor = if (highlighted) Pink80 else Color.Transparent
     Column(
         modifier = modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.surface),
@@ -45,7 +48,9 @@ internal fun VocaDetailsTitleView(
                     .background(
                         color = highlightColor,
                         shape = RectangleShape
-                    ),
+                    ).noRippleClickable{
+                        ttsManager.speak(word)
+                    },
                 text = word,
                 fontWeight = FontWeight.Black,
                 fontSize = 32.sp,
