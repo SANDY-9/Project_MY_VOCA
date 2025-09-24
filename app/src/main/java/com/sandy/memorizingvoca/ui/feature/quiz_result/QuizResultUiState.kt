@@ -7,4 +7,5 @@ internal data class QuizResultUiState(
     val incorrectCount: Int,
     val totalCount: Int,
     val percentage: Int,
+    val deleted: Boolean,
 )

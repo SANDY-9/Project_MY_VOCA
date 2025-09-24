@@ -20,10 +20,12 @@ fun NavController.navigateToQuizResult(
 
 fun NavGraphBuilder.quizResultScreen(
     onNavigateBack: () -> Unit,
+    onNavigateVocaDetails: (Int) -> Unit,
 ) {
     composable<QuizResultRoute> {
         QuizResultRoute(
             onNavigateBack = onNavigateBack,
+            onNavigateVocaDetails = onNavigateVocaDetails,
         )
     }
 }

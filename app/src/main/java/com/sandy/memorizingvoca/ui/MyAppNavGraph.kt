@@ -67,6 +67,7 @@ internal fun MyAppNavGraph(
 
         quizResultScreen(
             onNavigateBack = navController::navigateUp,
+            onNavigateVocaDetails = navController::navigateToDetails,
         )
 
     }

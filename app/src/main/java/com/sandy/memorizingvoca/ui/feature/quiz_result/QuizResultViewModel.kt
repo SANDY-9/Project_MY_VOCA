@@ -52,7 +52,8 @@ internal class QuizResultViewModel @Inject constructor(
                     correctCount = correctCount,
                     incorrectCount = wrongCount,
                     totalCount = totalCount,
-                    percentage = if(totalCount > 0) (correctCount / totalCount) * 100 else 0
+                    percentage = if(totalCount > 0) (correctCount / totalCount) * 100 else 0,
+                    deleted = false,
                 )
                 _quizResultUiState.update { quizResultState }
             }
@@ -76,6 +77,8 @@ internal class QuizResultViewModel @Inject constructor(
         vocaQuiz?.let { quiz ->
             quizRepository.deleteQuiz(quiz)
         }
+    }.invokeOnCompletion {
+        _quizResultUiState.update { it?.copy(deleted = true) }
     }
 
     fun addMultipleBookmark() = viewModelScope.launch {

@@ -1,13 +1,15 @@
 package com.sandy.memorizingvoca.ui.feature.quiz_result
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,10 +25,19 @@ import com.sandy.memorizingvoca.utils.rememberTTSManager
 @Composable
 internal fun QuizResultRoute(
     onNavigateBack: () -> Unit,
+    onNavigateVocaDetails: (Int) -> Unit,
     viewModel: QuizResultViewModel = hiltViewModel(),
 ) {
     val quizResult by viewModel.quizResultUiState.collectAsStateWithLifecycle()
     val incorrectedList by viewModel.incorrectedVocaList.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+    LaunchedEffect(quizResult?.deleted) {
+        if(quizResult?.deleted == true) {
+            Toast.makeText(context, "퀴즈 결과를 삭제했습니다.", Toast.LENGTH_SHORT).show()
+            onNavigateBack()
+        }
+    }
 
     QuizResultScreen(
         title = quizResult?.title,
@@ -40,7 +51,7 @@ internal fun QuizResultRoute(
         onDeleteClick = viewModel::deleteQuizResult,
         onAllBookmarkClick = viewModel::addMultipleBookmark,
         onBookmarkChange = viewModel::updateBookmark,
-        onItemClick = {},
+        onNavigateVocaDetails = onNavigateVocaDetails,
     )
 }
 
@@ -57,7 +68,7 @@ private fun QuizResultScreen(
     onDeleteClick: () -> Unit,
     onAllBookmarkClick: () -> Unit,
     onBookmarkChange: (Vocabulary, Boolean) -> Unit,
-    onItemClick: (Int) -> Unit,
+    onNavigateVocaDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val ttsManager = rememberTTSManager()
@@ -92,7 +103,7 @@ private fun QuizResultScreen(
                     ttsManager.speak(voca.word)
                 },
                 onClick = {
-                    onItemClick(voca.vocaId)
+                    onNavigateVocaDetails(voca.vocaId)
                 },
                 onBookmarkChange = { bookmarked ->
                     onBookmarkChange(voca, bookmarked)
@@ -150,7 +161,7 @@ private fun QuizResultScreenPreview() {
             onDeleteClick = {},
             onAllBookmarkClick = {},
             onBookmarkChange = { _, _ -> },
-            onItemClick = {},
+            onNavigateVocaDetails = {},
         )
     }
 }
