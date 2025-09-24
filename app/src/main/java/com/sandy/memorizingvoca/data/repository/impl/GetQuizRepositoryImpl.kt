@@ -17,8 +17,8 @@ class GetQuizRepositoryImpl @Inject constructor(
         return@withContext dao.getQuizList(day)
     }
 
-    override fun getQuizResult(quizDate: String): Flow<VocaQuiz> {
-        return dao.getQuiz(quizDate)
+    override suspend fun getQuizResult(quizDate: String): VocaQuiz = withContext(Dispatchers.IO) {
+        return@withContext dao.getQuiz(quizDate)
     }
 
     override fun getWrongVocaList(quizDate: String): Flow<List<Vocabulary>> {

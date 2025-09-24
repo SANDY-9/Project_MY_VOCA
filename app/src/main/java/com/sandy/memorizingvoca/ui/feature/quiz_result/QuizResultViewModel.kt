@@ -33,23 +33,31 @@ internal class QuizResultViewModel @Inject constructor(
     private val date = savedStateHandle.toRoute<QuizResultRoute>().date
     private var vocaQuiz: VocaQuiz? = null
 
-    val quizResult = getQuizRepository.getQuizResult(date).map {
-        val incorrectCount = it.wrongCount
-        val correctCount = it.totalCount - incorrectCount
-        val totalCollection = it.totalCount
-        QuizResultUiState(
-            title = getQuizResultTitle(it.day),
-            date = getQuizResultDate(it.date),
-            correctCount = correctCount,
-            incorrectCount = incorrectCount,
-            totalCount = totalCollection,
-            percentage = (correctCount / totalCollection) * 100
-        )
-    }.stateIn(
+    private val _quizResultUiState = MutableStateFlow<QuizResultUiState?>(null)
+    val quizResultUiState = _quizResultUiState.asStateFlow()
+
+    val incorrectedVocaList = getQuizRepository.getWrongVocaList(date).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = null,
+        initialValue = emptyList(),
     )
+
+    init {
+        viewModelScope.launch {
+            getQuizRepository.getQuizResult(date).run {
+                val correctCount = totalCount - wrongCount
+                val quizResultState = QuizResultUiState(
+                    title = getQuizResultTitle(day),
+                    date = getQuizResultDate(date),
+                    correctCount = correctCount,
+                    incorrectCount = wrongCount,
+                    totalCount = totalCount,
+                    percentage = if(totalCount > 0) (correctCount / totalCount) * 100 else 0
+                )
+                _quizResultUiState.update { quizResultState }
+            }
+        }
+    }
 
     private fun getQuizResultTitle(day: Int): String {
         return when {
@@ -64,11 +72,6 @@ internal class QuizResultViewModel @Inject constructor(
         return dateTime.format(formatter)
     }
 
-    val incorrectedVocaList = getQuizRepository.getWrongVocaList(date).stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = emptyList(),
-    )
     fun deleteQuizResult() = viewModelScope.launch {
         vocaQuiz?.let { quiz ->
             quizRepository.deleteQuiz(quiz)

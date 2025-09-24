@@ -38,7 +38,7 @@ interface QuizDao {
         "SELECT * FROM voca_quiz " +
                 "WHERE date = :quizDate "
     )
-    fun getQuiz(quizDate: String): Flow<VocaQuiz>
+    suspend fun getQuiz(quizDate: String): VocaQuiz
 
     @Transaction
     @Query(
