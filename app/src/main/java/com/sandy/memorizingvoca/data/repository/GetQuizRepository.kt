@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetQuizRepository {
     suspend fun getQuizList(day: Int): List<VocaQuiz>
-    suspend fun getQuizResult(quizDate: String): VocaQuiz
+    fun getQuizResult(quizDate: String): Flow<VocaQuiz>
     fun getWrongVocaList(quizDate: String): Flow<List<Vocabulary>>
 }
