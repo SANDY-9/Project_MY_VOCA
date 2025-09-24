@@ -2,12 +2,14 @@ package com.sandy.memorizingvoca.ui.feature.quiz1
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sandy.memorizingvoca.ui.feature.quiz1.components.Quiz1ProgressIndicator
 import com.sandy.memorizingvoca.ui.feature.quiz1.components.Quiz1TopBar
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
@@ -48,7 +50,13 @@ private fun Quiz1Screen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-
+        Quiz1TopBar(
+            title = title,
+            correctCount = correctCount,
+            totalCount = totalCount,
+            onNavigateBack = onNavigateBack,
+        )
+        Quiz1ProgressIndicator()
     }
 }
 
@@ -58,7 +66,7 @@ private fun Quiz1ScreenPreview() {
     MemorizingVocaTheme {
        Quiz1Screen(
            title = "Day 03",
-           correctCount = 0,
+           correctCount = 4,
            totalCount = 50,
            questionIndex = 2,
            question = "respect",
