@@ -11,11 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -36,12 +32,11 @@ fun LinearPercentageGraph(
     maxValue: Int,
     modifier: Modifier = Modifier,
 ) {
-    var currentRatio  by remember { mutableStateOf(0) }
-    LaunchedEffect(Unit) {
-        currentRatio  = currentValue
-    }
     val animatedProgress by animateFloatAsState(
-        targetValue = currentRatio.toFloat() / maxValue,
+        targetValue = calculateTargetValue(
+            maxValue = maxValue,
+            currentValue = currentValue,
+        ),
         animationSpec = tween(durationMillis = 1000, easing = LinearOutSlowInEasing)
     )
     Box(
@@ -102,6 +97,14 @@ fun LinearPercentageGraph(
             }
         }
     }
+}
+
+private fun calculateTargetValue(
+    maxValue: Int,
+    currentValue: Int,
+): Float {
+    if(maxValue == 0) return 0f
+    return currentValue.toFloat() / maxValue.toFloat()
 }
 
 @Preview(name = "LinearExpGraph")

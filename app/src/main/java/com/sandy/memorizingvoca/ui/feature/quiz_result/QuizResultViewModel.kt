@@ -14,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -46,18 +45,25 @@ internal class QuizResultViewModel @Inject constructor(
         viewModelScope.launch {
             getQuizRepository.getQuizResult(date).run {
                 val correctCount = totalCount - wrongCount
+                val percentage = calculatePercentage(totalCount, correctCount)
                 val quizResultState = QuizResultUiState(
                     title = getQuizResultTitle(day),
                     date = getQuizResultDate(date),
                     correctCount = correctCount,
                     incorrectCount = wrongCount,
                     totalCount = totalCount,
-                    percentage = if(totalCount > 0) (correctCount / totalCount) * 100 else 0,
+                    percentage = percentage,
                     deleted = false,
                 )
                 _quizResultUiState.update { quizResultState }
             }
         }
+    }
+
+    private fun calculatePercentage(totalCount: Int, correctCount: Int): Int {
+        if(totalCount == 0) return 0
+        val result = (correctCount.toDouble() / totalCount.toDouble()) * 100
+        return result.toInt()
     }
 
     private fun getQuizResultTitle(day: Int): String {
