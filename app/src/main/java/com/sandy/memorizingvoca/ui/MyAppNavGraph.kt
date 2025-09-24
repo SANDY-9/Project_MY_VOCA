@@ -9,6 +9,7 @@ import com.sandy.memorizingvoca.ui.feature.home.navigation.homeScreen
 import com.sandy.memorizingvoca.ui.feature.home.navigation.navigateToHome
 import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.navigateToQuiz1
 import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.quiz1Screen
+import com.sandy.memorizingvoca.ui.feature.quiz_result.navigation.quizResultScreen
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.SplashRoute
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.splashScreen
 import com.sandy.memorizingvoca.ui.feature.voca_details.navigation.navigateToDetails
@@ -55,6 +56,10 @@ internal fun MyAppNavGraph(
         )
 
         quiz1Screen(
+            onNavigateBack = navController::navigateUp,
+        )
+
+        quizResultScreen(
             onNavigateBack = navController::navigateUp,
         )
 
