@@ -93,6 +93,7 @@ internal class Quiz1ViewModel @Inject constructor(
         _questionState.value = Quiz1QuestionState(
             index = nextIndex,
             question = answer.word,
+            questionNumTitle = String.format("%02d", nextIndex + 1) +".",
             options = options,
             answerIndex = options.indexOf(answer.meaning),
         )

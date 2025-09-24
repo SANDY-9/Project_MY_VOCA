@@ -63,7 +63,7 @@ internal fun Quiz1QuizView(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = modifier.weight(1f))
+        Spacer(modifier = modifier.weight(0.9f))
         Text(
             text = questionNumTitle,
             fontWeight = FontWeight.Bold,

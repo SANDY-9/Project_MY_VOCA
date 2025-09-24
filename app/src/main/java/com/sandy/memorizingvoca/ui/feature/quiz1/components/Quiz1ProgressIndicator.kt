@@ -28,12 +28,12 @@ import com.sandy.memorizingvoca.ui.theme.Gray30
 
 @Composable
 internal fun Quiz1ProgressIndicator(
+    progressed: Boolean,
     modifier: Modifier = Modifier,
     durationMillis: Int = 5000,
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     var targetWidth by remember { mutableStateOf(0.dp) }
-
     val animatedWidth by animateDpAsState(
         targetValue = targetWidth,
         animationSpec = tween(
@@ -46,11 +46,12 @@ internal fun Quiz1ProgressIndicator(
         targetWidth = screenWidth
     }
 
+    val progressColor = if(progressed) Gray30 else Color.Transparent
     Box(
         modifier = modifier
             .height(8.dp)
             .width(animatedWidth)
-            .background(color = Gray30)
+            .background(color = progressColor)
     )
 }
 
@@ -59,6 +60,6 @@ internal fun Quiz1ProgressIndicator(
 @Preview
 private fun PreviewQuiz1ProgressIndicator() {
     Box(modifier = Modifier.fillMaxWidth()) {
-        Quiz1ProgressIndicator()
+        Quiz1ProgressIndicator(progressed = true)
     }
 }

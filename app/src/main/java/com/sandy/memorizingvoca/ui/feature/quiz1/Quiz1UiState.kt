@@ -13,6 +13,7 @@ internal data class Quiz1UiState(
 internal data class Quiz1QuestionState(
     val index: Int? = null,
     val question: String = "",
+    val questionNumTitle: String = "",
     val options: List<String> = emptyList(),
     val answerIndex: Int? = null,
 )
