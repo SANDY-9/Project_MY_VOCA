@@ -24,3 +24,5 @@ internal enum class AnswerState {
     CORRECT,
     INCORRECT,
 }
+
+internal const val QUIZ1_TIME_OUT = 5000

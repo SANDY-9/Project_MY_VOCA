@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.quiz1
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,16 +35,18 @@ internal class Quiz1ViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            initQuiz1UiState()
             quiz1UiState.map { it.answerState }.collectLatest { answer ->
                 when(answer) {
-                    AnswerState.NONE -> nextQuestion()
+                    AnswerState.NONE -> {
+                        initQuiz1UiState()
+                        nextQuestion()
+                    }
                     AnswerState.SOLVING_QUESTIONS -> {
-                        delay(5000L) // 시간제한
+                        delay(QUIZ1_TIME_OUT.toLong()) // 시간제한
                         if(quiz1UiState.value.answerState == AnswerState.SOLVING_QUESTIONS) checkAnswer(null)
                     }
                     AnswerState.CORRECT, AnswerState.INCORRECT -> {
-                        delay(2000L)
+                        delay(1000L)
                         nextQuestion()
                     }
                 }
@@ -54,14 +57,12 @@ internal class Quiz1ViewModel @Inject constructor(
     private suspend fun initQuiz1UiState() {
         val day = savedStateHandle.toRoute<Quiz1Route>().day
         val vocaList = downloadVocaList(day)
-        _quiz1UiState.update {
-            Quiz1UiState(
-                title = getQuiz1Title(day),
-                vocaList = vocaList,
-                correctCount = 0,
-                totalCount = vocaList.size,
-            )
-        }
+        _quiz1UiState.value = Quiz1UiState(
+            title = getQuiz1Title(day),
+            vocaList = vocaList,
+            correctCount = 0,
+            totalCount = vocaList.size,
+        )
     }
 
     private fun getQuiz1Title(day: Int): String {
@@ -73,8 +74,8 @@ internal class Quiz1ViewModel @Inject constructor(
 
     private suspend fun downloadVocaList(day: Int): List<Vocabulary> {
         return when {
-            day > 0 -> getBookmarkRepository.getBookmarkList().first().flatMap { it.value }
-            else -> getVocabularyRepository.getVocaList(day).first()
+            day > 0 -> getVocabularyRepository.getVocaList(day).first()
+            else -> getBookmarkRepository.getBookmarkList().first().flatMap { it.value }
         }.shuffled()
     }
 
@@ -84,9 +85,9 @@ internal class Quiz1ViewModel @Inject constructor(
     }
 
     private fun updateQuestionState() {
-        val currentIndex = questionState.value.index ?: 0
-        val nextIndex = currentIndex + 1
-        if(nextIndex < quiz1UiState.value.totalCount) return
+        val currentIndex = questionState.value.index
+        val nextIndex = if(currentIndex == null) 0 else currentIndex + 1
+        if(nextIndex == quiz1UiState.value.totalCount) return
 
         val answer = quiz1UiState.value.vocaList[nextIndex]
         val options = generateOptions(answer.meaning)
