@@ -2,6 +2,7 @@ package com.sandy.memorizingvoca.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -50,14 +51,16 @@ fun IncorrectVocaListCard(
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                modifier = modifier
-                    .fillMaxWidth(0.9f)
-                    .noRippleClickable(onClick = onSpeak),
-                text = word,
-                fontWeight = FontWeight.Bold,
-                fontSize = 22.sp,
-            )
+            Box(
+                modifier = modifier.fillMaxWidth(0.9f)
+            ) {
+                Text(
+                    modifier = modifier.noRippleClickable(onClick = onSpeak),
+                    text = word,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp,
+                )
+            }
             Spacer(modifier = modifier.weight(1f))
             VocaBookmarkButton(
                 bookmarked = bookmarked,
