@@ -13,7 +13,7 @@ import javax.inject.Inject
 class BookmarkRepositoryImpl @Inject constructor(
     private val dao: VocabularyDao,
 ) : BookmarkRepository {
-    override fun getBookmarkList(day: Int): Flow<Map<Int, List<Vocabulary>>> {
+    override fun getBookmarkList(): Flow<Map<Int, List<Vocabulary>>> {
         return dao.getBookmarkList()
             .flowOn(Dispatchers.IO)
             .map { it.groupBy { voca -> voca.day } }
