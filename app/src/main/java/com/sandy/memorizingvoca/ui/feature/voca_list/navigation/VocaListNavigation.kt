@@ -23,7 +23,7 @@ fun NavGraphBuilder.vocaListScreen(
     onNavigateBack: () -> Unit,
     onNavigateFull: () -> Unit,
     onNavigateQuiz1: (Int) -> Unit,
-    onNavigateQuiz2: () -> Unit,
+    onNavigateQuiz2: (Int) -> Unit,
     onVocaItemClick: (Int) -> Unit,
 ) {
     composable<VocaListRoute> {

@@ -10,6 +10,8 @@ import com.sandy.memorizingvoca.ui.feature.home.navigation.navigateToHome
 import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.Quiz1Route
 import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.navigateToQuiz1
 import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.quiz1Screen
+import com.sandy.memorizingvoca.ui.feature.quiz2.navigation.Quiz2Route
+import com.sandy.memorizingvoca.ui.feature.quiz2.navigation.navigateToQuiz2
 import com.sandy.memorizingvoca.ui.feature.quiz2.navigation.quiz2Screen
 import com.sandy.memorizingvoca.ui.feature.quiz_result.navigation.navigateToQuizResult
 import com.sandy.memorizingvoca.ui.feature.quiz_result.navigation.quizResultScreen
@@ -50,8 +52,8 @@ internal fun MyAppNavGraph(
             onNavigateBack = navController::navigateUp,
             onNavigateFull = {},
             onNavigateQuiz1 = navController::navigateToQuiz1,
-            onNavigateQuiz2 = {},
-            onVocaItemClick = navController::navigateToDetails
+            onNavigateQuiz2 = navController::navigateToQuiz2,
+            onVocaItemClick = navController::navigateToDetails,
         )
 
         vocaDetailsScreen (

@@ -18,7 +18,7 @@ internal fun VocaListRoute(
     onNavigateBack: () -> Unit,
     onNavigateFull: () -> Unit,
     onNavigateQuiz1: (Int) -> Unit,
-    onNavigateQuiz2: () -> Unit,
+    onNavigateQuiz2: (Int) -> Unit,
     onItemClick: (Int) -> Unit,
     viewModel: VocaListViewModel = hiltViewModel(),
 ) {
@@ -41,7 +41,7 @@ private fun VocaListScreen(
     onNavigateBack: () -> Unit,
     onNavigateFull: () -> Unit,
     onNavigateQuiz1: (Int) -> Unit,
-    onNavigateQuiz2: () -> Unit,
+    onNavigateQuiz2: (Int) -> Unit,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {

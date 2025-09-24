@@ -28,7 +28,7 @@ internal fun VocaListTopBar(
     onNavigateBack: () -> Unit,
     onNavigateFull: () -> Unit,
     onNavigateQuiz1: (Int) -> Unit,
-    onNavigateQuiz2: () -> Unit,
+    onNavigateQuiz2: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -75,7 +75,9 @@ internal fun VocaListTopBar(
             )
         }
         TextButton (
-            onClick = onNavigateQuiz2,
+            onClick = {
+                onNavigateQuiz2(day)
+            },
         ) {
             Text(
                 text = "Quiz2",
