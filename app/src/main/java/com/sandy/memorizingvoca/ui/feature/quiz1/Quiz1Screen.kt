@@ -1,9 +1,10 @@
 package com.sandy.memorizingvoca.ui.feature.quiz1
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,10 +21,17 @@ import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 @Composable
 internal fun Quiz1Route(
     onNavigateBack: () -> Unit,
+    onNavigateResult: (String) -> Unit,
     viewModel: Quiz1ViewModel = hiltViewModel(),
 ) {
-    val quiz1State by viewModel.quiz1UiState.collectAsStateWithLifecycle()
+    val quiz1State by viewModel.quiz1State.collectAsStateWithLifecycle()
     val questionState by viewModel.questionState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(quiz1State.answerState) {
+        if(quiz1State.answerState == AnswerState.DONE) {
+            onNavigateResult(quiz1State.quizDate ?: return@LaunchedEffect)
+        }
+    }
 
     Quiz1Screen(
         title = quiz1State.title,

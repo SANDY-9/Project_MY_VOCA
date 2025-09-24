@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.quiz1
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -90,17 +91,16 @@ internal class Quiz1ViewModel @Inject constructor(
     }
 
     private fun nextQuestion() {
+        if(questionState.value.index == quiz1State.value.vocaList.lastIndex) {
+            updateAnswerState(AnswerState.DONE)
+            return
+        }
         updateQuestionState()
         updateAnswerState(AnswerState.SOLVING_QUESTIONS)
     }
 
     private fun updateQuestionState() = _questionState.update { current ->
         val nextIndex = (current.index ?: -1) + 1
-        if (nextIndex >= quiz1State.value.totalCount) {
-            updateAnswerState(AnswerState.DONE)
-            return@update current
-        }
-
         val answerVoca = quiz1State.value.vocaList[nextIndex]
         val options = generateOptions(answerVoca.meaning)
         Quiz1QuestionState(

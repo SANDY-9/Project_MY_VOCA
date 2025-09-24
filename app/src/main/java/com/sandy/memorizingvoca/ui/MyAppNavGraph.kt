@@ -7,8 +7,10 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.sandy.memorizingvoca.ui.feature.home.navigation.homeScreen
 import com.sandy.memorizingvoca.ui.feature.home.navigation.navigateToHome
+import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.Quiz1Route
 import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.navigateToQuiz1
 import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.quiz1Screen
+import com.sandy.memorizingvoca.ui.feature.quiz_result.navigation.navigateToQuizResult
 import com.sandy.memorizingvoca.ui.feature.quiz_result.navigation.quizResultScreen
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.SplashRoute
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.splashScreen
@@ -55,8 +57,12 @@ internal fun MyAppNavGraph(
             onNavigateBack = navController::navigateUp,
         )
 
+        val quiz1NavOptions = navOptionBuilder.setPopUpTo<Quiz1Route>(inclusive = true).build()
         quiz1Screen(
             onNavigateBack = navController::navigateUp,
+            onNavigateResult = { date ->
+                navController.navigateToQuizResult(date, quiz1NavOptions)
+            }
         )
 
         quizResultScreen(
