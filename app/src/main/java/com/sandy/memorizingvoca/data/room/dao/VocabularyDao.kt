@@ -11,13 +11,15 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface VocabularyDao {
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addVocabularyList(vocaList: List<Vocabulary>)
 
     @Update
     suspend fun updateHighlight(vocabulary: Vocabulary)
     @Update
     suspend fun updateBookmark(vocabulary: Vocabulary)
+    @Update
+    suspend fun updateMultipleBookmark(vocaList: List<Vocabulary>)
 
     @Query(
         "SELECT DISTINCT day " +

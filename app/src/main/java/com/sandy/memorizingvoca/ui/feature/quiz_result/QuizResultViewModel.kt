@@ -1,17 +1,23 @@
 package com.sandy.memorizingvoca.ui.feature.quiz_result
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.sandy.memorizingvoca.data.model.VocaQuiz
+import com.sandy.memorizingvoca.data.model.Vocabulary
+import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetQuizRepository
 import com.sandy.memorizingvoca.data.repository.QuizRepository
 import com.sandy.memorizingvoca.ui.feature.quiz_result.navigation.QuizResultRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -21,9 +27,11 @@ internal class QuizResultViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getQuizRepository: GetQuizRepository,
     private val quizRepository: QuizRepository,
+    private val bookmarkRepository: BookmarkRepository,
 ): ViewModel() {
 
     private val date = savedStateHandle.toRoute<QuizResultRoute>().date
+    private var vocaQuiz: VocaQuiz? = null
 
     val quizResult = getQuizRepository.getQuizResult(date).map {
         val incorrectCount = it.wrongCount
@@ -61,5 +69,45 @@ internal class QuizResultViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(),
         initialValue = emptyList(),
     )
+    fun deleteQuizResult() = viewModelScope.launch {
+        vocaQuiz?.let { quiz ->
+            quizRepository.deleteQuiz(quiz)
+        }
+    }
+
+    fun addMultipleBookmark() = viewModelScope.launch {
+        val multipleList = incorrectedVocaList.value.filter { !it.bookmarked }.map {
+            it.copy(bookmarked = true)
+        }
+        if(multipleList.isEmpty()) return@launch
+        bookmarkRepository.addMutipleBookmark(multipleList)
+    }
+
+    fun updateBookmark(voca: Vocabulary, bookmarked: Boolean) = viewModelScope.launch {
+        when {
+            bookmarked -> addBookmarkVoca(voca)
+            else -> deleteBookmarkVoca(voca)
+        }
+    }
+
+    private suspend fun addBookmarkVoca(voca: Vocabulary) {
+        bookmarkRepository.addBookmark(
+            vocaId = voca.vocaId,
+            day = voca.day,
+            word = voca.word,
+            meaning = voca.meaning,
+            highlighted = voca.highlighted,
+        )
+    }
+
+    private suspend fun deleteBookmarkVoca(voca: Vocabulary) {
+        bookmarkRepository.deleteBookmark(
+            vocaId = voca.vocaId,
+            day = voca.day,
+            word = voca.word,
+            meaning = voca.meaning,
+            highlighted = voca.highlighted,
+        )
+    }
 
 }

@@ -25,7 +25,7 @@ internal fun QuizResultRoute(
     onNavigateBack: () -> Unit,
     viewModel: QuizResultViewModel = hiltViewModel(),
 ) {
-    val quizResult by viewModel.quizResult.collectAsStateWithLifecycle()
+    val quizResult by viewModel.quizResultUiState.collectAsStateWithLifecycle()
     val incorrectedList by viewModel.incorrectedVocaList.collectAsStateWithLifecycle()
 
     QuizResultScreen(
@@ -37,9 +37,9 @@ internal fun QuizResultRoute(
         date = quizResult?.date,
         incorrectedList = incorrectedList,
         onNavigateBack = onNavigateBack,
-        onDeleteClick = {},
-        onAllBookmarkClick = {},
-        onBookmarkChange = {},
+        onDeleteClick = viewModel::deleteQuizResult,
+        onAllBookmarkClick = viewModel::addMultipleBookmark,
+        onBookmarkChange = viewModel::updateBookmark,
         onItemClick = {},
     )
 }
@@ -56,7 +56,7 @@ private fun QuizResultScreen(
     onNavigateBack: () -> Unit,
     onDeleteClick: () -> Unit,
     onAllBookmarkClick: () -> Unit,
-    onBookmarkChange: (Boolean) -> Unit,
+    onBookmarkChange: (Vocabulary, Boolean) -> Unit,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -94,7 +94,9 @@ private fun QuizResultScreen(
                 onClick = {
                     onItemClick(voca.vocaId)
                 },
-                onBookmarkChange = onBookmarkChange,
+                onBookmarkChange = { bookmarked ->
+                    onBookmarkChange(voca, bookmarked)
+                },
             )
         }
     }
@@ -147,7 +149,7 @@ private fun QuizResultScreenPreview() {
             onNavigateBack = {},
             onDeleteClick = {},
             onAllBookmarkClick = {},
-            onBookmarkChange = {},
+            onBookmarkChange = { _, _ -> },
             onItemClick = {},
         )
     }
