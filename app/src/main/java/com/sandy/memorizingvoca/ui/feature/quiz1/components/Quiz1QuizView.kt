@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.feature.quiz1.AnswerState
 import com.sandy.memorizingvoca.ui.theme.DarkBlue
 import com.sandy.memorizingvoca.ui.theme.DarkRed
@@ -37,6 +39,7 @@ import com.sandy.memorizingvoca.ui.theme.Pink100
 import com.sandy.memorizingvoca.ui.theme.Pink40
 import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape16
+import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
 internal fun Quiz1QuizView(
@@ -48,6 +51,12 @@ internal fun Quiz1QuizView(
     onOptionSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val ttsManager = rememberTTSManager()
+    LaunchedEffect(answerState) {
+        if(answerState != AnswerState.NONE) {
+            ttsManager.speak(questionWord)
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -63,6 +72,11 @@ internal fun Quiz1QuizView(
         )
         Spacer(modifier = modifier.height(16.dp))
         Text(
+            modifier = modifier.noRippleClickable(
+              onClick = {
+                  ttsManager.speak(questionWord)
+              }
+            ),
             text = questionWord,
             fontWeight = FontWeight.Black,
             textAlign = TextAlign.Center,
