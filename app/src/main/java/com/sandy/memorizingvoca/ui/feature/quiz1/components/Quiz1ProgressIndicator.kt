@@ -1,6 +1,8 @@
 package com.sandy.memorizingvoca.ui.feature.quiz1.components
 
 import android.media.VolumeShaper
+import android.util.Log
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -9,49 +11,63 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sandy.memorizingvoca.ui.feature.quiz1.QUIZ1_TIME_OUT
 import com.sandy.memorizingvoca.ui.theme.Gray30
 
 @Composable
 internal fun Quiz1ProgressIndicator(
     progressed: Boolean,
     modifier: Modifier = Modifier,
-    durationMillis: Int = 5000,
+    durationMillis: Int = QUIZ1_TIME_OUT,
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    var targetWidth by remember { mutableStateOf(0.dp) }
-    val animatedWidth by animateDpAsState(
-        targetValue = targetWidth,
-        animationSpec = tween(
-            durationMillis = durationMillis,
-            easing = FastOutLinearInEasing,
-        ),
-    )
+    val density = LocalDensity.current
+    val animWidth = remember { Animatable(0f) } // px 단위로 애니메이션 관리
 
-    LaunchedEffect(Unit) {
-        targetWidth = screenWidth
+    LaunchedEffect(progressed) {
+        animWidth.run {
+            if(progressed) {
+                stop()
+                snapTo(0f)
+                animateTo(
+                    targetValue = with(density) { screenWidth.toPx() },
+                    animationSpec = tween(
+                        durationMillis = durationMillis,
+                        easing = FastOutLinearInEasing,
+                    )
+                )
+            }
+            else {
+                snapTo(0f)
+            }
+        }
     }
 
-    val progressColor = if(progressed) Gray30 else Color.Transparent
     Box(
         modifier = modifier
             .height(8.dp)
-            .width(animatedWidth)
-            .background(color = progressColor)
+            .width(with(density) { animWidth.value.toDp() })
+            .background(color = Gray30)
     )
 }
 
@@ -59,7 +75,17 @@ internal fun Quiz1ProgressIndicator(
 @Composable
 @Preview
 private fun PreviewQuiz1ProgressIndicator() {
-    Box(modifier = Modifier.fillMaxWidth()) {
-        Quiz1ProgressIndicator(progressed = true)
+    var progressed by remember { mutableStateOf(true) }
+    Column (modifier = Modifier.fillMaxWidth()) {
+        Quiz1ProgressIndicator(progressed = progressed)
+        Button(
+            onClick = {
+                progressed = !progressed
+            }
+        ) {
+            Text(
+                text = "애니메이션 상태 조절 : $progressed"
+            )
+        }
     }
 }
