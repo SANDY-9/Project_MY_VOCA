@@ -1,7 +1,9 @@
 package com.sandy.memorizingvoca.ui.feature.voca_details
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,42 +47,46 @@ private fun VocaDetailsScreen(
     onBookmarkChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn (
+    Column(
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = 24.dp)
     ) {
-        stickyHeader {
-            VocaDetailsTopBar(
-                voca = voca,
-                onNavigateBack = onNavigateBack,
-                onHighlightChange = onHighlightChange,
-                onBookmarkChange = onBookmarkChange,
-            )
-            VocaDetailsTitleView(
-                word = voca?.word ?: "",
-                meaning = voca?.meaning ?: "",
-                highlighted = voca?.highlighted ?: false,
-            )
-        }
-        item {
-            VocaGrammarView(
-                item = details?.grammar ?: emptyMap(),
-            )
-            VocaFamilyView(
-                title = "파생어",
-                item = details?.wordFamily ?: emptyList(),
-            )
-            VocaFamilyView(
-                title = "반의어",
-                item = details?.oppositeWord ?: emptyList(),
-            )
-            VocaFamilyView(
-                title = "유의어",
-                item = details?.similarWord ?: emptyList(),
-            )
-            VocaExampleView(
-                item = details?.exampleList ?: emptyList(),
-            )
+        VocaDetailsTopBar(
+            voca = voca,
+            onNavigateBack = onNavigateBack,
+            onHighlightChange = onHighlightChange,
+            onBookmarkChange = onBookmarkChange,
+        )
+        LazyColumn (
+            modifier = modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(bottom = 24.dp)
+        ) {
+            stickyHeader {
+                VocaDetailsTitleView(
+                    word = voca?.word ?: "",
+                    meaning = voca?.meaning ?: "",
+                    highlighted = voca?.highlighted ?: false,
+                )
+            }
+            item {
+                VocaGrammarView(
+                    item = details?.grammar ?: emptyMap(),
+                )
+                VocaFamilyView(
+                    title = "파생어",
+                    item = details?.wordFamily ?: emptyList(),
+                )
+                VocaFamilyView(
+                    title = "반의어",
+                    item = details?.oppositeWord ?: emptyList(),
+                )
+                VocaFamilyView(
+                    title = "유의어",
+                    item = details?.similarWord ?: emptyList(),
+                )
+                VocaExampleView(
+                    item = details?.exampleList ?: emptyList(),
+                )
+            }
         }
     }
 

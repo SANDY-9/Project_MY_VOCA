@@ -1,8 +1,10 @@
 package com.sandy.memorizingvoca.ui.feature.quiz_result
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -72,43 +74,47 @@ private fun QuizResultScreen(
     modifier: Modifier = Modifier,
 ) {
     val ttsManager = rememberTTSManager()
-    LazyColumn(
+    Column(
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = 16.dp)
     ) {
-        stickyHeader {
-            QuizResultTopBar(
-                title = title,
-                onNavigateBack = onNavigateBack,
-                onDeleteClick = onDeleteClick,
-            )
-            QuizResultScoreView(
-                date = date,
-                correctCount = correctCount,
-                totalCount = totalCount,
-                percentage = percentage,
-            )
-            QuizResultListHeaderView(
-                incorrectCount = incorrectCount,
-                onAllBookmarkClick = onAllBookmarkClick,
-            )
-        }
-        items(incorrectedList) { voca ->
-            IncorrectVocaListCard(
-                word = voca.word,
-                meaning = voca.meaning,
-                highlighted = voca.highlighted,
-                bookmarked = voca.bookmarked,
-                onSpeak = {
-                    ttsManager.speak(voca.word)
-                },
-                onClick = {
-                    onNavigateVocaDetails(voca.vocaId)
-                },
-                onBookmarkChange = { bookmarked ->
-                    onBookmarkChange(voca, bookmarked)
-                },
-            )
+        QuizResultTopBar(
+            title = title,
+            onNavigateBack = onNavigateBack,
+            onDeleteClick = onDeleteClick,
+        )
+        LazyColumn(
+            modifier = modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(bottom = 16.dp)
+        ) {
+            stickyHeader {
+                QuizResultScoreView(
+                    date = date,
+                    correctCount = correctCount,
+                    totalCount = totalCount,
+                    percentage = percentage,
+                )
+                QuizResultListHeaderView(
+                    incorrectCount = incorrectCount,
+                    onAllBookmarkClick = onAllBookmarkClick,
+                )
+            }
+            items(incorrectedList) { voca ->
+                IncorrectVocaListCard(
+                    word = voca.word,
+                    meaning = voca.meaning,
+                    highlighted = voca.highlighted,
+                    bookmarked = voca.bookmarked,
+                    onSpeak = {
+                        ttsManager.speak(voca.word)
+                    },
+                    onClick = {
+                        onNavigateVocaDetails(voca.vocaId)
+                    },
+                    onBookmarkChange = { bookmarked ->
+                        onBookmarkChange(voca, bookmarked)
+                    },
+                )
+            }
         }
     }
 }
