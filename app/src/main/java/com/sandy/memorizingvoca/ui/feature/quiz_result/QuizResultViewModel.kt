@@ -26,11 +26,16 @@ internal class QuizResultViewModel @Inject constructor(
     private val date = savedStateHandle.toRoute<QuizResultRoute>().date
 
     val quizResult = getQuizRepository.getQuizResult(date).map {
+        val incorrectCount = it.wrongCount
+        val correctCount = it.totalCount - incorrectCount
+        val totalCollection = it.totalCount
         QuizResultUiState(
             title = getQuizResultTitle(it.day),
             date = getQuizResultDate(it.date),
-            correctCount = it.totalCount - it.wrongCount,
-            totalCount = it.totalCount,
+            correctCount = correctCount,
+            incorrectCount = incorrectCount,
+            totalCount = totalCollection,
+            percentage = (correctCount / totalCollection) * 100
         )
     }.stateIn(
         scope = viewModelScope,
