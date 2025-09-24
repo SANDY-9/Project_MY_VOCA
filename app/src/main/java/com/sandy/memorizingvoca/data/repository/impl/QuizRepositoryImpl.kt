@@ -14,27 +14,27 @@ class QuizRepositoryImpl @Inject constructor(
     private val dao: QuizDao
 ) : QuizRepository {
     override suspend fun addNewQuizResult(
+        date: String,
         day: Int,
         totalCount: Int,
-        vararg wrongVocaId: Int
+        incorrectedVocaId: List<Int>,
     ) = withContext(Dispatchers.IO) {
-        val date = LocalDateTime.now().toString()
         dao.addNewQuiz(
             VocaQuiz(
                 date = date,
                 day = day,
-                wrongCount = wrongVocaId.size,
+                wrongCount = incorrectedVocaId.size,
                 totalCount = totalCount,
             )
         )
-        wrongVocaId.forEach { id ->
-            dao.addNewWrongVoca(
+        dao.addNewWrongVoca(
+            incorrectedVocaId.map { id ->
                 WrongVoca(
                     quizDate = date,
                     vocaId = id,
                 )
-            )
-        }
+            }
+        )
     }
 
     @Transaction

@@ -17,7 +17,7 @@ interface QuizDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNewQuiz(quiz: VocaQuiz)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addNewWrongVoca(wrongVoca: WrongVoca)
+    suspend fun addNewWrongVoca(wrongVoca: List<WrongVoca>)
 
     @Delete
     suspend fun deleteQuiz(quiz: VocaQuiz)

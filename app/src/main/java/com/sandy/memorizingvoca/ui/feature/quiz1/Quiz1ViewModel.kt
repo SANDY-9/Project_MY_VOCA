@@ -25,10 +25,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class Quiz1ViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val getVocabularyRepository: GetVocabularyRepository,
     private val getBookmarkRepository: BookmarkRepository,
+    private val quizRepository: QuizRepository,
 ): ViewModel() {
+
+    private val day = savedStateHandle.toRoute<Quiz1Route>().day
 
     private val _quiz1State = MutableStateFlow(Quiz1State())
     val quiz1State = _quiz1State.asStateFlow()
@@ -51,6 +54,9 @@ internal class Quiz1ViewModel @Inject constructor(
                     AnswerState.CORRECT, AnswerState.INCORRECT -> {
                         delay(1000L)
                         nextQuestion()
+                    }
+                    AnswerState.DONE -> {
+                        requestQuizResult()
                     }
                 }
             }
@@ -88,20 +94,22 @@ internal class Quiz1ViewModel @Inject constructor(
         updateAnswerState(AnswerState.SOLVING_QUESTIONS)
     }
 
-    private fun updateQuestionState() {
-        val currentIndex = questionState.value.index
-        val nextIndex = if(currentIndex == null) 0 else currentIndex + 1
-        if(nextIndex == quiz1UiState.value.totalCount) return
+    private fun updateQuestionState() = _questionState.update { current ->
+        val nextIndex = (current.index ?: -1) + 1
+        if (nextIndex >= quiz1State.value.totalCount) {
+            updateAnswerState(AnswerState.DONE)
+            return@update current
+        }
 
-        val answer = quiz1UiState.value.vocaList[nextIndex]
-        val options = generateOptions(answer.meaning)
-        _questionState.value = Quiz1QuestionState(
+        val answerVoca = quiz1State.value.vocaList[nextIndex]
+        val options = generateOptions(answerVoca.meaning)
+        Quiz1QuestionState(
             index = nextIndex,
-            question = answer.word,
-            questionNumTitle = String.format("%02d", nextIndex + 1) +".",
+            question = answerVoca.word,
+            questionNumTitle = String.format("%02d.", nextIndex + 1),
             options = options,
-            answerIndex = options.indexOf(answer.meaning),
-            answerVoca = answer,
+            answerIndex = options.indexOf(answerVoca.meaning),
+            answerVoca = answerVoca,
         )
     }
 
@@ -140,6 +148,16 @@ internal class Quiz1ViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun requestQuizResult() = CoroutineScope(Dispatchers.IO).launch {
+        val quiz1State = quiz1State.value
+        quizRepository.addNewQuizResult(
+            date = quiz1State.quizDate ?: return@launch,
+            day = day,
+            totalCount = quiz1State.totalCount,
+            incorrectedVocaId = quiz1State.incorrectedList.map { it.vocaId },
+        )
     }
 
 }
