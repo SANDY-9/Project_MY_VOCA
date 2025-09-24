@@ -62,6 +62,7 @@ internal class Quiz1ViewModel @Inject constructor(
             vocaList = vocaList,
             correctCount = 0,
             totalCount = vocaList.size,
+            incorrectedList = emptyList(),
         )
     }
 
@@ -97,6 +98,7 @@ internal class Quiz1ViewModel @Inject constructor(
             questionNumTitle = String.format("%02d", nextIndex + 1) +".",
             options = options,
             answerIndex = options.indexOf(answer.meaning),
+            answerVoca = answer,
         )
     }
 
@@ -123,6 +125,18 @@ internal class Quiz1ViewModel @Inject constructor(
         val correct = questionState.value.answerIndex == selectIndex
         val answer = if(correct) AnswerState.CORRECT else AnswerState.INCORRECT
         updateAnswerState(answer)
+        updateIncorrectedVocaList(answer)
+    }
+
+    private fun updateIncorrectedVocaList(answer: AnswerState) {
+        if(answer == AnswerState.INCORRECT) {
+            val voca = questionState.value.answerVoca ?: return
+            _quiz1UiState.update {
+                it.copy(
+                    incorrectedList = it.incorrectedList.toMutableList().apply { add(voca) }
+                )
+            }
+        }
     }
 
 }
