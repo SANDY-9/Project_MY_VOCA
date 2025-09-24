@@ -102,7 +102,7 @@ internal class Quiz1ViewModel @Inject constructor(
 
     private fun generateOptions(answer: String): List<String> {
         val incorrectOptions = quiz1UiState.value.vocaList
-            .filter { it.word != answer }
+            .filter { it.meaning != answer }
             .shuffled()
             .take(3)
             .map { it.meaning }
