@@ -2,13 +2,14 @@ package com.sandy.memorizingvoca.ui.feature.quiz1
 
 import com.sandy.memorizingvoca.data.model.Vocabulary
 
-internal data class Quiz1UiState(
+internal data class Quiz1State(
     val title: String = "",
     val vocaList: List<Vocabulary> = emptyList(),
     val correctCount: Int = 0,
     val totalCount: Int = vocaList.size,
     val answerState: AnswerState = AnswerState.NONE,
     val incorrectedList: List<Vocabulary> = emptyList(),
+    val quizDate: String? = null,
 )
 
 internal data class Quiz1QuestionState(
@@ -25,6 +26,7 @@ internal enum class AnswerState {
     SOLVING_QUESTIONS,
     CORRECT,
     INCORRECT,
+    DONE,
 }
 
 internal const val QUIZ1_TIME_OUT = 5000

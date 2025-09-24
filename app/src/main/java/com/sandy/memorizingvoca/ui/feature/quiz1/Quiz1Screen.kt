@@ -22,18 +22,18 @@ internal fun Quiz1Route(
     onNavigateBack: () -> Unit,
     viewModel: Quiz1ViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.quiz1UiState.collectAsStateWithLifecycle()
+    val quiz1State by viewModel.quiz1UiState.collectAsStateWithLifecycle()
     val questionState by viewModel.questionState.collectAsStateWithLifecycle()
 
     Quiz1Screen(
-        title = uiState.title,
-        correctCount = uiState.correctCount,
-        totalCount = uiState.totalCount,
+        title = quiz1State.title,
+        correctCount = quiz1State.correctCount,
+        totalCount = quiz1State.totalCount,
         questionNumTitle = questionState.questionNumTitle,
         question = questionState.question,
         options = questionState.options,
         answerIndex = questionState.answerIndex,
-        answerState = uiState.answerState,
+        answerState = quiz1State.answerState,
         onNavigateBack = onNavigateBack,
         onOptionSelect = viewModel::checkAnswer,
     )
