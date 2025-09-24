@@ -12,6 +12,9 @@ interface BookmarkRepository {
         meaning: String,
         highlighted: Boolean,
     )
+    suspend fun addMutipleBookmark(
+        vocaList: List<Vocabulary>,
+    )
     suspend fun deleteBookmark(
         vocaId: Int,
         day: Int,

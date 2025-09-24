@@ -38,6 +38,10 @@ class BookmarkRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun addMutipleBookmark(vocaList: List<Vocabulary>) = withContext(Dispatchers.IO) {
+        dao.updateMultipleBookmark(vocaList)
+    }
+
     override suspend fun deleteBookmark(
         vocaId: Int,
         day: Int,
