@@ -8,14 +8,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,70 +22,75 @@ import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.Pink40
-import com.sandy.memorizingvoca.ui.theme.Pink80
 
 @Composable
-fun VocaSimpleListCard(
+fun IncorrectVocaListCard(
     word: String,
     meaning: String,
     highlighted: Boolean,
-    onClick: () -> Unit,
+    bookmarked: Boolean,
     onSpeak: () -> Unit,
+    onClick: () -> Unit,
+    onBookmarkChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val highlightColor = if (highlighted) Pink40 else Color.Transparent
     Column(
         modifier = modifier
+            .fillMaxWidth()
             .background(
                 color = highlightColor,
             )
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
+            .padding(top = 16.dp),
     ) {
-        Spacer(modifier = modifier.height(16.dp))
         Row(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                modifier = modifier.fillMaxWidth(0.5f),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = word,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp,
-                )
-                Spacer(modifier = modifier.width(4.dp))
-                Icon(
-                    modifier = modifier.noRippleClickable(onClick = onSpeak),
-                    imageVector = Icons.Rounded.PlayArrow,
-                    contentDescription = null,
-                    tint = Pink80,
-                )
-            }
-            Spacer(modifier = modifier.width(4.dp))
             Text(
-                modifier = modifier.fillMaxWidth(),
-                text = meaning,
-                fontWeight = FontWeight.Medium,
-                fontSize = 13.sp,
+                modifier = modifier
+                    .fillMaxWidth(0.9f)
+                    .noRippleClickable(onClick = onSpeak),
+                text = word,
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp,
+            )
+            Spacer(modifier = modifier.weight(1f))
+            VocaBookmarkButton(
+                bookmarked = bookmarked,
+                onBookmarkChange = onBookmarkChange,
             )
         }
+        Text(
+            modifier = modifier.padding(
+                start = 16.dp,
+                end = 16.dp,
+                top = 8.dp,
+            ),
+            text = meaning,
+            fontWeight = FontWeight.Normal,
+            fontSize = 13.sp,
+        )
         Spacer(modifier = modifier.height(16.dp))
-        HorizontalDivider(color = Gray30)
+        HorizontalDivider(
+            color = Gray30,
+        )
     }
 }
 
-@Composable
 @Preview
-private fun Preview() {
-    VocaSimpleListCard(
-        word = "take into account [consideration]",
-        meaning = "① -을 생각해 내다 ② -을 해결하다[알아내다] ③ -을 계산[산출]하다 ④ 운동하다 ⑤ (일이) 잘 풀리다",
+@Composable
+private fun IncorrectVocaListCardPreview() {
+    IncorrectVocaListCard(
+        word = "pale",
+        meaning = "① (안색이) 창백한 ② (색이) 엷은, 옅은 ③ (빛이) 약한 [동] ① (안색이) 창백해지다 ② 색이 옅어지다 ③ (빛이) 약해지다",
         highlighted = false,
-        onClick = {},
+        bookmarked = true,
         onSpeak = {},
+        onClick = {},
+        onBookmarkChange = {},
     )
 }
