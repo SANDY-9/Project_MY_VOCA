@@ -16,6 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -41,25 +42,31 @@ internal class Quiz1ViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            quiz1State.map { it.quiz1Status }.collectLatest { status ->
-                when(status) {
-                    Quiz1Status.NONE -> {
-                        initQuiz1UiState()
-                        nextQuestion()
-                    }
-                    Quiz1Status.SOLVING_QUESTIONS -> {
-                        delay(QUIZ1_TIME_OUT.toLong()) // 시간제한
-                        if(quiz1State.value.quiz1Status == Quiz1Status.SOLVING_QUESTIONS) checkAnswer(null)
-                    }
-                    Quiz1Status.CORRECT, Quiz1Status.INCORRECT -> {
-                        delay(1000L)
-                        nextQuestion()
-                    }
-                    Quiz1Status.DONE -> {
-                        requestQuizResult()
+            quiz1State
+                .map { it.quiz1Status }
+                .distinctUntilChanged()
+                .collectLatest { status ->
+                    when (status) {
+                        Quiz1Status.NONE -> {
+                            initQuiz1UiState()
+                            nextQuestion()
+                        }
+
+                        Quiz1Status.SOLVING_QUESTIONS -> {
+                            delay(QUIZ1_TIME_OUT.toLong()) // 시간제한
+                            checkAnswer(null)
+                        }
+
+                        Quiz1Status.CORRECT, Quiz1Status.INCORRECT -> {
+                            delay(1000L)
+                            nextQuestion()
+                        }
+
+                        Quiz1Status.DONE -> {
+                            requestQuizResult()
+                        }
                     }
                 }
-            }
         }
     }
 
