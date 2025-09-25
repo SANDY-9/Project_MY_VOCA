@@ -67,16 +67,17 @@ internal class Quiz2ViewModel @Inject constructor(
                         }
                     }
                 }
-            }
-            launch {
-                gameSetState.filter {
-                    it.gameStatus !=  GameSetStatus.NONE
-                }.collectLatest {
-                    delay(500L)
-                    resetGameStatus()
-                }
-            }
         }
+        gameSetState
+            .filter {
+                it.gameStatus != GameSetStatus.NONE
+            }
+            .distinctUntilChanged()
+            .onEach {
+                val gameSetState = gameSetState.value
+                delay(200L)
+                resetGameStatus(gameSetState)
+            }.launchIn(viewModelScope)
     }
 
     private suspend fun initQuiz2UiState() {
