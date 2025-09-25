@@ -17,8 +17,8 @@ internal data class Quiz2GameSetState(
     val notCompleteList: List<Vocabulary> = emptyList(),
     val maxCompleteCount: Int = 0, //게임이 진행할 때 불변
     val gameSet: List<VocaCardState> = emptyList(),
-    val prevSelectedCard: VocaCardState? = null,
-    val curSelectedCard: VocaCardState? = null,
+    val firstSelectedCard: VocaCardState? = null,
+    val secondSelectedCard: VocaCardState? = null,
     val gameStatus: GameSetStatus = GameSetStatus.NONE,
 )
 

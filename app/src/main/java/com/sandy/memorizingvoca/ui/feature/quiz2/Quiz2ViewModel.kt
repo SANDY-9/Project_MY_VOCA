@@ -7,7 +7,6 @@ import androidx.navigation.toRoute
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetVocabularyRepository
-import com.sandy.memorizingvoca.data.repository.QuizRepository
 import com.sandy.memorizingvoca.ui.feature.quiz2.navigation.Quiz2Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -60,14 +59,14 @@ internal class Quiz2ViewModel @Inject constructor(
             gameSetState.filter {
                 it.gameStatus !=  GameSetStatus.NONE
             }.collectLatest {
-                delay(200L)
+                delay(100L)
                 resetGameStatus()
             }
         }
     }
 
     private suspend fun initQuiz2UiState() {
-        val vocaList = downloadVocaList(day).chunked(10)
+        val vocaList = downloadVocaList(day).chunked(6)
         _quiz2State.value = Quiz2State(
             title = getQuiz1Title(day),
             vocaListSets = vocaList,
@@ -107,8 +106,8 @@ internal class Quiz2ViewModel @Inject constructor(
             notCompleteList = notCompleteList,
             maxCompleteCount = notCompleteList.size,
             gameSet = createGameSet(notCompleteList),
-            prevSelectedCard = null,
-            curSelectedCard = null,
+            firstSelectedCard = null,
+            secondSelectedCard = null,
             gameStatus = GameSetStatus.NONE,
         )
         updateQuizStatus(Quiz2Status.STARTED)
@@ -141,37 +140,37 @@ internal class Quiz2ViewModel @Inject constructor(
     }
 
     fun selectCard(newCard: VocaCardState) {
-        val prevCard = gameSetState.value.prevSelectedCard
-        val curCard = gameSetState.value.curSelectedCard
-        if(newCard == prevCard || newCard == curCard) return
+        val firstCard = gameSetState.value.firstSelectedCard
+        val secondCard = gameSetState.value.secondSelectedCard
+        if(newCard == firstCard || newCard == secondCard) return
 
-        checkPrevCard(prevCard, newCard)
-        checkAnswer(prevCard ?: return, newCard)
+        checkfirstCard(firstCard, newCard)
+        checkAnswer(firstCard ?: return, newCard)
     }
 
-    private fun checkPrevCard(prevCard: VocaCardState?, newCard: VocaCardState) {
-        if(prevCard == null) {
-            updateGameSetState(prevSelectedCard = newCard)
+    private fun checkfirstCard(firstCard: VocaCardState?, newCard: VocaCardState) {
+        if(firstCard == null) {
+            updateGameSetState(firstSelectedCard = newCard)
         }
     }
 
     private fun checkAnswer(
-        prevCard: VocaCardState,
+        firstCard: VocaCardState,
         newCard: VocaCardState,
     ) {
-        val isAnswered = prevCard.voca == newCard.voca
+        val isAnswered = firstCard.voca == newCard.voca
         if(isAnswered) { // 정답 처리
             updateGameSetState(
-                prevSelectedCard = prevCard,
-                curSelectedCard = newCard,
+                firstSelectedCard = firstCard,
+                secondSelectedCard = newCard,
                 gameStatus = GameSetStatus.CORRECTED,
             )
             updateRemainsCount()
         }
         else { // 오답 처리
             updateGameSetState(
-                prevSelectedCard = prevCard,
-                curSelectedCard = newCard,
+                firstSelectedCard = firstCard,
+                secondSelectedCard = newCard,
                 gameStatus = GameSetStatus.INCORRECTED,
             )
         }
@@ -180,15 +179,15 @@ internal class Quiz2ViewModel @Inject constructor(
     private fun updateGameSetState(
         notCompleteList: List<Vocabulary> = gameSetState.value.notCompleteList,
         gameSet: List<VocaCardState> = gameSetState.value.gameSet,
-        prevSelectedCard: VocaCardState? = gameSetState.value.prevSelectedCard,
-        curSelectedCard: VocaCardState? = gameSetState.value.curSelectedCard,
+        firstSelectedCard: VocaCardState? = gameSetState.value.firstSelectedCard,
+        secondSelectedCard: VocaCardState? = gameSetState.value.secondSelectedCard,
         gameStatus: GameSetStatus = gameSetState.value.gameStatus,
     ) {
         _gameSetState.value = gameSetState.value.copy(
             notCompleteList = notCompleteList,
             gameSet = gameSet,
-            prevSelectedCard = prevSelectedCard,
-            curSelectedCard = curSelectedCard,
+            firstSelectedCard = firstSelectedCard,
+            secondSelectedCard = secondSelectedCard,
             gameStatus = gameStatus,
         )
     }
@@ -198,15 +197,15 @@ internal class Quiz2ViewModel @Inject constructor(
     }
 
     private fun resetGameStatus() {
-        val prevCard = gameSetState.value.prevSelectedCard ?: return
-        val curCard = gameSetState.value.curSelectedCard ?: return
-        val prevGameStatus = gameSetState.value.gameStatus
-        val notCompleteList = getUpdatedCompleteList(prevGameStatus, prevCard.voca)
+        val firstCard = gameSetState.value.firstSelectedCard ?: return
+        val secondCard = gameSetState.value.secondSelectedCard ?: return
+        val firstGameStatus = gameSetState.value.gameStatus
+        val notCompleteList = getUpdatedCompleteList(firstGameStatus, firstCard.voca)
         updateGameSetState(
             notCompleteList = notCompleteList,
-            gameSet = getUpdatedGameSet(prevGameStatus, prevCard, curCard),
-            prevSelectedCard = null,
-            curSelectedCard = null,
+            gameSet = getUpdatedGameSet(firstGameStatus, firstCard, secondCard),
+            firstSelectedCard = null,
+            secondSelectedCard = null,
             gameStatus = GameSetStatus.NONE,
         )
 
@@ -216,11 +215,11 @@ internal class Quiz2ViewModel @Inject constructor(
     }
 
     private fun getUpdatedGameSet(
-        prevGameStatus: GameSetStatus,
+        firstGameStatus: GameSetStatus,
         vararg cards: VocaCardState,
     ): List<VocaCardState> {
         return gameSetState.value.gameSet.toMutableList().also {
-            if(prevGameStatus == GameSetStatus.CORRECTED) {
+            if(firstGameStatus == GameSetStatus.CORRECTED) {
                 cards.forEach { card ->
                     it[card.index] = card.copy(isAnswered = true)
                 }
@@ -229,11 +228,11 @@ internal class Quiz2ViewModel @Inject constructor(
     }
 
     private fun getUpdatedCompleteList(
-        prevGameStatus: GameSetStatus,
+        firstGameStatus: GameSetStatus,
         voca: Vocabulary,
     ): List<Vocabulary> {
         return gameSetState.value.notCompleteList.toMutableList().apply {
-            if(prevGameStatus == GameSetStatus.CORRECTED) {
+            if(firstGameStatus == GameSetStatus.CORRECTED) {
                 remove(voca)
             }
         }
