@@ -1,6 +1,5 @@
 package com.sandy.memorizingvoca.ui.feature.quiz1
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -27,8 +26,8 @@ internal fun Quiz1Route(
     val quiz1State by viewModel.quiz1State.collectAsStateWithLifecycle()
     val questionState by viewModel.questionState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(quiz1State.answerState) {
-        if(quiz1State.answerState == AnswerState.DONE) {
+    LaunchedEffect(quiz1State.quiz1Status) {
+        if(quiz1State.quiz1Status == Quiz1Status.DONE) {
             onNavigateResult(quiz1State.quizDate ?: return@LaunchedEffect)
         }
     }
@@ -41,7 +40,7 @@ internal fun Quiz1Route(
         question = questionState.question,
         options = questionState.options,
         answerIndex = questionState.answerIndex,
-        answerState = quiz1State.answerState,
+        quiz1Status = quiz1State.quiz1Status,
         onNavigateBack = onNavigateBack,
         onOptionSelect = viewModel::checkAnswer,
     )
@@ -56,7 +55,7 @@ private fun Quiz1Screen(
     question: String,
     options: List<String>,
     answerIndex: Int?,
-    answerState: AnswerState,
+    quiz1Status: Quiz1Status,
     onNavigateBack: () -> Unit,
     onOptionSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -71,12 +70,12 @@ private fun Quiz1Screen(
             onNavigateBack = onNavigateBack,
         )
         Quiz1ProgressIndicator(
-            progressed = answerState == AnswerState.SOLVING_QUESTIONS,
+            progressed = quiz1Status == Quiz1Status.SOLVING_QUESTIONS,
         )
         Quiz1QuizView(
             questionNumTitle = questionNumTitle,
             questionWord = question,
-            answerState = answerState,
+            quiz1Status = quiz1Status,
             options = options,
             answerIndex = answerIndex ?: -1,
             onOptionSelect = onOptionSelect,
@@ -87,7 +86,7 @@ private fun Quiz1Screen(
 @Composable
 @Preview
 private fun Quiz1ScreenPreview() {
-    var answerState by remember { mutableStateOf(AnswerState.SOLVING_QUESTIONS) }
+    var quiz1Status by remember { mutableStateOf(Quiz1Status.SOLVING_QUESTIONS) }
     MemorizingVocaTheme {
        Quiz1Screen(
            title = "Day 03",
@@ -102,10 +101,10 @@ private fun Quiz1ScreenPreview() {
                "[명] ① 관점, 시각 ② 원근법",
            ),
            answerIndex = 1,
-           answerState = answerState,
+           quiz1Status = quiz1Status,
            onNavigateBack = {},
            onOptionSelect = { selectedIndex ->
-               answerState = if(selectedIndex == 1) AnswerState.CORRECT else AnswerState.INCORRECT
+               quiz1Status = if(selectedIndex == 1) Quiz1Status.CORRECT else Quiz1Status.INCORRECT
            },
        )
     }

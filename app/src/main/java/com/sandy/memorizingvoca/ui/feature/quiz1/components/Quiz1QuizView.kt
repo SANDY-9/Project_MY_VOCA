@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
-import com.sandy.memorizingvoca.ui.feature.quiz1.AnswerState
+import com.sandy.memorizingvoca.ui.feature.quiz1.Quiz1Status
 import com.sandy.memorizingvoca.ui.theme.DarkBlue
 import com.sandy.memorizingvoca.ui.theme.DarkRed
 import com.sandy.memorizingvoca.ui.theme.Pink100
@@ -45,15 +45,15 @@ import com.sandy.memorizingvoca.utils.rememberTTSManager
 internal fun Quiz1QuizView(
     questionNumTitle: String,
     questionWord: String,
-    answerState: AnswerState,
+    quiz1Status: Quiz1Status,
     options: List<String>,
     answerIndex: Int,
     onOptionSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val ttsManager = rememberTTSManager()
-    LaunchedEffect(answerState) {
-        if(answerState != AnswerState.NONE) {
+    LaunchedEffect(quiz1Status) {
+        if(quiz1Status != Quiz1Status.NONE) {
             ttsManager.speak(questionWord)
         }
     }
@@ -84,7 +84,7 @@ internal fun Quiz1QuizView(
         )
         Spacer(modifier = modifier.height(40.dp))
         OptionsList(
-            answerState = answerState,
+            quiz1Status = quiz1Status,
             options = options,
             answerIndex = answerIndex,
             onOptionSelect = onOptionSelect,
@@ -93,10 +93,10 @@ internal fun Quiz1QuizView(
             modifier = modifier.weight(1f),
             contentAlignment = Alignment.Center,
         ) {
-            if(answerState == AnswerState.CORRECT) {
+            if(quiz1Status == Quiz1Status.CORRECT) {
                 AnswerResultCorrect()
             }
-            if(answerState == AnswerState.INCORRECT) {
+            if(quiz1Status == Quiz1Status.INCORRECT) {
                 AnswerResultIncorrect()
             }
         }
@@ -105,7 +105,7 @@ internal fun Quiz1QuizView(
 
 @Composable
 private fun OptionsList(
-    answerState: AnswerState,
+    quiz1Status: Quiz1Status,
     options: List<String>,
     answerIndex: Int,
     onOptionSelect: (Int) -> Unit,
@@ -116,8 +116,8 @@ private fun OptionsList(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         options.forEachIndexed { index, option ->
-            when(answerState) {
-                AnswerState.CORRECT, AnswerState.INCORRECT -> OptionsAnswerItem(
+            when(quiz1Status) {
+                Quiz1Status.CORRECT, Quiz1Status.INCORRECT -> OptionsAnswerItem(
                     text = option,
                     isAnswered = index == answerIndex,
                 )
@@ -252,11 +252,11 @@ private fun AnswerResultCorrect(
 @Composable
 @Preview
 private fun Quiz1QuizViewPreview() {
-    var answerState by remember { mutableStateOf(AnswerState.SOLVING_QUESTIONS) }
+    var quiz1Status by remember { mutableStateOf(Quiz1Status.SOLVING_QUESTIONS) }
     Quiz1QuizView(
         questionNumTitle = "02.",
         questionWord = "respect",
-        answerState = answerState,
+        quiz1Status = quiz1Status,
         options = listOf(
             "[형] 눈에 잘 띄는, 뚜렷한",
             "[동] 존경하다 [명] ① 존경 ② (측)면",
@@ -265,7 +265,7 @@ private fun Quiz1QuizViewPreview() {
         ),
         answerIndex = 1,
         onOptionSelect = { selectedIndex ->
-            answerState = if(selectedIndex == 1) AnswerState.CORRECT else AnswerState.INCORRECT
+            quiz1Status = if(selectedIndex == 1) Quiz1Status.CORRECT else Quiz1Status.INCORRECT
         }
     )
 }

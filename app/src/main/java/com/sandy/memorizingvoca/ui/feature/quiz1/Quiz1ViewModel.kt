@@ -1,6 +1,5 @@
 package com.sandy.memorizingvoca.ui.feature.quiz1
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,21 +41,21 @@ internal class Quiz1ViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            quiz1State.map { it.answerState }.collectLatest { answer ->
-                when(answer) {
-                    AnswerState.NONE -> {
+            quiz1State.map { it.quiz1Status }.collectLatest { status ->
+                when(status) {
+                    Quiz1Status.NONE -> {
                         initQuiz1UiState()
                         nextQuestion()
                     }
-                    AnswerState.SOLVING_QUESTIONS -> {
+                    Quiz1Status.SOLVING_QUESTIONS -> {
                         delay(QUIZ1_TIME_OUT.toLong()) // 시간제한
-                        if(quiz1State.value.answerState == AnswerState.SOLVING_QUESTIONS) checkAnswer(null)
+                        if(quiz1State.value.quiz1Status == Quiz1Status.SOLVING_QUESTIONS) checkAnswer(null)
                     }
-                    AnswerState.CORRECT, AnswerState.INCORRECT -> {
+                    Quiz1Status.CORRECT, Quiz1Status.INCORRECT -> {
                         delay(1000L)
                         nextQuestion()
                     }
-                    AnswerState.DONE -> {
+                    Quiz1Status.DONE -> {
                         requestQuizResult()
                     }
                 }
@@ -92,11 +91,11 @@ internal class Quiz1ViewModel @Inject constructor(
 
     private fun nextQuestion() {
         if(questionState.value.index == quiz1State.value.vocaList.lastIndex) {
-            updateAnswerState(AnswerState.DONE)
+            updateAnswerState(Quiz1Status.DONE)
             return
         }
         updateQuestionState()
-        updateAnswerState(AnswerState.SOLVING_QUESTIONS)
+        updateAnswerState(Quiz1Status.SOLVING_QUESTIONS)
     }
 
     private fun updateQuestionState() = _questionState.update { current ->
@@ -122,25 +121,25 @@ internal class Quiz1ViewModel @Inject constructor(
         return (incorrectOptions + answer).shuffled()
     }
 
-    private fun updateAnswerState(answerState: AnswerState) {
+    private fun updateAnswerState(quiz1Status: Quiz1Status) {
         _quiz1State.update {
             val currentScore = it.correctCount
             it.copy(
-                correctCount = if(answerState == AnswerState.CORRECT) currentScore + 1 else currentScore,
-                answerState = answerState,
+                correctCount = if(quiz1Status == Quiz1Status.CORRECT) currentScore + 1 else currentScore,
+                quiz1Status = quiz1Status,
             )
         }
     }
 
     fun checkAnswer(selectIndex: Int?) {
         val correct = questionState.value.answerIndex == selectIndex
-        val answer = if(correct) AnswerState.CORRECT else AnswerState.INCORRECT
+        val answer = if(correct) Quiz1Status.CORRECT else Quiz1Status.INCORRECT
         updateAnswerState(answer)
         updateIncorrectedVocaList(answer)
     }
 
-    private fun updateIncorrectedVocaList(answer: AnswerState) {
-        if(answer == AnswerState.INCORRECT) {
+    private fun updateIncorrectedVocaList(answer: Quiz1Status) {
+        if(answer == Quiz1Status.INCORRECT) {
             val voca = questionState.value.answerVoca ?: return
             _quiz1State.update {
                 it.copy(

@@ -7,7 +7,7 @@ internal data class Quiz1State(
     val vocaList: List<Vocabulary> = emptyList(),
     val correctCount: Int = 0,
     val totalCount: Int = vocaList.size,
-    val answerState: AnswerState = AnswerState.NONE,
+    val quiz1Status: Quiz1Status = Quiz1Status.NONE,
     val incorrectedList: List<Vocabulary> = emptyList(),
     val quizDate: String? = null,
 )
@@ -21,7 +21,7 @@ internal data class Quiz1QuestionState(
     val answerVoca: Vocabulary? = null,
 )
 
-internal enum class AnswerState {
+internal enum class Quiz1Status {
     NONE,
     SOLVING_QUESTIONS,
     CORRECT,
