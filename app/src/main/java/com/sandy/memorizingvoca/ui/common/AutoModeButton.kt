@@ -7,7 +7,9 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -32,7 +34,7 @@ import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 fun VocaAutoModeButton(
-    isAutoMode: Boolean = false,
+    isAutoMode: Boolean,
     onAutoModeChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -63,13 +65,14 @@ fun VocaAutoModeButton(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
-            modifier = modifier.rotate(rotation.value),
+            modifier = modifier.rotate(rotation.value).size(22.dp),
             imageVector = Icons.Rounded.AutoMode,
             contentDescription = null,
             tint = color,
         )
+        Spacer(modifier = modifier.height(2.dp))
         Text(
-            text = "Auto",
+            text = "AUTO",
             fontWeight = FontWeight.Medium,
             fontSize = 10.sp,
             color = color,

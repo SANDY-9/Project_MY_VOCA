@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,6 +59,14 @@ internal class VocaFullScreenViewModel @Inject constructor(
             day > 0 -> "Day " + String.format("%02d", day)
             else -> "Bookmark"
         }
+    }
+
+    fun onBlindModeChange(isBlindMode: Boolean) {
+        _fullScreenState.update { it.copy(blindMode = isBlindMode) }
+    }
+
+    fun onAutoModeChange(isAutoMode: Boolean) {
+        _fullScreenState.update { it.copy(autoMode = isAutoMode) }
     }
 
 
