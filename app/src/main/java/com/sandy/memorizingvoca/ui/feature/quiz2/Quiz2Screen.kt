@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sandy.memorizingvoca.ui.common.QuizProgressIndicator
 import com.sandy.memorizingvoca.ui.feature.quiz2.components.Quiz2TopBar
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
@@ -21,6 +22,7 @@ internal fun Quiz2Route(
     val gameSetState by viewModel.gameSetState.collectAsStateWithLifecycle()
 
     Quiz2Screen(
+        quizStatus = quiz2State.guizStatus,
         title = quiz2State.title,
         remainsCount = quiz2State.remainsCount,
         totalCount = quiz2State.totalCount,
@@ -30,6 +32,7 @@ internal fun Quiz2Route(
 
 @Composable
 private fun Quiz2Screen(
+    quizStatus: Quiz2Status,
     title: String,
     remainsCount: Int,
     totalCount: Int,
@@ -45,6 +48,10 @@ private fun Quiz2Screen(
             remainsCount = remainsCount,
             onNavigateBack = onNavigateBack,
         )
+        QuizProgressIndicator(
+            progressed = quizStatus == Quiz2Status.STARTED,
+            durationMillis = QUIZ2_TIME_OUT,
+        )
     }
 }
 
@@ -53,6 +60,7 @@ private fun Quiz2Screen(
 private fun Quiz2ScreenPreview() {
     MemorizingVocaTheme {
         Quiz2Screen(
+            quizStatus = Quiz2Status.STARTED,
             title = "Day 01",
             remainsCount = 19,
             totalCount = 50,

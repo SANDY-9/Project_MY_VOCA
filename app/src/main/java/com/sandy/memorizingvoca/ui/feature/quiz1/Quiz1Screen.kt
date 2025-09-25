@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sandy.memorizingvoca.ui.feature.quiz1.components.Quiz1ProgressIndicator
+import com.sandy.memorizingvoca.ui.common.QuizProgressIndicator
 import com.sandy.memorizingvoca.ui.feature.quiz1.components.Quiz1QuizView
 import com.sandy.memorizingvoca.ui.feature.quiz1.components.Quiz1TopBar
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
@@ -69,8 +69,9 @@ private fun Quiz1Screen(
             totalCount = totalCount,
             onNavigateBack = onNavigateBack,
         )
-        Quiz1ProgressIndicator(
+        QuizProgressIndicator(
             progressed = quiz1Status == Quiz1Status.SOLVING_QUESTIONS,
+            durationMillis = QUIZ1_TIME_OUT,
         )
         Quiz1QuizView(
             questionNumTitle = questionNumTitle,

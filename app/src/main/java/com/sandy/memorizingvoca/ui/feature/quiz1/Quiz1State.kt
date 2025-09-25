@@ -29,4 +29,4 @@ internal enum class Quiz1Status {
     DONE,
 }
 
-internal const val QUIZ1_TIME_OUT = 5000
+const val QUIZ1_TIME_OUT = 5000
