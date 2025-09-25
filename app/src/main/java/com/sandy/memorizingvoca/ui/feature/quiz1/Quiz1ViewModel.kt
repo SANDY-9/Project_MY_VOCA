@@ -92,7 +92,7 @@ internal class Quiz1ViewModel @Inject constructor(
     private suspend fun downloadVocaList(day: Int): List<Vocabulary> {
         return when {
             day > 0 -> getVocabularyRepository.getVocaList(day).first()
-            else -> getBookmarkRepository.getBookmarkList().first().flatMap { it.value }
+            else -> getBookmarkRepository.getBookmarkList().first()
         }.shuffled()
     }
 
