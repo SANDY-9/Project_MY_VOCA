@@ -8,7 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.common.QuizProgressIndicator
+import com.sandy.memorizingvoca.ui.feature.quiz2.components.Quiz2QuizView
 import com.sandy.memorizingvoca.ui.feature.quiz2.components.Quiz2TopBar
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
@@ -27,6 +29,11 @@ internal fun Quiz2Route(
         remainsCount = quiz2State.remainsCount,
         totalCount = quiz2State.totalCount,
         onNavigateBack = onNavigateBack,
+        cardList = gameSetState.gameSet,
+        gameStatus = gameSetState.gameStatus,
+        firstSelectedCard = gameSetState.firstSelectedCard,
+        secondSelectedCard = gameSetState.secondSelectedCard,
+        onCardSelect = viewModel::selectCard,
     )
 }
 
@@ -36,6 +43,11 @@ private fun Quiz2Screen(
     title: String,
     remainsCount: Int,
     totalCount: Int,
+    cardList: List<VocaCardState>,
+    gameStatus: GameSetStatus,
+    firstSelectedCard: VocaCardState?,
+    secondSelectedCard: VocaCardState?,
+    onCardSelect: (VocaCardState) -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -52,6 +64,13 @@ private fun Quiz2Screen(
             progressed = quizStatus == Quiz2Status.STARTED,
             durationMillis = QUIZ2_TIME_OUT,
         )
+        Quiz2QuizView(
+            cardList = cardList,
+            status = gameStatus,
+            firstSelectedCard = firstSelectedCard,
+            secondSelectedCard = secondSelectedCard,
+            onCardSelect = onCardSelect,
+        )
     }
 }
 
@@ -64,6 +83,72 @@ private fun Quiz2ScreenPreview() {
             title = "Day 01",
             remainsCount = 19,
             totalCount = 50,
+            cardList = listOf(
+                VocaCardState(
+                    type = VocaCardType.MEANING,
+                    text = "advocate",
+                    voca = Vocabulary(
+                        vocaId = 2,
+                        day = 1,
+                        word = "advocate",
+                        meaning = "[동] ① 지지하다, 옹호하다 ② 주장하다 [명] 지지자, 옹호자",
+                    ),
+                ),
+                VocaCardState(
+                    type = VocaCardType.MEANING,
+                    text = "affluent",
+                    voca = Vocabulary(
+                        vocaId = 3,
+                        day = 1,
+                        word = "affluent",
+                        meaning = "[형] ① 풍부한 ② 부유한"
+                    ),
+                ),
+                VocaCardState(
+                    type = VocaCardType.MEANING,
+                    text = "ing 하는 데 어려움[곤란]을 겪다",
+                    voca = Vocabulary(
+                        vocaId = 5,
+                        day = 1,
+                        word = "have trouble[difficulty] (in)",
+                        meaning = "ing 하는 데 어려움[곤란]을 겪다",
+                    ),
+                ),
+                VocaCardState(
+                    type = VocaCardType.MEANING,
+                    text = "have trouble[difficulty] (in)",
+                    voca = Vocabulary(
+                        vocaId = 5,
+                        day = 1,
+                        word = "have trouble[difficulty] (in)",
+                        meaning = "ing 하는 데 어려움[곤란]을 겪다",
+                    ),
+                ),
+                VocaCardState(
+                    type = VocaCardType.MEANING,
+                    text = "[동] ① 지지하다, 옹호하다 ② 주장하다 [명] 지지자, 옹호자",
+                    voca = Vocabulary(
+                        vocaId = 2,
+                        day = 1,
+                        word = "advocate",
+                        meaning = "[동] ① 지지하다, 옹호하다 ② 주장하다 [명] 지지자, 옹호자",
+                    ),
+                ),
+                VocaCardState(
+                    type = VocaCardType.MEANING,
+                    text = "[형] ① 풍부한 ② 부유한",
+                    voca = Vocabulary(
+                        vocaId = 3,
+                        day = 1,
+                        word = "affluent",
+                        meaning = "[형] ① 풍부한 ② 부유한",
+                    ),
+                ),
+            ),
+            gameStatus = GameSetStatus.NONE,
+            firstSelectedCard = null,
+            secondSelectedCard = null,
+            onCardSelect = {},
             onNavigateBack = {},
         )
     }

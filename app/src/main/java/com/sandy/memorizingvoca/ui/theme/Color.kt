@@ -18,3 +18,5 @@ val Gray30 = Color(0xFFE7E7E7)
 
 val DarkRed = Color(0xFFBE2525)
 val DarkBlue = Color(0xFF2847A2)
+val DarkBlueTransparent = Color(0xB42847A2)
+val DarkRedTransparent = Color(0x8FBE2525)
