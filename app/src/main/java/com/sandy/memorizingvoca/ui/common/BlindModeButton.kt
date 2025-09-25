@@ -11,31 +11,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
-import com.sandy.memorizingvoca.ui.resources.AutoFixHigh
+import com.sandy.memorizingvoca.ui.resources.Visibility
+import com.sandy.memorizingvoca.ui.resources.VisibilityOff
 import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
-fun VocaHighlightButton(
-    highlighted: Boolean,
-    onHighlightChange: (Boolean) -> Unit,
+fun VocaBlindModeButton(
+    isBlindMode: Boolean,
+    onBlindModeChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Icon(
         modifier = modifier.noRippleClickable {
-            onHighlightChange(!highlighted)
+            onBlindModeChange(!isBlindMode)
         },
-        imageVector = if(highlighted) Icons.Rounded.AutoFixHigh else Icons.Outlined.AutoFixHigh,
+        imageVector = if(isBlindMode) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
         contentDescription = null,
-        tint = if(highlighted) Pink100 else Color.LightGray,
+        tint = if(isBlindMode) Color.LightGray else Pink100,
     )
 }
 
-@Composable
 @Preview
-private fun Preview() {
-    var highlighted by remember { mutableStateOf(false) }
-    VocaHighlightButton(
-        highlighted = highlighted,
-        onHighlightChange = { highlighted = !highlighted },
+@Composable
+private fun VocaBlindModeButtonPreview() {
+    var isBlindMode by remember { mutableStateOf(false) }
+    VocaBlindModeButton(
+        isBlindMode = isBlindMode,
+        onBlindModeChange = { isBlindMode = !isBlindMode }
     )
 }

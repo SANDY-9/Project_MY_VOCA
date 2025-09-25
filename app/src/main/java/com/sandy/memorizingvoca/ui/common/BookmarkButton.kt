@@ -1,14 +1,18 @@
 package com.sandy.memorizingvoca.ui.common
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.resources.Star
+import com.sandy.memorizingvoca.ui.resources.StarOutline
 import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
@@ -17,28 +21,22 @@ fun VocaBookmarkButton(
     onBookmarkChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val clickEvent = { onBookmarkChange(!bookmarked) }
-    when {
-        bookmarked -> Icon(
-            modifier = modifier.noRippleClickable(clickEvent),
-            imageVector = Icons.Rounded.CheckCircle,
-            contentDescription = null,
-            tint = Pink100,
-        )
-        else -> Icon(
-            modifier = modifier.noRippleClickable(clickEvent),
-            imageVector = Icons.Outlined.CheckCircle,
-            contentDescription = null,
-            tint = Color.LightGray,
-        )
-    }
+    Icon(
+        modifier = modifier.noRippleClickable {
+            onBookmarkChange(!bookmarked)
+        },
+        imageVector = if(bookmarked) Icons.Rounded.Star else Icons.Rounded.StarOutline,
+        contentDescription = null,
+        tint = if(bookmarked) Pink100 else Color.LightGray,
+    )
 }
 
 @Composable
 @Preview
 private fun Preview() {
+    var bookmarked by remember { mutableStateOf(false) }
     VocaBookmarkButton(
-        bookmarked = false,
-        onBookmarkChange = {},
+        bookmarked = bookmarked,
+        onBookmarkChange = { bookmarked = !bookmarked },
     )
 }
