@@ -11,7 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.common.QuizProgressIndicator
-import com.sandy.memorizingvoca.ui.feature.quiz1.Quiz1Status
+import com.sandy.memorizingvoca.ui.feature.quiz2.components.Quiz2QuizHeader
 import com.sandy.memorizingvoca.ui.feature.quiz2.components.Quiz2QuizView
 import com.sandy.memorizingvoca.ui.feature.quiz2.components.Quiz2TopBar
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
@@ -37,11 +37,13 @@ internal fun Quiz2Route(
         title = quiz2State.title,
         correctCount = quiz2State.correctCount,
         totalCount = quiz2State.totalCount,
-        onNavigateBack = onNavigateBack,
+        totalPage = quiz2State.totalPage,
+        gameSetIndex = gameSetState.index,
         cardList = gameSetState.gameSet,
         gameStatus = gameSetState.gameStatus,
         firstSelectedCard = gameSetState.firstSelectedCard,
         secondSelectedCard = gameSetState.secondSelectedCard,
+        onNavigateBack = onNavigateBack,
         onCardSelect = viewModel::selectCard,
     )
 }
@@ -52,6 +54,8 @@ private fun Quiz2Screen(
     title: String,
     correctCount: Int,
     totalCount: Int,
+    totalPage: Int,
+    gameSetIndex: Int?,
     cardList: List<VocaCardState>,
     gameStatus: GameSetStatus,
     firstSelectedCard: VocaCardState?,
@@ -73,6 +77,10 @@ private fun Quiz2Screen(
         QuizProgressIndicator(
             progressed = quizStatus == Quiz2Status.STARTED,
             durationMillis = QUIZ2_TIME_OUT,
+        )
+        Quiz2QuizHeader(
+            index = gameSetIndex ?: 0,
+            totalPage = totalPage,
         )
         Quiz2QuizView(
             cardList = cardList,
@@ -96,6 +104,8 @@ private fun Quiz2ScreenPreview() {
             title = "Day 01",
             correctCount = 19,
             totalCount = 50,
+            totalPage = 6,
+            gameSetIndex = null,
             cardList = listOf(
                 VocaCardState(
                     type = VocaCardType.MEANING,

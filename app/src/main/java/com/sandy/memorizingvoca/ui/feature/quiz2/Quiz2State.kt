@@ -7,6 +7,7 @@ internal data class Quiz2State(
     val vocaListSets: List<List<Vocabulary>> = emptyList(),
     val correctCount: Int = 0,
     val totalCount: Int = 0,
+    val totalPage: Int = 0,
     val incorrectedSet: Set<Vocabulary> = emptySet(),
     val quizDate: String? = null,
     val guizStatus: Quiz2Status = Quiz2Status.READY,

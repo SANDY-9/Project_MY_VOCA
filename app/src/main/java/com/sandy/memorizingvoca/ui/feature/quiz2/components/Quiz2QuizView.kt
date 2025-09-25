@@ -55,7 +55,11 @@ internal fun Quiz2QuizView(
         modifier = modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surface)
-            .padding(16.dp),
+            .padding(
+                start = 16.dp,
+                end = 16.dp,
+                bottom = 16.dp,
+            ),
         maxItemsInEachRow = 3,
         maxLines = 4,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
