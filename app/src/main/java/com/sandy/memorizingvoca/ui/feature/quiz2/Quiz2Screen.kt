@@ -26,7 +26,7 @@ internal fun Quiz2Route(
     Quiz2Screen(
         quizStatus = quiz2State.guizStatus,
         title = quiz2State.title,
-        remainsCount = quiz2State.remainsCount,
+        correctCount = quiz2State.correctCount,
         totalCount = quiz2State.totalCount,
         onNavigateBack = onNavigateBack,
         cardList = gameSetState.gameSet,
@@ -41,7 +41,7 @@ internal fun Quiz2Route(
 private fun Quiz2Screen(
     quizStatus: Quiz2Status,
     title: String,
-    remainsCount: Int,
+    correctCount: Int,
     totalCount: Int,
     cardList: List<VocaCardState>,
     gameStatus: GameSetStatus,
@@ -57,7 +57,7 @@ private fun Quiz2Screen(
         Quiz2TopBar(
             title = title,
             totalCount = totalCount,
-            remainsCount = remainsCount,
+            correctCount = correctCount,
             onNavigateBack = onNavigateBack,
         )
         QuizProgressIndicator(
@@ -81,7 +81,7 @@ private fun Quiz2ScreenPreview() {
         Quiz2Screen(
             quizStatus = Quiz2Status.STARTED,
             title = "Day 01",
-            remainsCount = 19,
+            correctCount = 19,
             totalCount = 50,
             cardList = listOf(
                 VocaCardState(

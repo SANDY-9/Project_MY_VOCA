@@ -5,7 +5,7 @@ import com.sandy.memorizingvoca.data.model.Vocabulary
 internal data class Quiz2State(
     val title: String = "",
     val vocaListSets: List<List<Vocabulary>> = emptyList(),
-    val remainsCount: Int = 0,
+    val correctCount: Int = 0,
     val totalCount: Int = 0,
     val incorrectedList: List<Vocabulary> = emptyList(),
     val quizDate: String? = null,

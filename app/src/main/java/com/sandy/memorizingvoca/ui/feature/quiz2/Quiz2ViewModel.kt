@@ -81,11 +81,11 @@ internal class Quiz2ViewModel @Inject constructor(
     }
 
     private suspend fun initQuiz2UiState() {
-        val vocaList = downloadVocaList(day).chunked(6)
+        val vocaList = downloadVocaList(day)
         _quiz2State.value = Quiz2State(
             title = getQuiz1Title(day),
-            vocaListSets = vocaList,
-            remainsCount = vocaList.size,
+            vocaListSets = vocaList.chunked(6),
+            correctCount = 0,
             totalCount = vocaList.size,
             incorrectedList = emptyList(),
             quizDate = LocalDateTime.now().toString(),
@@ -180,7 +180,7 @@ internal class Quiz2ViewModel @Inject constructor(
                 secondSelectedCard = newCard,
                 gameStatus = GameSetStatus.CORRECTED,
             )
-            updateRemainsCount()
+            updateCorrectCount()
         }
         else { // 오답 처리
             updateGameSetState(
@@ -207,8 +207,8 @@ internal class Quiz2ViewModel @Inject constructor(
         )
     }
 
-    private fun updateRemainsCount() {
-        _quiz2State.update { it.copy(remainsCount = it.remainsCount - 1) }
+    private fun updateCorrectCount() {
+        _quiz2State.update { it.copy(correctCount = it.correctCount + 1) }
     }
 
     private fun resetGameStatus(curGameSetState: Quiz2GameSetState) {

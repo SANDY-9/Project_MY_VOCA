@@ -25,7 +25,7 @@ import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 @Composable
 internal fun Quiz2TopBar(
     title: String,
-    remainsCount: Int,
+    correctCount: Int,
     totalCount: Int,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
@@ -55,7 +55,7 @@ internal fun Quiz2TopBar(
         )
         Spacer(modifier = modifier.width(8.dp))
         ScoreView(
-            remainsCount = remainsCount,
+            correctCount = correctCount,
             total = totalCount,
         )
     }
@@ -63,7 +63,7 @@ internal fun Quiz2TopBar(
 
 @Composable
 private fun ScoreView(
-    remainsCount: Int,
+    correctCount: Int,
     total: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -72,13 +72,13 @@ private fun ScoreView(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "남은 개수",
+            text = "정답 개수",
             fontSize = 16.sp,
             color = Color.DarkGray,
         )
         Spacer(modifier = modifier.width(8.dp))
         Text(
-            text = "$remainsCount",
+            text = "$correctCount",
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
             color = Pink100,
@@ -102,7 +102,7 @@ private fun Quiz2TopBarPreview() {
     Quiz2TopBar(
         title = "Day 01",
         totalCount = 50,
-        remainsCount = 14,
+        correctCount = 14,
         onNavigateBack = {},
     )
 }
