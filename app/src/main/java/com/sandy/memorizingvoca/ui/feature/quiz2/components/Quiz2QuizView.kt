@@ -150,7 +150,7 @@ private fun VocaWordCard(
                 ),
                 color = Color.DarkGray,
             )
-            if(status == GameSetStatus.INCORRECTED) {
+            if(status == GameSetStatus.INCORRECTED && selected) {
                 Text(
                     text = "X",
                     fontWeight = FontWeight.Black,
@@ -200,7 +200,7 @@ private fun VocaMeaningCard(
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,
             )
-            if(status == GameSetStatus.INCORRECTED) {
+            if(status == GameSetStatus.INCORRECTED && selected) {
                 Text(
                     text = "X",
                     fontWeight = FontWeight.Black,

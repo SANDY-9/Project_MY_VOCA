@@ -38,29 +38,33 @@ internal class Quiz2ViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            quiz2State.map { it.guizStatus }.collectLatest { status ->
-                when(status) {
-                    Quiz2Status.READY -> {
-                        initQuiz2UiState()
-                        nextGameSet()
-                    }
-                    Quiz2Status.STARTED -> {
-                        delay(QUIZ2_TIME_OUT.toLong())
-                        updateCompletedGameSet()
-                    }
-                    Quiz2Status.COMPLETED -> {
-                        nextGameSet()
-                    }
-                    Quiz2Status.FINISHED -> {
+            launch {
+                quiz2State.map { it.guizStatus }.collectLatest { status ->
+                    when(status) {
+                        Quiz2Status.READY -> {
+                            initQuiz2UiState()
+                            nextGameSet()
+                        }
+                        Quiz2Status.STARTED -> {
+                            delay(QUIZ2_TIME_OUT.toLong())
+                            updateCompletedGameSet()
+                        }
+                        Quiz2Status.COMPLETED -> {
+                            nextGameSet()
+                        }
+                        Quiz2Status.FINISHED -> {
 
+                        }
                     }
                 }
             }
-            gameSetState.filter {
-                it.gameStatus !=  GameSetStatus.NONE
-            }.collectLatest {
-                delay(100L)
-                resetGameStatus()
+            launch {
+                gameSetState.filter {
+                    it.gameStatus !=  GameSetStatus.NONE
+                }.collectLatest {
+                    delay(500L)
+                    resetGameStatus()
+                }
             }
         }
     }
