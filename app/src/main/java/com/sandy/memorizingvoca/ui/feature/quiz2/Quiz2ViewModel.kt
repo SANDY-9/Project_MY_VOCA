@@ -71,7 +71,7 @@ internal class Quiz2ViewModel @Inject constructor(
         _quiz2State.value = Quiz2State(
             title = getQuiz1Title(day),
             vocaListSets = vocaList,
-            correctCount = 0,
+            remainsCount = vocaList.size,
             totalCount = vocaList.size,
             incorrectedList = emptyList(),
             quizDate = LocalDateTime.now().toString(),
@@ -166,7 +166,7 @@ internal class Quiz2ViewModel @Inject constructor(
                 curSelectedCard = newCard,
                 gameStatus = GameSetStatus.CORRECTED,
             )
-            updateCorrectCount()
+            updateRemainsCount()
         }
         else { // 오답 처리
             updateGameSetState(
@@ -193,8 +193,8 @@ internal class Quiz2ViewModel @Inject constructor(
         )
     }
 
-    private fun updateCorrectCount() {
-        _quiz2State.update { it.copy(correctCount = it.correctCount + 1) }
+    private fun updateRemainsCount() {
+        _quiz2State.update { it.copy(remainsCount = it.remainsCount - 1) }
     }
 
     private fun resetGameStatus() {
