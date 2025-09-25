@@ -3,6 +3,7 @@ package com.sandy.memorizingvoca.ui.feature.quiz2
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -10,6 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.common.QuizProgressIndicator
+import com.sandy.memorizingvoca.ui.feature.quiz1.Quiz1Status
 import com.sandy.memorizingvoca.ui.feature.quiz2.components.Quiz2QuizView
 import com.sandy.memorizingvoca.ui.feature.quiz2.components.Quiz2TopBar
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
@@ -22,6 +24,12 @@ internal fun Quiz2Route(
 ) {
     val quiz2State by viewModel.quiz2State.collectAsStateWithLifecycle()
     val gameSetState by viewModel.gameSetState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(quiz2State.guizStatus) {
+        if(quiz2State.guizStatus == Quiz2Status.FINISHED) {
+            onNavigateResult(quiz2State.quizDate ?: return@LaunchedEffect)
+        }
+    }
 
     Quiz2Screen(
         quizStatus = quiz2State.guizStatus,
