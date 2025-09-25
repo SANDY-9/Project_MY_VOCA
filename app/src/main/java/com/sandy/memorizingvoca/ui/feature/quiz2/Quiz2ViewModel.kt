@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.quiz2
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,9 +14,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -38,20 +42,26 @@ internal class Quiz2ViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            launch {
-                quiz2State.map { it.guizStatus }.collectLatest { status ->
-                    when(status) {
+            quiz2State
+                .map { it.guizStatus }
+                .distinctUntilChanged()
+                .collectLatest { status ->
+                    when (status) {
                         Quiz2Status.READY -> {
                             initQuiz2UiState()
                             nextGameSet()
                         }
+
                         Quiz2Status.STARTED -> {
                             delay(QUIZ2_TIME_OUT.toLong())
                             updateCompletedGameSet()
                         }
+
                         Quiz2Status.COMPLETED -> {
+                            delay(100L)
                             nextGameSet()
                         }
+
                         Quiz2Status.FINISHED -> {
 
                         }
@@ -200,10 +210,10 @@ internal class Quiz2ViewModel @Inject constructor(
         _quiz2State.update { it.copy(remainsCount = it.remainsCount - 1) }
     }
 
-    private fun resetGameStatus() {
-        val firstCard = gameSetState.value.firstSelectedCard ?: return
-        val secondCard = gameSetState.value.secondSelectedCard ?: return
-        val firstGameStatus = gameSetState.value.gameStatus
+    private fun resetGameStatus(curGameSetState: Quiz2GameSetState) {
+        val firstCard = curGameSetState.firstSelectedCard ?: return
+        val secondCard = curGameSetState.secondSelectedCard ?: return
+        val firstGameStatus = curGameSetState.gameStatus
         val notCompleteList = getUpdatedCompleteList(firstGameStatus, firstCard.voca)
         updateGameSetState(
             notCompleteList = notCompleteList,
@@ -245,7 +255,7 @@ internal class Quiz2ViewModel @Inject constructor(
     private fun updateCompletedGameSet() {
         // TO_DO 오답 저장 로직 구혐
         val incorrectedList = gameSetState.value.notCompleteList
-
+        Log.e("확인", "updateCompletedGameSet: 음?", )
         updateQuizStatus(Quiz2Status.COMPLETED)
     }
 
