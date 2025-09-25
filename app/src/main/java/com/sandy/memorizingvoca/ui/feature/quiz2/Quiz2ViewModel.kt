@@ -1,6 +1,5 @@
 package com.sandy.memorizingvoca.ui.feature.quiz2
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,8 +7,11 @@ import androidx.navigation.toRoute
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetVocabularyRepository
+import com.sandy.memorizingvoca.data.repository.QuizRepository
 import com.sandy.memorizingvoca.ui.feature.quiz2.navigation.Quiz2Route
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,6 +32,7 @@ internal class Quiz2ViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getVocabularyRepository: GetVocabularyRepository,
     private val getBookmarkRepository: BookmarkRepository,
+    private val quizRepository: QuizRepository,
 ): ViewModel() {
 
     private val day = savedStateHandle.toRoute<Quiz2Route>().day
@@ -63,7 +66,7 @@ internal class Quiz2ViewModel @Inject constructor(
                         }
 
                         Quiz2Status.FINISHED -> {
-
+                            requestQuizResult()
                         }
                     }
                 }
@@ -83,13 +86,13 @@ internal class Quiz2ViewModel @Inject constructor(
     }
 
     private suspend fun initQuiz2UiState() {
-        val vocaList = downloadVocaList(day)
+        val vocaList = downloadVocaList(day).take(20)
         _quiz2State.value = Quiz2State(
             title = getQuiz1Title(day),
             vocaListSets = vocaList.chunked(6),
             correctCount = 0,
             totalCount = vocaList.size,
-            incorrectedList = emptyList(),
+            incorrectedSet = emptySet(),
             quizDate = LocalDateTime.now().toString(),
             guizStatus = Quiz2Status.READY,
         )
@@ -256,10 +259,21 @@ internal class Quiz2ViewModel @Inject constructor(
     }
 
     private fun updateCompletedGameSet() {
-        // TO_DO 오답 저장 로직 구혐
         val incorrectedList = gameSetState.value.notCompleteList
-        Log.e("확인", "updateCompletedGameSet: 음?", )
-        updateQuizStatus(Quiz2Status.COMPLETED)
+        _quiz2State.value = quiz2State.value.copy(
+            incorrectedSet = quiz2State.value.incorrectedSet + incorrectedList,
+            guizStatus = Quiz2Status.COMPLETED,
+        )
+    }
+
+    private fun requestQuizResult() = CoroutineScope(Dispatchers.IO).launch {
+        val quiz2State = quiz2State.value
+        quizRepository.addNewQuizResult(
+            date = quiz2State.quizDate ?: return@launch,
+            day = day,
+            totalCount = quiz2State.totalCount,
+            incorrectedVocaId = quiz2State.incorrectedSet.map { it.vocaId },
+        )
     }
 
 }
