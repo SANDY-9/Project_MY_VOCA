@@ -74,9 +74,11 @@ internal class Quiz2ViewModel @Inject constructor(
             }
             .distinctUntilChanged()
             .onEach {
-                val gameSetState = gameSetState.value
+                val prvGameSetState = gameSetState.value
                 delay(200L)
-                resetGameStatus(gameSetState)
+                if(prvGameSetState.notCompleteList.size == gameSetState.value.notCompleteList.size) {
+                    resetGameStatus(prvGameSetState)
+                }
             }.launchIn(viewModelScope)
     }
 
