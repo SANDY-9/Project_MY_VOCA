@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
+import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenButtonFooter
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenPageHeader
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenTopBar
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenVocaPager
@@ -76,6 +77,7 @@ private fun VocaFullScreen(
                 vocaList = vocaList,
             )
         }
+        FullScreenButtonFooter()
     }
 
 }
