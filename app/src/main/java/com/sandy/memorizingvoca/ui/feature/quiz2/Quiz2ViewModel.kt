@@ -86,7 +86,7 @@ internal class Quiz2ViewModel @Inject constructor(
     }
 
     private suspend fun initQuiz2UiState() {
-        val vocaList = downloadVocaList(day).take(20)
+        val vocaList = downloadVocaList(day)
         _quiz2State.value = Quiz2State(
             title = getQuiz1Title(day),
             vocaListSets = vocaList.chunked(6),

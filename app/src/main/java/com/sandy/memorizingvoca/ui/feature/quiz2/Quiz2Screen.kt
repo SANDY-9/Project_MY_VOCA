@@ -15,6 +15,7 @@ import com.sandy.memorizingvoca.ui.feature.quiz1.Quiz1Status
 import com.sandy.memorizingvoca.ui.feature.quiz2.components.Quiz2QuizView
 import com.sandy.memorizingvoca.ui.feature.quiz2.components.Quiz2TopBar
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
 internal fun Quiz2Route(
@@ -59,6 +60,7 @@ private fun Quiz2Screen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val ttsManager = rememberTTSManager()
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -78,6 +80,9 @@ private fun Quiz2Screen(
             firstSelectedCard = firstSelectedCard,
             secondSelectedCard = secondSelectedCard,
             onCardSelect = onCardSelect,
+            onSpeak = { text ->
+                ttsManager.speak(text)
+            }
         )
     }
 }

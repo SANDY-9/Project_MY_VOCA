@@ -40,7 +40,6 @@ import com.sandy.memorizingvoca.ui.theme.DarkRedTransparent
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink40
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape10
-import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
 internal fun Quiz2QuizView(
@@ -49,6 +48,7 @@ internal fun Quiz2QuizView(
     firstSelectedCard: VocaCardState?,
     secondSelectedCard: VocaCardState?,
     onCardSelect: (VocaCardState) -> Unit,
+    onSpeak: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     FlowRow (
@@ -74,6 +74,7 @@ internal fun Quiz2QuizView(
                         selected = selected,
                         status = status,
                         isAnswered = item.isAnswered,
+                        onSpeak = onSpeak,
                         onClick = {
                             onCardSelect(item)
                         },
@@ -117,9 +118,9 @@ private fun VocaWordCard(
     status: GameSetStatus,
     isAnswered: Boolean,
     onClick: () -> Unit,
+    onSpeak: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val ttsManager = rememberTTSManager()
     AnimatedVisibility(
         visible = !isAnswered,
         enter = fadeIn(),
@@ -134,7 +135,7 @@ private fun VocaWordCard(
                 )
                 .clip(roundedCornerShape10)
                 .clickable {
-                    ttsManager.speak(text)
+                    onSpeak(text)
                     onClick()
                 }
                 .padding(8.dp),
@@ -216,17 +217,6 @@ private fun VocaMeaningCard(
     }
 }
 
-@Composable
-private fun CorrectedItem(
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth(0.319f)
-            .fillMaxHeight(0.23f)
-    )
-}
-
 @Preview
 @Composable
 private fun Quiz2QuizViewPreview() {
@@ -245,6 +235,7 @@ private fun Quiz2QuizViewPreview() {
                     card2 = it
                 }
             },
+            onSpeak = {},
             cardList = listOf(
                 VocaCardState(
                     type = VocaCardType.WORD,
