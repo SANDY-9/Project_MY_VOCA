@@ -1,11 +1,9 @@
 package com.sandy.memorizingvoca.ui.feature.voca_list.navigation
 
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.sandy.memorizingvoca.ui.feature.voca_list.VocaListRoute
 import kotlinx.serialization.Serializable
 
@@ -21,7 +19,7 @@ fun NavController.navigateToList(
 
 fun NavGraphBuilder.vocaListScreen(
     onNavigateBack: () -> Unit,
-    onNavigateFull: () -> Unit,
+    onNavigateFullScreen: (Int) -> Unit,
     onNavigateQuiz1: (Int) -> Unit,
     onNavigateQuiz2: (Int) -> Unit,
     onVocaItemClick: (Int) -> Unit,
@@ -29,7 +27,7 @@ fun NavGraphBuilder.vocaListScreen(
     composable<VocaListRoute> {
         VocaListRoute (
             onNavigateBack = onNavigateBack,
-            onNavigateFull = onNavigateFull,
+            onNavigateFullScreen = onNavigateFullScreen,
             onNavigateQuiz1 = onNavigateQuiz1,
             onNavigateQuiz2 = onNavigateQuiz2,
             onItemClick = onVocaItemClick,

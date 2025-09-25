@@ -16,7 +16,7 @@ import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 @Composable
 internal fun VocaListRoute(
     onNavigateBack: () -> Unit,
-    onNavigateFull: () -> Unit,
+    onNavigateFullScreen: (Int) -> Unit,
     onNavigateQuiz1: (Int) -> Unit,
     onNavigateQuiz2: (Int) -> Unit,
     onItemClick: (Int) -> Unit,
@@ -27,7 +27,7 @@ internal fun VocaListRoute(
         day = viewModel.day,
         vocaList = vocaList,
         onNavigateBack = onNavigateBack,
-        onNavigateFull = onNavigateFull,
+        onNavigateFullScreen = onNavigateFullScreen,
         onNavigateQuiz1 = onNavigateQuiz1,
         onNavigateQuiz2 = onNavigateQuiz2,
         onItemClick = onItemClick,
@@ -39,7 +39,7 @@ private fun VocaListScreen(
     day: Int,
     vocaList: List<Vocabulary>,
     onNavigateBack: () -> Unit,
-    onNavigateFull: () -> Unit,
+    onNavigateFullScreen: (Int) -> Unit,
     onNavigateQuiz1: (Int) -> Unit,
     onNavigateQuiz2: (Int) -> Unit,
     onItemClick: (Int) -> Unit,
@@ -51,7 +51,7 @@ private fun VocaListScreen(
         VocaListTopBar(
             day = day,
             onNavigateBack = onNavigateBack,
-            onNavigateFull = onNavigateFull,
+            onNavigateFullScreen = onNavigateFullScreen,
             onNavigateQuiz1 = onNavigateQuiz1,
             onNavigateQuiz2 = onNavigateQuiz2,
         )
@@ -103,7 +103,7 @@ private fun VocaListScreenPreview() {
             ),
             onNavigateBack = {},
             onItemClick = {},
-            onNavigateFull = {},
+            onNavigateFullScreen = {},
             onNavigateQuiz1 = {},
             onNavigateQuiz2 = {}
         )
