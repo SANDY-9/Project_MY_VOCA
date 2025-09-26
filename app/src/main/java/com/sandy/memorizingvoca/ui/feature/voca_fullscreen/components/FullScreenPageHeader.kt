@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.theme.Gray100
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink100
 
@@ -19,6 +21,8 @@ import com.sandy.memorizingvoca.ui.theme.Pink100
 internal fun FullScreenPageHeader(
     page: Int,
     totalPage: Int,
+    resetButtonEnabled: Boolean,
+    onResetClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -47,6 +51,16 @@ internal fun FullScreenPageHeader(
             text = "$totalPage",
             fontWeight = FontWeight.Medium,
         )
+        Spacer(modifier = modifier.weight(1f))
+        Text(
+            modifier = modifier.noRippleClickable(
+                enabled = resetButtonEnabled,
+                onClick = onResetClick,
+            ),
+            text = "RESET",
+            fontWeight = FontWeight.Medium,
+            color = if(resetButtonEnabled) Pink100 else Gray100,
+        )
     }
 }
 
@@ -57,6 +71,8 @@ private fun FullScreenFooterPreview() {
         FullScreenPageHeader(
             page = 1,
             totalPage = 6,
+            resetButtonEnabled = true,
+            onResetClick = {},
         )
     }
 }

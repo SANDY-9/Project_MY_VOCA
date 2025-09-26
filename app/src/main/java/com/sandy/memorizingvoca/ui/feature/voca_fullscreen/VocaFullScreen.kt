@@ -68,6 +68,8 @@ private fun VocaFullScreen(
         pageCount = { totalPage },
     )
     val ttsManager = rememberTTSManager()
+    val scope = rememberCoroutineScope()
+
     LaunchedEffect(autoMode, settledPage) {
         if(autoMode) {
             val word = vocaList[settledPage -1].word
@@ -108,6 +110,7 @@ private fun VocaFullScreen(
                 onSettledPageChange(index)
             }
     }
+
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -122,6 +125,12 @@ private fun VocaFullScreen(
         FullScreenPageHeader(
             page = page,
             totalPage = totalPage,
+            resetButtonEnabled = settledPage != 1,
+            onResetClick = {
+                scope.launch {
+                    pagerState.animateScrollToPage(0)
+                }
+            },
         )
         Box(
             modifier = modifier.weight(1f),
@@ -135,7 +144,6 @@ private fun VocaFullScreen(
                 },
             )
         }
-        val scope = rememberCoroutineScope()
         FullScreenButtonFooter(
             prevButtonEnabled = settledPage > 1,
             nextButtonEnabled = settledPage < totalPage,
