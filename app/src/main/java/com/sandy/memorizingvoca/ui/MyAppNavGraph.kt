@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
+import com.sandy.memorizingvoca.ui.feature.bookmark.navigation.bookmarkScreen
 import com.sandy.memorizingvoca.ui.feature.home.navigation.homeScreen
 import com.sandy.memorizingvoca.ui.feature.home.navigation.navigateToHome
 import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.Quiz1Route
@@ -85,6 +86,10 @@ internal fun MyAppNavGraph(
         quizResultScreen(
             onNavigateBack = navController::navigateUp,
             onNavigateVocaDetails = navController::navigateToDetails,
+        )
+
+        bookmarkScreen(
+
         )
 
     }

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.sandy.memorizingvoca.ui.feature.bookmark.navigation.BookmarkRoute
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.SplashRoute
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
             MemorizingVocaTheme {
                 MainApp(
                     appState = myAppState,
-                    startDestination = SplashRoute,
+                    startDestination = BookmarkRoute,
                     onAppFinish = ::finishAffinity,
                 )
             }
