@@ -2,8 +2,12 @@ package com.sandy.memorizingvoca.ui.feature.voca_list
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -11,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.feature.voca_list.components.VocaListTopBar
 import com.sandy.memorizingvoca.ui.feature.voca_list.components.VocaListView
+import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
 @Composable
@@ -45,18 +50,25 @@ private fun VocaListScreen(
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var blindMode by remember { mutableStateOf(false) }
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         VocaListTopBar(
             day = day,
+            blindMode = blindMode,
+            onBlindModeChange = {
+                blindMode = !blindMode
+            },
             onNavigateBack = onNavigateBack,
             onNavigateFullScreen = onNavigateFullScreen,
             onNavigateQuiz1 = onNavigateQuiz1,
             onNavigateQuiz2 = onNavigateQuiz2,
         )
+        HorizontalDivider(color = Gray30)
         VocaListView(
             vocaList = vocaList,
+            blindMode = blindMode,
             onItemClick = onItemClick,
         )
     }

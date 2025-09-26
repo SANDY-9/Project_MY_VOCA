@@ -15,6 +15,7 @@ import com.sandy.memorizingvoca.utils.rememberTTSManager
 @Composable
 internal fun VocaListView(
     vocaList: List<Vocabulary>,
+    blindMode: Boolean,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -28,6 +29,7 @@ internal fun VocaListView(
                 word = voca.word,
                 meaning = voca.meaning,
                 highlighted = voca.highlighted,
+                blindMode = blindMode,
                 onClick = { onItemClick(voca.vocaId) },
                 onSpeak = {
                     ttsManager.speak(voca.word)
@@ -41,6 +43,7 @@ internal fun VocaListView(
 @Preview
 private fun VocaListViewPreview() {
     VocaListView(
+        blindMode = false,
         vocaList = listOf(
             Vocabulary(
                 vocaId = 1,
