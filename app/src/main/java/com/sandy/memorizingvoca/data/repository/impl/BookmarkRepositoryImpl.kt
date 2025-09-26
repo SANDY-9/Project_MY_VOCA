@@ -52,4 +52,9 @@ class BookmarkRepositoryImpl @Inject constructor(
             )
         )
     }
+
+    override suspend fun deleteMutipleBookmark(vocaList: List<Vocabulary>) = withContext(Dispatchers.IO) {
+        val updateList = vocaList.map { it.copy(bookmarked = false) }
+        dao.updateMultipleBookmark(updateList)
+    }
 }

@@ -20,4 +20,7 @@ interface BookmarkRepository {
         meaning: String,
         highlighted: Boolean,
     )
+    suspend fun deleteMutipleBookmark(
+        vocaList: List<Vocabulary>,
+    )
 }
