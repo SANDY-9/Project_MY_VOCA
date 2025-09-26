@@ -9,4 +9,5 @@ interface GetVocabularyRepository {
     fun getVocaList(day: Int): Flow<List<Vocabulary>>
     fun getVocabulary(vocaId: Int): Flow<Vocabulary>
     suspend fun getVocabularyDetails(word: String): VocabularyDetails
+    fun getBookmarkList(): Flow<List<Vocabulary>>
 }

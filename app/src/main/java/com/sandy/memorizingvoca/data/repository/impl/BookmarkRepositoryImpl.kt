@@ -4,17 +4,12 @@ import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.room.dao.VocabularyDao
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BookmarkRepositoryImpl @Inject constructor(
     private val dao: VocabularyDao,
 ) : BookmarkRepository {
-    override fun getBookmarkList(): Flow<List<Vocabulary>> {
-        return dao.getBookmarkList().flowOn(Dispatchers.IO)
-    }
 
     override suspend fun addBookmark(
         vocaId: Int,
