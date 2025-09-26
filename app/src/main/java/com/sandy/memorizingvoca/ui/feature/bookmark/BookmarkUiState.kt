@@ -6,6 +6,7 @@ internal data class BookmarkUiState(
     val bookmarkList: List<Vocabulary> = emptyList(),
     val filteredBookmarkMapByDay: Map<Int, List<Vocabulary>> = emptyMap(),
     val bookmarkCount: Int = 0,
+    val itemCount: Int = 0,
     val blindMode: Boolean = false,
     val query: String? = null,
 )

@@ -3,7 +3,6 @@ package com.sandy.memorizingvoca.ui.feature.bookmark
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Query
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetVocabularyRepository
@@ -28,18 +27,25 @@ internal class BookmarkViewModel @Inject constructor(
 
     init {
         getVocabularyRepository.getBookmarkList().onEach { bookmarkList ->
+            val items = getFilteredBookmarkMap(
+                query = bookmarkUiState.value.query,
+                originalList = bookmarkList,
+            )
             _bookmarkUiState.value = BookmarkUiState(
                 bookmarkList = bookmarkList,
                 bookmarkCount = bookmarkList.size,
-                filteredBookmarkMapByDay = getFilteredBookmarkMap(bookmarkUiState.value.query),
+                filteredBookmarkMapByDay = items,
+                itemCount = items.itemCount(),
             )
         }.catch { e ->
             Log.e("[BOOKMARK_ERROR]", "${e.message}")
         }.launchIn(viewModelScope)
     }
 
-    private fun getFilteredBookmarkMap(query: String?): Map<Int, List<Vocabulary>> {
-        val originalList = bookmarkUiState.value.bookmarkList
+    private fun getFilteredBookmarkMap(
+        query: String?,
+        originalList: List<Vocabulary> = bookmarkUiState.value.bookmarkList,
+    ): Map<Int, List<Vocabulary>> {
         if(query == null) return originalList.bookmarkMap()
         try {
             // query가 숫자일 경우
@@ -59,25 +65,32 @@ internal class BookmarkViewModel @Inject constructor(
         return groupBy { it.day }.toSortedMap()
     }
 
+    private fun Map<Int, List<Vocabulary>>.itemCount(): Int {
+        return values.sumOf { it.size }
+    }
+
     fun onBlindModeChange(isBlindMode: Boolean) {
         _bookmarkUiState.update { it.copy(blindMode = isBlindMode) }
     }
 
     fun searchVoca(query: String) {
-        val query = query.trim()
+        val newQuery = query.trim()
+        val result = getFilteredBookmarkMap(newQuery)
         _bookmarkUiState.update {
             it.copy(
-                filteredBookmarkMapByDay = getFilteredBookmarkMap(query),
-                query = query,
+                filteredBookmarkMapByDay = result,
+                query = newQuery,
+                itemCount = result.itemCount(),
             )
         }
     }
 
-    fun renewBookmarkList() {
+    fun resetBookmarkList() {
         _bookmarkUiState.update {
             it.copy(
                 filteredBookmarkMapByDay = getFilteredBookmarkMap(null),
                 query = null,
+                itemCount = bookmarkUiState.value.bookmarkCount,
             )
         }
     }
