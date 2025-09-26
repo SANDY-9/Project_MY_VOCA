@@ -23,8 +23,9 @@ internal fun FullScreenPageHeader(
 ) {
     Row(
         modifier = modifier.padding(
-            vertical = 4.dp,
-            horizontal = 16.dp,
+            top = 8.dp,
+            start = 24.dp,
+            end = 24.dp,
         ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
