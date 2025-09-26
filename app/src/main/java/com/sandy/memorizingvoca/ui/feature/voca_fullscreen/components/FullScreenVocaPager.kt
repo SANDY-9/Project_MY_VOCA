@@ -33,6 +33,7 @@ import com.sandy.memorizingvoca.ui.theme.Pink80
 internal fun FullScreenVocaPager(
     pagerState: PagerState,
     vocaList: List<Vocabulary>,
+    blindMode: Boolean,
     modifier: Modifier = Modifier,
 ) {
     HorizontalPager(
@@ -43,6 +44,7 @@ internal fun FullScreenVocaPager(
         FullScreenVocaView(
             word = item.word,
             meaning = item.meaning,
+            blindMode = blindMode,
         )
     }
 }
@@ -51,6 +53,7 @@ internal fun FullScreenVocaPager(
 private fun FullScreenVocaView(
     word: String,
     meaning: String,
+    blindMode: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -59,7 +62,9 @@ private fun FullScreenVocaView(
     ) {
         Spacer(modifier = modifier.weight(0.8f))
         Icon(
-            modifier = modifier.size(30.dp).noRippleClickable(onClick = {}),
+            modifier = modifier
+                .size(30.dp)
+                .noRippleClickable(onClick = {}),
             imageVector = Icons.AutoMirrored.Rounded.VolumeUp,
             contentDescription = null,
             tint = Pink80,
@@ -77,19 +82,21 @@ private fun FullScreenVocaView(
         )
         Spacer(modifier = modifier.fillMaxHeight(0.05f))
         Box(
-            modifier = modifier.weight(1f)
+            modifier = modifier.weight(1f),
         ) {
-            Text(
-                modifier = modifier.fillMaxWidth(0.9f),
-                text = meaning,
-                style = TextStyle.Default.copy(
-                    lineBreak = LineBreak.Heading,
-                ),
-                fontWeight = FontWeight.Normal,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Center,
-                lineHeight = 27.sp,
-            )
+            if (!blindMode) {
+                Text(
+                    modifier = modifier.fillMaxWidth(0.9f),
+                    text = meaning,
+                    style = TextStyle.Default.copy(
+                        lineBreak = LineBreak.Heading,
+                    ),
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center,
+                    lineHeight = 27.sp,
+                )
+            }
         }
     }
 }
@@ -120,6 +127,7 @@ private fun FullScreenVocaPagerPreview() {
                     meaning = "ing 하는 데 어려움[곤란]을 겪다"
                 )
             ),
+            blindMode = false,
         )
     }
 }

@@ -15,6 +15,8 @@ import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 internal fun FullScreenButtonFooter(
+     onPrevButtonClick: () -> Unit,
+    onNextButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -28,7 +30,7 @@ internal fun FullScreenButtonFooter(
     ) {
         TextButton(
             modifier = modifier.align(Alignment.BottomStart),
-            onClick = {}
+            onClick = onPrevButtonClick,
         ) {
             Text(
                 text = "이전",
@@ -37,7 +39,7 @@ internal fun FullScreenButtonFooter(
         }
         TextButton(
             modifier = modifier.align(Alignment.BottomEnd),
-            onClick = {}
+            onClick = onNextButtonClick,
         ) {
             Text(
                 text = "다음",
@@ -51,6 +53,9 @@ internal fun FullScreenButtonFooter(
 @Composable
 private fun FullScreenButtonFooterPreview() {
     MemorizingVocaTheme {
-        FullScreenButtonFooter()
+        FullScreenButtonFooter(
+            onPrevButtonClick = {},
+            onNextButtonClick = {},
+        )
     }
 }

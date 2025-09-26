@@ -2,11 +2,13 @@ package com.sandy.memorizingvoca.ui.feature.voca_fullscreen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,6 +19,10 @@ import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreen
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenTopBar
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenVocaPager
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun VocaFullScreenRoute(
@@ -29,10 +35,13 @@ internal fun VocaFullScreenRoute(
         blindMode = state.blindMode,
         autoMode = state.autoMode,
         page = state.currentPage,
+        settledPage = state.settledPage,
         totalPage = state.totalPage,
         vocaList = state.vocaList,
         onBlindModeChange = viewModel::onBlindModeChange,
         onAutoModeChange = viewModel::onAutoModeChange,
+        onPageChange = viewModel::onPageChange,
+        onSettledPageChange = viewModel::onSettledPageChange,
         onNavigateBack = onNavigateBack,
     )
 }
@@ -43,10 +52,13 @@ private fun VocaFullScreen(
     blindMode: Boolean,
     autoMode: Boolean,
     page: Int,
+    settledPage: Int,
     totalPage: Int,
     vocaList: List<Vocabulary>,
     onBlindModeChange: (Boolean) -> Unit,
     onAutoModeChange: (Boolean) -> Unit,
+    onPageChange: (Int) -> Unit,
+    onSettledPageChange: (Int) -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -54,6 +66,31 @@ private fun VocaFullScreen(
         initialPage = 0,
         pageCount = { totalPage },
     )
+    LaunchedEffect(autoMode, settledPage) {
+        if(autoMode) {
+            delay(1000L) // 원하는 대기 시간(원하는 행동)
+            if(settledPage == totalPage) {
+                onAutoModeChange(false)
+            }
+            pagerState.animateScrollToPage(settledPage)
+        }
+    }
+    LaunchedEffect(pagerState) {
+        snapshotFlow {
+            pagerState.currentPage
+        }.distinctUntilChanged()
+            .collectLatest { index ->
+                onPageChange(index)
+            }
+    }
+    LaunchedEffect(pagerState) {
+        snapshotFlow {
+            pagerState.settledPage
+        }.distinctUntilChanged()
+            .collectLatest { index ->
+                onSettledPageChange(index)
+            }
+    }
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -75,9 +112,22 @@ private fun VocaFullScreen(
             FullScreenVocaPager(
                 pagerState = pagerState,
                 vocaList = vocaList,
+                blindMode = blindMode,
             )
         }
-        FullScreenButtonFooter()
+        val scope = rememberCoroutineScope()
+        FullScreenButtonFooter(
+            onPrevButtonClick = {
+                scope.launch {
+                    pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                }
+            },
+            onNextButtonClick = {
+                scope.launch {
+                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                }
+            },
+        )
     }
 
 }
@@ -92,6 +142,7 @@ private fun VocaFullScreenPreview() {
             autoMode = false,
             page = 2,
             totalPage = 4,
+            settledPage = 2,
             vocaList = listOf(
                 Vocabulary(
                     vocaId = 1,
@@ -122,6 +173,8 @@ private fun VocaFullScreenPreview() {
             onBlindModeChange = {},
             onAutoModeChange = {},
             onNavigateBack = {},
+            onPageChange = {},
+            onSettledPageChange = {},
         )
     }
 }

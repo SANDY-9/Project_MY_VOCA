@@ -36,7 +36,7 @@ internal class VocaFullScreenViewModel @Inject constructor(
             _fullScreenState.value = VocaFullScreenState(
                 title = getDayTitle(day),
                 vocaList = vocaList,
-                curIndex = 0,
+                settledPage = 1,
                 autoMode = false,
                 blindMode = false,
                 currentPage = 1,
@@ -69,5 +69,12 @@ internal class VocaFullScreenViewModel @Inject constructor(
         _fullScreenState.update { it.copy(autoMode = isAutoMode) }
     }
 
+    fun onPageChange(index: Int) {
+        _fullScreenState.update { it.copy(currentPage = index + 1,) }
+    }
+
+    fun onSettledPageChange(index: Int) {
+        _fullScreenState.update { it.copy(settledPage = index + 1,) }
+    }
 
 }
