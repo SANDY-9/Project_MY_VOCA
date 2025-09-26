@@ -5,8 +5,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.sandy.memorizingvoca.ui.feature.bookmark.BookmarkRoute
-import com.sandy.memorizingvoca.ui.feature.home.HomeRoute
-import com.sandy.memorizingvoca.ui.feature.home.navigation.HomeRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -18,10 +16,23 @@ fun NavController.navigateToBookmark(
     navigate(route = BookmarkRoute, navOptions)
 }
 
+private const val BOOKMARK_DAY_NUMBER = 0
 fun NavGraphBuilder.bookmarkScreen(
+    onNavigateFullScreen: (Int) -> Unit,
+    onNavigateQuiz1: (Int) -> Unit,
+    onNavigateQuiz2: (Int) -> Unit,
 ) {
     composable<BookmarkRoute> {
         BookmarkRoute(
+            onNavigateFullScreen = {
+                onNavigateFullScreen(BOOKMARK_DAY_NUMBER)
+            },
+            onNavigateQuiz1 = {
+                onNavigateQuiz1(BOOKMARK_DAY_NUMBER)
+            },
+            onNavigateQuiz2 = {
+                onNavigateQuiz2(BOOKMARK_DAY_NUMBER)
+            },
         )
     }
 }

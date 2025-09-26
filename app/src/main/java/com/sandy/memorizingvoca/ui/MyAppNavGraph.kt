@@ -89,7 +89,9 @@ internal fun MyAppNavGraph(
         )
 
         bookmarkScreen(
-
+            onNavigateFullScreen = navController::navigateToVocaFullScreen,
+            onNavigateQuiz1 = navController::navigateToQuiz1,
+            onNavigateQuiz2 = navController::navigateToQuiz2,
         )
 
     }
