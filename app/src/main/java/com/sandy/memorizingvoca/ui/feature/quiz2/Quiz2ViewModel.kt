@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.sandy.memorizingvoca.data.model.Vocabulary
-import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetVocabularyRepository
 import com.sandy.memorizingvoca.data.repository.QuizRepository
 import com.sandy.memorizingvoca.ui.feature.quiz2.navigation.Quiz2Route
@@ -31,7 +30,6 @@ import javax.inject.Inject
 internal class Quiz2ViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getVocabularyRepository: GetVocabularyRepository,
-    private val getBookmarkRepository: BookmarkRepository,
     private val quizRepository: QuizRepository,
 ): ViewModel() {
 
@@ -110,7 +108,7 @@ internal class Quiz2ViewModel @Inject constructor(
     private suspend fun downloadVocaList(day: Int): List<Vocabulary> {
         return when {
             day > 0 -> getVocabularyRepository.getVocaList(day).first()
-            else -> getBookmarkRepository.getBookmarkList().first()
+            else -> getVocabularyRepository.getBookmarkList().first()
         }.shuffled()
     }
 

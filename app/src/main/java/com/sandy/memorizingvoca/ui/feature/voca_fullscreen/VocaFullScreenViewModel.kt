@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.sandy.memorizingvoca.data.model.Vocabulary
-import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetVocabularyRepository
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.navigation.VocaFullScreenRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +22,6 @@ import javax.inject.Inject
 internal class VocaFullScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getVocabularyRepository: GetVocabularyRepository,
-    private val getBookmarkRepository: BookmarkRepository,
 ): ViewModel() {
 
     private val day = savedStateHandle.toRoute<VocaFullScreenRoute>().day
@@ -50,7 +48,7 @@ internal class VocaFullScreenViewModel @Inject constructor(
     private  fun downloadVocaListFlow(day: Int): Flow<List<Vocabulary>> {
         return when {
             day > 0 -> getVocabularyRepository.getVocaList(day)
-            else -> getBookmarkRepository.getBookmarkList()
+            else -> getVocabularyRepository.getBookmarkList()
         }
     }
 
