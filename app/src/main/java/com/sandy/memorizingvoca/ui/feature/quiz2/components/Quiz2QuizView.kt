@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -26,7 +25,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -58,21 +56,17 @@ internal fun Quiz2QuizView(
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surface)
             .padding(
-                start = 16.dp,
-                end = 16.dp,
-                bottom = 16.dp,
+                start = 12.dp,
+                end = 12.dp,
+                bottom = 12.dp,
             ),
         maxItemsInEachRow = 3,
         maxLines = 4,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         cardList.forEach { item ->
             val selected = firstSelectedCard == item || secondSelectedCard == item
             Box(
-                modifier = modifier
-                    .fillMaxWidth(0.319f)
-                    .fillMaxHeight(0.23f),
+                modifier = modifier.fillMaxWidth(0.333f).fillMaxHeight(0.249f),
             ) {
                 when(item.type) {
                     VocaCardType.WORD -> VocaWordCard(
@@ -134,6 +128,7 @@ private fun VocaWordCard(
     ) {
         Box(
             modifier = modifier
+                .padding(4.dp)
                 .fillMaxSize()
                 .then(
                     if (selected) selectedBackgroundModifier
@@ -153,11 +148,6 @@ private fun VocaWordCard(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 22.sp,
                 textAlign = TextAlign.Center,
-                style = TextStyle.Default.copy(
-                    lineBreak = LineBreak.Paragraph,
-                    hyphens = Hyphens.Auto,
-                    fontFamily = PyeoginGothic,
-                ),
                 color = Color.DarkGray,
             )
             if(status == GameSetStatus.INCORRECTED && selected) {
@@ -189,6 +179,7 @@ private fun VocaMeaningCard(
     ) {
         Box(
             modifier = modifier
+                .padding(4.dp)
                 .fillMaxSize()
                 .then(
                     if (selected) selectedBackgroundModifier
