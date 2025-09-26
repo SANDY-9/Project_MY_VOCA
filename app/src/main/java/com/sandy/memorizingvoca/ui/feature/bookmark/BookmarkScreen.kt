@@ -4,10 +4,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sandy.memorizingvoca.ui.extensions.addFocusCleaner
+import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkSearchBar
 import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkTopBar
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
@@ -22,6 +27,8 @@ internal fun BookmarkRoute(
     BookmarkScreen(
         bookmarkCount = bookmarkUiState.bookmarkCount,
         blindMode = bookmarkUiState.blindMode,
+        query = bookmarkUiState.query,
+        onSearchVoca = viewModel::searchVoca,
         onBlindModeChange = viewModel::onBlindModeChange,
         onNavigateFullScreen = onNavigateFullScreen,
         onNavigateQuiz1 = onNavigateQuiz1,
@@ -33,14 +40,21 @@ internal fun BookmarkRoute(
 private fun BookmarkScreen(
     bookmarkCount: Int,
     blindMode: Boolean,
+    query: String?,
+    onSearchVoca: (String) -> Unit,
     onBlindModeChange: (Boolean) -> Unit,
     onNavigateFullScreen: () -> Unit,
     onNavigateQuiz1: () -> Unit,
     onNavigateQuiz2: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
+
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .addFocusCleaner(focusManager)
     ) {
         BookmarkTopBar(
             bookmarkCount = bookmarkCount,
@@ -53,6 +67,12 @@ private fun BookmarkScreen(
             onNavigateQuiz1 = onNavigateQuiz1,
             onNavigateQuiz2 = onNavigateQuiz2,
         )
+        BookmarkSearchBar(
+            query = query,
+            focusManager = focusManager,
+            focusRequester = focusRequester,
+            onSearchVoca = onSearchVoca,
+        )
     }
 }
 
@@ -63,6 +83,8 @@ private fun BookmarkScreenPreview() {
         BookmarkScreen(
             bookmarkCount = 10,
             blindMode = false,
+            query = "Day 1",
+            onSearchVoca = {},
             onBlindModeChange = {},
             onNavigateFullScreen = {},
             onNavigateQuiz1 = {},
