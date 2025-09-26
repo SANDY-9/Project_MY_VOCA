@@ -125,7 +125,7 @@ private fun VocaFullScreen(
         FullScreenPageHeader(
             page = page,
             totalPage = totalPage,
-            resetButtonEnabled = settledPage != 1,
+            resetButtonEnabled = page != 1,
             onResetClick = {
                 scope.launch {
                     pagerState.animateScrollToPage(0)
@@ -145,8 +145,8 @@ private fun VocaFullScreen(
             )
         }
         FullScreenButtonFooter(
-            prevButtonEnabled = settledPage > 1,
-            nextButtonEnabled = settledPage < totalPage,
+            prevButtonEnabled = page > 1,
+            nextButtonEnabled = page < totalPage,
             onPrevButtonClick = {
                 scope.launch {
                     pagerState.animateScrollToPage(pagerState.currentPage - 1)
