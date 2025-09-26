@@ -9,23 +9,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
-import com.sandy.memorizingvoca.ui.resources.VolumeUp
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.Pink40
-import com.sandy.memorizingvoca.ui.theme.Pink80
+import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
 fun VocaSimpleListCard(
@@ -56,24 +55,23 @@ fun VocaSimpleListCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
+                    modifier = modifier.noRippleClickable(onClick = onSpeak),
                     text = word,
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp,
-                )
-                Spacer(modifier = modifier.width(8.dp))
-                Icon(
-                    modifier = modifier.noRippleClickable(onClick = onSpeak),
-                    imageVector = Icons.AutoMirrored.Rounded.VolumeUp,
-                    contentDescription = null,
-                    tint = Pink80,
+                    style = TextStyle.Default.copy(
+                        lineBreak = LineBreak.Heading,
+                        fontFamily = PyeoginGothic,
+                    ),
                 )
             }
-            Spacer(modifier = modifier.width(4.dp))
+            Spacer(modifier = modifier.width(12.dp))
             Text(
                 modifier = modifier.fillMaxWidth(),
                 text = meaning,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.Normal,
                 fontSize = 13.sp,
+                lineHeight = 18.sp,
             )
         }
         Spacer(modifier = modifier.height(16.dp))
