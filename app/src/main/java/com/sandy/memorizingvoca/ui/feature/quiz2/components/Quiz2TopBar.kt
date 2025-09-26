@@ -48,10 +48,8 @@ internal fun Quiz2TopBar(
         Text(
             modifier = modifier.weight(1f),
             text = title,
-            fontFamily = PyeoginGothic,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
-            letterSpacing = (-0.1).sp,
         )
         Spacer(modifier = modifier.width(8.dp))
         ScoreView(
@@ -68,30 +66,30 @@ private fun ScoreView(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier.padding(end = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = "정답 개수",
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             color = Color.DarkGray,
         )
         Spacer(modifier = modifier.width(8.dp))
         Text(
             text = "$correctCount",
             fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             color = Pink100,
         )
         Text(
             text = " / ",
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             color = Color.Gray,
         )
         Text(
             text = "$total",
-            fontWeight = FontWeight.Medium,
-            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp,
         )
     }
 }

@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +40,7 @@ import com.sandy.memorizingvoca.ui.feature.quiz2.VocaCardType
 import com.sandy.memorizingvoca.ui.theme.DarkRedTransparent
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink40
+import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape10
 
 @Composable
@@ -146,12 +148,15 @@ private fun VocaWordCard(
             contentAlignment = Alignment.Center,
         ) {
             Text(
+                modifier = modifier.fillMaxWidth(),
                 text = text,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 22.sp,
                 textAlign = TextAlign.Center,
                 style = TextStyle.Default.copy(
+                    lineBreak = LineBreak.Paragraph,
                     hyphens = Hyphens.Auto,
+                    fontFamily = PyeoginGothic,
                 ),
                 color = Color.DarkGray,
             )
@@ -161,9 +166,6 @@ private fun VocaWordCard(
                     fontWeight = FontWeight.Black,
                     fontSize = 100.sp,
                     textAlign = TextAlign.Center,
-                    style = TextStyle.Default.copy(
-                        hyphens = Hyphens.Auto,
-                    ),
                     color = DarkRedTransparent,
                 )
             }
@@ -199,11 +201,16 @@ private fun VocaMeaningCard(
         ) {
             Text(
                 text = text,
-                fontSize = 16.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,
+                lineHeight = 18.sp,
+                style = TextStyle.Default.copy(
+                    lineBreak = LineBreak.Simple,
+                    fontFamily = PyeoginGothic,
+                ),
             )
             if(status == GameSetStatus.INCORRECTED && selected) {
                 Text(
@@ -211,9 +218,6 @@ private fun VocaMeaningCard(
                     fontWeight = FontWeight.Black,
                     fontSize = 100.sp,
                     textAlign = TextAlign.Center,
-                    style = TextStyle.Default.copy(
-                        hyphens = Hyphens.Auto,
-                    ),
                     color = DarkRedTransparent,
                 )
             }

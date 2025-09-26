@@ -76,6 +76,7 @@ fun IncorrectVocaListCard(
             text = meaning,
             fontWeight = FontWeight.Normal,
             fontSize = 13.sp,
+            lineHeight = 18.sp,
         )
         Spacer(modifier = modifier.height(16.dp))
         HorizontalDivider(

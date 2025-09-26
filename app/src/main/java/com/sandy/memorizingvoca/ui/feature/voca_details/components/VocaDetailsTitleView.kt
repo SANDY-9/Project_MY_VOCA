@@ -29,7 +29,7 @@ internal fun VocaDetailsTitleView(
     word: String,
     meaning: String,
     highlighted: Boolean,
-    pron: String = "",
+    pron: String = "[ˌɪˌlɛkˈtrɑnɪkəˌli]",
     modifier: Modifier = Modifier,
 )  {
     val ttsManager = rememberTTSManager()
@@ -59,18 +59,19 @@ internal fun VocaDetailsTitleView(
             Spacer(modifier = modifier.width(8.dp))
             Text(
                 modifier = modifier.alignByBaseline(),
-                text = "[ˌɪˌlɛkˈtrɑnɪkəˌli]",
+                text = pron,
                 color = Color.Gray,
             )
         }
-        Spacer(modifier = modifier.height(8.dp))
+        Spacer(modifier = modifier.height(12.dp))
         Text(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             text = meaning,
             fontWeight = FontWeight.Normal,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
         )
         Spacer(modifier = modifier.height(16.dp))
         HorizontalDivider(

@@ -81,9 +81,8 @@ fun DayFolderCard(
         ) {
             Text(
                 text = "Day " + String.format("%02d", day),
-                fontFamily = PyeoginGothic,
                 fontWeight = FontWeight.Medium,
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 color = Color.DarkGray,
             )
         }

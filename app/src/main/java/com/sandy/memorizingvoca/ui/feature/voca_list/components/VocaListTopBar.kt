@@ -55,10 +55,8 @@ internal fun VocaListTopBar(
         }
         Text(
             text = "Day " + String.format("%02d", day),
-            fontFamily = PyeoginGothic,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
-            letterSpacing = (-0.1).sp,
         )
         Spacer(modifier = modifier.width(8.dp))
         Icon(

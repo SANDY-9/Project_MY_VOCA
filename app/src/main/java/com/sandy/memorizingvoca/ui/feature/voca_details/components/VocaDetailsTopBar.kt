@@ -55,10 +55,8 @@ internal fun VocaDetailsTopBar(
         Text(
             modifier = modifier.weight(1f),
             text = title,
-            fontFamily = PyeoginGothic,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
-            letterSpacing = (-0.1).sp,
         )
         VocaHighlightButton(
             highlighted = voca?.highlighted ?: false,

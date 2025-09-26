@@ -101,13 +101,14 @@ private fun FullScreenVocaView(
             Text(
                 modifier = modifier.fillMaxWidth(0.9f),
                 text = meaning,
-                style = TextStyle.Default.copy(
-                    lineBreak = LineBreak.Heading,
-                ),
                 fontWeight = FontWeight.Normal,
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center,
                 lineHeight = 27.sp,
+                style = TextStyle.Default.copy(
+                    lineBreak = LineBreak.Heading,
+                    fontFamily = PyeoginGothic,
+                ),
             )
         }
     }

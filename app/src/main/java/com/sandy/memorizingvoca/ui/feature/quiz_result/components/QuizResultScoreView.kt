@@ -38,7 +38,7 @@ internal fun QuizResultScoreView(
             .padding(horizontal = 20.dp),
     ) {
         Row(
-            verticalAlignment = Alignment.Bottom,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if(totalCount != null && correctCount != null) {
                 ScoreView(
@@ -51,9 +51,8 @@ internal fun QuizResultScoreView(
                 text = date ?: "",
                 color = Color.Gray,
             )
-            Spacer(modifier = modifier.width(8.dp))
         }
-        Spacer(modifier = modifier.height(8.dp))
+        Spacer(modifier = modifier.height(12.dp))
         Row(
             modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -68,9 +67,10 @@ internal fun QuizResultScoreView(
                 text = "${percentage ?: 0}%",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.End,
             )
         }
+        Spacer(modifier = modifier.height(16.dp))
     }
 }
 
@@ -80,10 +80,13 @@ private fun ScoreView(
     total: Int,
     modifier: Modifier = Modifier,
 ) {
-    Row {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Text(
-            text = "정답 개수",
+            text = "정답률",
             fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
             color = Color.DarkGray,
         )
         Spacer(modifier = modifier.width(8.dp))
@@ -100,7 +103,7 @@ private fun ScoreView(
         )
         Text(
             text = "$total",
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
             fontSize = 16.sp,
         )
     }

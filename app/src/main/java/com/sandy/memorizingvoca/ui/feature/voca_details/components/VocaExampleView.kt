@@ -14,12 +14,15 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.fromHtml
+import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.ExampleSentence
 import com.sandy.memorizingvoca.ui.theme.Gray30
+import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
 internal fun VocaExampleView(
@@ -59,13 +62,26 @@ private fun ExampleItem(
             .fillMaxWidth().padding(top = 16.dp),
     ) {
         Text(
+            modifier = modifier.fillMaxWidth(1f),
             text = AnnotatedString.fromHtml(htmlSentence),
             fontSize = 16.sp,
+            style = TextStyle.Default.copy(
+                lineBreak = LineBreak.Paragraph,
+                fontFamily = PyeoginGothic,
+                hyphens = Hyphens.Auto,
+            ),
         )
-        Spacer(modifier = modifier.height(4.dp))
+        Spacer(modifier = modifier.height(8.dp))
         Text(
+            modifier = modifier.fillMaxWidth(),
             text = AnnotatedString.fromHtml(htmlMean),
             color = Color.DarkGray,
+            lineHeight = 18.sp,
+            textAlign = TextAlign.Justify,
+            style = TextStyle.Default.copy(
+                lineBreak = LineBreak.Paragraph,
+                fontFamily = PyeoginGothic,
+            ),
         )
         Spacer(modifier = modifier.height(16.dp))
         HorizontalDivider(
@@ -90,8 +106,8 @@ private fun VocaExampleViewPreview() {
                 emphWords = emptyList(),
             ),
             ExampleSentence(
-                sentence = "However, Boone withdrew from the show after entering the Top 24 to consider his career.",
-                mean = "하지만, Boone은 그의 직업을 고려하여 탑 24에 들어간 후 그 프로그램에서 기권했습니다.",
+                sentence = "Third, conditioner prevents static from accumulating on clothes during the winter season.",
+                mean = "셋째, 컨디셔너는 겨울철 옷에 정전기가 쌓이는 것을 방지합니다.",
                 emphWords = emptyList(),
             ),
         )

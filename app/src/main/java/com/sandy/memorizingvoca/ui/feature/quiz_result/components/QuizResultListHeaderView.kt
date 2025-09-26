@@ -39,7 +39,7 @@ internal fun QuizResultListHeaderView(
             .background(color = MaterialTheme.colorScheme.surface),
     ) {
         Row(
-            modifier = modifier.padding(16.dp),
+            modifier = modifier.padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
@@ -81,6 +81,7 @@ internal fun QuizResultListHeaderView(
                 )
             }
         }
+        Spacer(modifier = modifier.height(12.dp))
         HorizontalDivider(color = Gray30)
     }
 }

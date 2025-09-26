@@ -24,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -38,6 +40,7 @@ import com.sandy.memorizingvoca.ui.theme.DarkRed
 import com.sandy.memorizingvoca.ui.theme.Pink100
 import com.sandy.memorizingvoca.ui.theme.Pink40
 import com.sandy.memorizingvoca.ui.theme.Pink80
+import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape16
 import com.sandy.memorizingvoca.utils.rememberTTSManager
 
@@ -81,6 +84,10 @@ internal fun Quiz1QuizView(
             fontWeight = FontWeight.Black,
             textAlign = TextAlign.Center,
             fontSize = 45.sp,
+            style = TextStyle.Default.copy(
+                lineBreak = LineBreak.Heading,
+                fontFamily = PyeoginGothic,
+            ),
         )
         Spacer(modifier = modifier.height(40.dp))
         OptionsList(

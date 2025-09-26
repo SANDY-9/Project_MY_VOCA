@@ -101,6 +101,7 @@ private fun WordItem(
             text = mean,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
+            lineHeight = 18.sp,
         )
     }
 }
