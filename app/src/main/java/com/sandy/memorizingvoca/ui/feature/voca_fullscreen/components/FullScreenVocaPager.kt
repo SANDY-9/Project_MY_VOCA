@@ -34,6 +34,7 @@ internal fun FullScreenVocaPager(
     pagerState: PagerState,
     vocaList: List<Vocabulary>,
     blindMode: Boolean,
+    onVocaSpeak: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     HorizontalPager(
@@ -45,6 +46,9 @@ internal fun FullScreenVocaPager(
             word = item.word,
             meaning = item.meaning,
             blindMode = blindMode,
+            onSpeak = {
+                onVocaSpeak(item.word)
+            },
         )
     }
 }
@@ -54,6 +58,7 @@ private fun FullScreenVocaView(
     word: String,
     meaning: String,
     blindMode: Boolean,
+    onSpeak: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -64,7 +69,7 @@ private fun FullScreenVocaView(
         Icon(
             modifier = modifier
                 .size(30.dp)
-                .noRippleClickable(onClick = {}),
+                .noRippleClickable(onClick = onSpeak),
             imageVector = Icons.AutoMirrored.Rounded.VolumeUp,
             contentDescription = null,
             tint = Pink80,
@@ -128,6 +133,7 @@ private fun FullScreenVocaPagerPreview() {
                 )
             ),
             blindMode = false,
+            onVocaSpeak = {},
         )
     }
 }

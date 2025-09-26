@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.voca_fullscreen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreen
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenTopBar
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenVocaPager
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import com.sandy.memorizingvoca.utils.rememberTTSManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -66,13 +68,29 @@ private fun VocaFullScreen(
         initialPage = 0,
         pageCount = { totalPage },
     )
+    val ttsManager = rememberTTSManager()
     LaunchedEffect(autoMode, settledPage) {
         if(autoMode) {
-            delay(1000L) // 원하는 대기 시간(원하는 행동)
-            if(settledPage == totalPage) {
-                onAutoModeChange(false)
+            val word = vocaList[settledPage -1].word
+            var count = 1
+            ttsManager.speak(word)
+            ttsManager.onDone {
+                if(count == 1) {
+                    delay(1000L)
+                    count ++
+                    ttsManager.speak(word)
+                    return@onDone
+                }
+                if(settledPage == totalPage) {
+                delay(1000L)
+                    onAutoModeChange(false)
+                    return@onDone
+                }
+                pagerState.animateScrollToPage(settledPage)
             }
-            pagerState.animateScrollToPage(settledPage)
+        }
+        if(!autoMode) {
+            ttsManager.stop()
         }
     }
     LaunchedEffect(pagerState) {
@@ -113,6 +131,9 @@ private fun VocaFullScreen(
                 pagerState = pagerState,
                 vocaList = vocaList,
                 blindMode = blindMode,
+                onVocaSpeak = { word ->
+                    ttsManager.speak(word)
+                },
             )
         }
         val scope = rememberCoroutineScope()
