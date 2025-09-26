@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
-import com.sandy.memorizingvoca.ui.common.IncorrectVocaListCard
+import com.sandy.memorizingvoca.ui.common.VocaWithBookmarkCard
 import com.sandy.memorizingvoca.ui.feature.quiz_result.components.QuizResultListHeaderView
 import com.sandy.memorizingvoca.ui.feature.quiz_result.components.QuizResultScoreView
 import com.sandy.memorizingvoca.ui.feature.quiz_result.components.QuizResultTopBar
@@ -99,7 +99,7 @@ private fun QuizResultScreen(
                 )
             }
             items(incorrectedList) { voca ->
-                IncorrectVocaListCard(
+                VocaWithBookmarkCard(
                     word = voca.word,
                     meaning = voca.meaning,
                     highlighted = voca.highlighted,
