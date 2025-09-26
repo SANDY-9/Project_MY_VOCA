@@ -6,28 +6,29 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
-import com.sandy.memorizingvoca.ui.resources.VolumeUp
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink80
+import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
 internal fun FullScreenVocaPager(
@@ -61,47 +62,53 @@ private fun FullScreenVocaView(
     onSpeak: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var meaningVisible by remember { mutableStateOf(!blindMode) }
+    LaunchedEffect(blindMode) {
+        meaningVisible = !blindMode
+    }
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = modifier.weight(0.8f))
-        Icon(
-            modifier = modifier
-                .size(30.dp)
-                .noRippleClickable(onClick = onSpeak),
-            imageVector = Icons.AutoMirrored.Rounded.VolumeUp,
-            contentDescription = null,
-            tint = Pink80,
-        )
-        Spacer(modifier = modifier.fillMaxHeight(0.05f))
-        Text(
+        Spacer(modifier = modifier.weight(0.9f))
+        Box(
             modifier = modifier.fillMaxWidth(0.9f),
-            text = word,
-            fontWeight = FontWeight.Black,
-            fontSize = 45.sp,
-            textAlign = TextAlign.Center,
-            style = TextStyle.Default.copy(
-                lineBreak = LineBreak.Heading,
-            ),
-        )
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                modifier = modifier.noRippleClickable(onClick = onSpeak),
+                text = word,
+                fontWeight = FontWeight.Black,
+                fontSize = 45.sp,
+                textAlign = TextAlign.Center,
+                style = TextStyle.Default.copy(
+                    lineBreak = LineBreak.Heading,
+                    fontFamily = PyeoginGothic,
+                ),
+            )
+        }
         Spacer(modifier = modifier.fillMaxHeight(0.05f))
         Box(
-            modifier = modifier.weight(1f),
-        ) {
-            if (!blindMode) {
-                Text(
-                    modifier = modifier.fillMaxWidth(0.9f),
-                    text = meaning,
-                    style = TextStyle.Default.copy(
-                        lineBreak = LineBreak.Heading,
-                    ),
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 18.sp,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 27.sp,
+            modifier = modifier
+                .weight(1f)
+                .alpha(
+                    if (meaningVisible) 1f else 0f
                 )
-            }
+                .noRippleClickable {
+                    meaningVisible = !meaningVisible
+                },
+        ) {
+            Text(
+                modifier = modifier.fillMaxWidth(0.9f),
+                text = meaning,
+                style = TextStyle.Default.copy(
+                    lineBreak = LineBreak.Heading,
+                ),
+                fontWeight = FontWeight.Normal,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center,
+                lineHeight = 27.sp,
+            )
         }
     }
 }
