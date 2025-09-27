@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.sandy.memorizingvoca.ui.feature.bookmark.navigation.bookmarkScreen
+import com.sandy.memorizingvoca.ui.feature.calendar.navigation.calendarScreen
 import com.sandy.memorizingvoca.ui.feature.home.navigation.homeScreen
 import com.sandy.memorizingvoca.ui.feature.home.navigation.navigateToHome
 import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.Quiz1Route
@@ -93,6 +94,12 @@ internal fun MyAppNavGraph(
             onNavigateQuiz1 = navController::navigateToQuiz1,
             onNavigateQuiz2 = navController::navigateToQuiz2,
             onNavigateDetails = navController::navigateToDetails,
+        )
+
+        calendarScreen(
+            navigateQuizResult = { date ->
+                navController.navigateToQuizResult(date, null)
+            }
         )
 
     }

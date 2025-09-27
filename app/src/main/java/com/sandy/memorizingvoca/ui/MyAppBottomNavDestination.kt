@@ -4,10 +4,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.sandy.memorizingvoca.ui.feature.bookmark.navigation.BookmarkRoute
+import com.sandy.memorizingvoca.ui.feature.calendar.navigation.CalendarRoute
 import com.sandy.memorizingvoca.ui.feature.home.navigation.HomeRoute
 import com.sandy.memorizingvoca.ui.resources.Apps
+import com.sandy.memorizingvoca.ui.resources.Calendar
 import com.sandy.memorizingvoca.ui.resources.Star
-import com.sandy.memorizingvoca.ui.resources.StarOutline
 import com.sandy.memorizingvoca.ui.theme.Gray70
 import com.sandy.memorizingvoca.ui.theme.Pink100
 import kotlin.reflect.KClass
@@ -28,8 +29,14 @@ internal enum class MyAppBottomNavDestination(
     ),
     BOOKMARK(
         selectedIcon = Icons.Rounded.Star,
-        unselectedIcon = Icons.Rounded.StarOutline,
+        unselectedIcon = Icons.Rounded.Star,
         title = "북마크",
         route = BookmarkRoute::class,
+    ),
+    CALENDAR(
+        selectedIcon = Icons.Rounded.Calendar,
+        unselectedIcon = Icons.Rounded.Calendar,
+        title = "캘린더",
+        route = CalendarRoute::class,
     )
 }

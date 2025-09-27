@@ -12,6 +12,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.sandy.memorizingvoca.ui.feature.bookmark.navigation.BookmarkRoute
 import com.sandy.memorizingvoca.ui.feature.bookmark.navigation.navigateToBookmark
+import com.sandy.memorizingvoca.ui.feature.calendar.navigation.CalendarRoute
+import com.sandy.memorizingvoca.ui.feature.calendar.navigation.navigateToCalendar
 import com.sandy.memorizingvoca.ui.feature.home.navigation.HomeRoute
 import com.sandy.memorizingvoca.ui.feature.home.navigation.navigateToHome
 
@@ -52,6 +54,7 @@ internal class MyAppState(
         when(destination) {
             MyAppBottomNavDestination.HOME -> navController.navigateToHome(topLevelNavOptions)
             MyAppBottomNavDestination.BOOKMARK -> navController.navigateToBookmark(topLevelNavOptions)
+            MyAppBottomNavDestination.CALENDAR -> navController.navigateToCalendar(topLevelNavOptions)
         }
     }
 
@@ -61,6 +64,7 @@ internal class MyAppState(
         return route in listOf(
             HomeRoute.javaClass.name,
             BookmarkRoute.javaClass.name,
+            CalendarRoute.javaClass.name,
         )
     }
 }
