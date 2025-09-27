@@ -30,14 +30,8 @@ internal class CalendarViewModel @Inject constructor(
     val calendarUiState = _calendarUiState.asStateFlow()
 
     init {
-        calendarUiState.map {
-            it.calendar
-        }.distinctUntilChanged()
-            .flatMapMerge { calendar ->
-                val startDay = DateUtils.getStartOfMonth(calendar.year, calendar.month)
-                val endDate = DateUtils.getEndOfMonth(calendar.year, calendar.month)
-                getQuizRepository.getQuizListForCalendar(startDay, endDate)
-            }.onEach { quizCalendar ->
+        getQuizRepository.getQuizListForCalendar()
+            .onEach { quizCalendar ->
                 _calendarUiState.update {
                     it.copy(
                         quizCalendar = quizCalendar,

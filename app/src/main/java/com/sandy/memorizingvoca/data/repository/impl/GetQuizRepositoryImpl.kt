@@ -20,17 +20,11 @@ class GetQuizRepositoryImpl @Inject constructor(
 ) : GetQuizRepository {
 
     override fun getQuizListForDate(date: LocalDate): Flow<List<VocaQuiz>> {
-        return dao.getQuizListForDate(date.toString())
+        return dao.getQuizListForDate(date.toString()).flowOn(Dispatchers.IO)
     }
 
-    override fun getQuizListForCalendar(
-        startDay: LocalDate,
-        endDay: LocalDate
-    ): Flow<Map<Date, List<VocaQuiz>>> {
-        return dao.getQuizListForCalendar(
-            startDay = startDay.toString(),
-            endDay = endDay.toString(),
-        ).map { quizList ->
+    override fun getQuizListForCalendar(): Flow<Map<Date, List<VocaQuiz>>> {
+        return dao.getQuizListForCalendar().map { quizList ->
             quizList.associate { quiz ->
                 val localDateTime = LocalDateTime.parse(quiz.date)
                 val localDate = localDateTime.toLocalDate()
@@ -39,10 +33,8 @@ class GetQuizRepositoryImpl @Inject constructor(
                     weekIndex = DateUtils.getWeekIndexOfMonthForLocale(localDate),
                 )
                 date to quizList
-            }.toSortedMap(
-                compareBy<Date> { it.localDate }
-            )
-        }
+            }
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun getQuizResult(quizDate: String): VocaQuiz = withContext(Dispatchers.IO) {

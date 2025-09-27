@@ -8,7 +8,7 @@ import java.time.LocalDate
 
 interface GetQuizRepository {
     fun getQuizListForDate(date: LocalDate): Flow<List<VocaQuiz>>
-    fun getQuizListForCalendar(startDay: LocalDate, endDay: LocalDate): Flow<Map<Date, List<VocaQuiz>>>
+    fun getQuizListForCalendar(): Flow<Map<Date, List<VocaQuiz>>>
     suspend fun getQuizResult(quizDate: String): VocaQuiz
     fun getWrongVocaList(quizDate: String): Flow<List<Vocabulary>>
     fun getExistDays(): Flow<List<Int>>
