@@ -24,4 +24,8 @@ class GetQuizRepositoryImpl @Inject constructor(
     override fun getWrongVocaList(quizDate: String): Flow<List<Vocabulary>> {
         return dao.getWrongVocaList(quizDate).flowOn(Dispatchers.IO)
     }
+
+    override fun getExistDays(): Flow<List<Int>> {
+        return dao.getExistDays()
+    }
 }

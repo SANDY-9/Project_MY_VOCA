@@ -40,6 +40,12 @@ interface QuizDao {
     )
     suspend fun getQuiz(quizDate: String): VocaQuiz
 
+    @Query(
+        "SELECT DISTINCT day " +
+                "FROM voca_quiz"
+    )
+    fun getExistDays(): Flow<List<Int>>
+
     @Transaction
     @Query(
         "SELECT v.* FROM voca_list v " +

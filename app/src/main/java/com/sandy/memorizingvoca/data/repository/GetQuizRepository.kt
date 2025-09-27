@@ -8,4 +8,5 @@ interface GetQuizRepository {
     suspend fun getQuizList(day: Int): List<VocaQuiz>
     suspend fun getQuizResult(quizDate: String): VocaQuiz
     fun getWrongVocaList(quizDate: String): Flow<List<Vocabulary>>
+    fun getExistDays(): Flow<List<Int>>
 }

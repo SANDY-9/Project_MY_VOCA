@@ -20,18 +20,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.FolderShape
 import com.sandy.memorizingvoca.ui.extensions.folderShape
+import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import com.sandy.memorizingvoca.ui.theme.Pink80
 
 @Composable
 fun DayFolderCard(
     day: Int,
+    exist: Boolean,
     onItemClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .padding(top = 1.dp)
-            .folderShape()
+            .folderShape(
+                backgroundColor = if(exist) Pink80 else Gray30,
+            )
             .clip(FolderShape())
             .clickable(onClick = onItemClick)
             .padding(8.dp),
@@ -59,16 +64,19 @@ private fun Preview() {
             DayFolderCard(
                 modifier = Modifier.weight(1f).height(100.dp),
                 day = 6,
+                exist = true,
                 onItemClick = {},
             )
             DayFolderCard(
                 modifier = Modifier.weight(1f),
                 day = 6,
+                exist = false,
                 onItemClick = {},
             )
             DayFolderCard(
                 modifier = Modifier.weight(1f),
                 day = 6,
+                exist = true,
                 onItemClick = {},
             )
         }

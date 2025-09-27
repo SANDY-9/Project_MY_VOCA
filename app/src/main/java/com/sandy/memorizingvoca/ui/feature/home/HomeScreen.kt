@@ -5,15 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,7 +44,7 @@ internal fun HomeRoute(
 
 @Composable
 private fun HomeScreen(
-    days: List<Int>,
+    days: Map<Int, Boolean>,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -73,12 +70,15 @@ private fun HomeScreen(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalArrangement = Arrangement.spacedBy(15.dp),
         ) {
-            items(days) { day ->
-                DayFolderCard(
-                    modifier = modifier.height(65.dp),
-                    day = day,
-                    onItemClick = { onItemClick(day) },
-                )
+            days.forEach { (day, quizExist) ->
+                item(day) {
+                    DayFolderCard(
+                        modifier = modifier.height(65.dp),
+                        day = day,
+                        exist = quizExist,
+                        onItemClick = { onItemClick(day) },
+                    )
+                }
             }
         }
     }
@@ -89,7 +89,7 @@ private fun HomeScreen(
 private fun HomeScreenPreview() {
     MemorizingVocaTheme {
         HomeScreen(
-            days = (1..10).toList(),
+            days = (1..10).associateWith { (it % 2 == 0) },
             onItemClick = {},
         )
     }
