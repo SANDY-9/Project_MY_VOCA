@@ -1,6 +1,7 @@
 package com.sandy.memorizingvoca.ui.feature.bookmark
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
@@ -77,7 +79,7 @@ private fun BookmarkScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .addFocusCleaner(focusManager)
+            .addFocusCleaner(focusManager),
     ) {
         BookmarkTopBar(
             bookmarkCount = bookmarkCount,
@@ -85,10 +87,22 @@ private fun BookmarkScreen(
             fullScreenEnabled = bookmarkCount > 0,
             quiz1Enabled = bookmarkCount >= 4,
             quiz2Enabled = bookmarkCount >= 6,
-            onBlindModeChange = onBlindModeChange,
-            onNavigateFullScreen = onNavigateFullScreen,
-            onNavigateQuiz1 = onNavigateQuiz1,
-            onNavigateQuiz2 = onNavigateQuiz2,
+            onBlindModeChange = {
+                focusManager.clearFocus()
+                onBlindModeChange(it)
+            },
+            onNavigateFullScreen = {
+                focusManager.clearFocus()
+                onNavigateFullScreen()
+            },
+            onNavigateQuiz1 = {
+                focusManager.clearFocus()
+                onNavigateQuiz1()
+            },
+            onNavigateQuiz2 = {
+                focusManager.clearFocus()
+                onNavigateQuiz2()
+            },
         )
         BookmarkSearchBar(
             query = query,
@@ -99,10 +113,14 @@ private fun BookmarkScreen(
         BookmarkListHeader(
             itemCount = itemCount,
             currentQueryText = queryTitle,
-            onAllDeleteClick = onAllDeleteClick,
+            onAllDeleteClick = {
+                focusManager.clearFocus()
+                onAllDeleteClick()
+            },
         )
         LazyColumn(
             modifier = modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(bottom = 16.dp),
         ) {
             bookmarkList.forEach { (day, vocaList) ->
                 stickyHeader {
@@ -119,18 +137,20 @@ private fun BookmarkScreen(
                         bookmarked = voca.bookmarked,
                         blindMode = blindMode,
                         onSpeak = {
+                            focusManager.clearFocus()
                             ttsManager.speak(voca.word)
                         },
                         onClick = {
+                            focusManager.clearFocus()
                             onNavigateDetails(voca.vocaId)
                         },
                         onBookmarkChange = {
+                            focusManager.clearFocus()
                             onBookmarkDelete(voca)
                         },
                     )
                 }
             }
-
         }
     }
 }
