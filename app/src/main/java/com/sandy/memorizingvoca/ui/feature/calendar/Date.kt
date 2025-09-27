@@ -20,11 +20,13 @@ internal enum class DayOfWeek(
     val dayOfWeek: Int = 0,
     val desc: String = "",
     val fullName: String = "",
+    val color: Color = Color.DarkGray,
 ) {
     SUNDAY(
         desc = "일",
         fullName = "일요일",
         dayOfWeek = 0,
+        color = DarkRed,
     ),
     MONDAY(
         desc = "월",
@@ -55,15 +57,8 @@ internal enum class DayOfWeek(
         desc = "토",
         fullName = "토요일",
         dayOfWeek = 6,
+        color = DarkBlue
     );
-
-    fun DayOfWeek.color(): Color {
-        return when (this) {
-            SUNDAY -> DarkRed
-            SATURDAY -> DarkBlue
-            else -> Color.DarkGray
-        }
-    }
 
     companion object {
         fun get(dayOfWeek: Int): DayOfWeek {
