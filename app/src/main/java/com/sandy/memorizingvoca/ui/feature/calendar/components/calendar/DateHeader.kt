@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape4
+import com.sandy.memorizingvoca.ui.theme.roundedCornerShape6
 
 @Composable
 internal fun DateHeader(
@@ -36,7 +37,6 @@ internal fun DateHeader(
             .fillMaxWidth()
             .background(
                 color = backColor,
-                shape = roundedCornerShape4,
             )
             .padding(vertical = 2.dp),
         contentAlignment = Alignment.Center,
