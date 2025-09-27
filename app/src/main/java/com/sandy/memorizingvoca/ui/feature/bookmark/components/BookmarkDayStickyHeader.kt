@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import com.sandy.memorizingvoca.ui.theme.Pink40
 import com.sandy.memorizingvoca.ui.theme.Pink80
 
 @Composable
@@ -22,7 +23,7 @@ internal fun BookmarkDayStickyHeader(
 ) {
     Row(
         modifier = modifier.fillMaxWidth().background(
-            color = Pink80,
+            color = Pink40,
         ).padding(
             horizontal = 16.dp,
             vertical = 4.dp,

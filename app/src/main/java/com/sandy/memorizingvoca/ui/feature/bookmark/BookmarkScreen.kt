@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.bookmark
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,8 @@ import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkDaySticky
 import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkListHeader
 import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkSearchBar
 import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkTopBar
+import com.sandy.memorizingvoca.ui.theme.Gray10
+import com.sandy.memorizingvoca.ui.theme.Gray20
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.utils.rememberTTSManager
 

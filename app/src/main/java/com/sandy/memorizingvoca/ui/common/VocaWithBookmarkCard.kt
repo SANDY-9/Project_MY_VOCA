@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.Pink40
+import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
@@ -40,7 +42,7 @@ fun VocaWithBookmarkCard (
     modifier: Modifier = Modifier,
     blindMode: Boolean = false,
 ) {
-    val highlightColor = if (highlighted) Pink40 else Color.Transparent
+    val highlightColor = if (highlighted) Pink80 else MaterialTheme.colorScheme.background
     Column(
         modifier = modifier
             .fillMaxWidth()

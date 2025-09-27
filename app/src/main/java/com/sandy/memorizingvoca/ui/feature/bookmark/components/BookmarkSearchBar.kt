@@ -1,7 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.bookmark.components
 
 import android.widget.Toast
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,11 +36,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.addFocusCleaner
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
-import com.sandy.memorizingvoca.ui.theme.Gray30
+import com.sandy.memorizingvoca.ui.theme.Gray20
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink100
 import com.sandy.memorizingvoca.ui.theme.Pink40
-import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape16
 
@@ -94,7 +92,7 @@ private fun BookmarkSearchTextField(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             focusedContainerColor = Pink40,
-            unfocusedContainerColor = Gray30,
+            unfocusedContainerColor = Gray20,
         ),
         textStyle = TextStyle.Default.copy(
             fontFamily = PyeoginGothic,
