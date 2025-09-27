@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sandy.memorizingvoca.ui.feature.calendar.DayOfWeek
+import com.sandy.memorizingvoca.data.model.DayOfWeek
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink10

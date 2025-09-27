@@ -1,4 +1,4 @@
-package com.sandy.memorizingvoca.ui.feature.calendar
+package com.sandy.memorizingvoca.data.model
 
 import androidx.compose.ui.graphics.Color
 import com.sandy.memorizingvoca.ui.theme.DarkBlue
@@ -6,7 +6,7 @@ import com.sandy.memorizingvoca.ui.theme.DarkRed
 import java.time.LocalDate
 
 
-internal data class Date(
+data class Date(
     val localDate: LocalDate = LocalDate.now(),
     val week: Int = 3,
 ) {
@@ -14,10 +14,9 @@ internal data class Date(
     val month: Int = localDate.monthValue
     val day: Int = localDate.dayOfMonth
     val dayOfWeek: DayOfWeek = DayOfWeek.get(localDate.dayOfWeek.value)
-
 }
 
-internal enum class DayOfWeek(
+enum class DayOfWeek(
     val dayOfWeek: Int = 0,
     val desc: String = "",
     val fullName: String = "",

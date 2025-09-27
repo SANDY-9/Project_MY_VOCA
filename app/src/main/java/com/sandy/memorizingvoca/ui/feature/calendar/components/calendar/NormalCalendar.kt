@@ -13,10 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sandy.memorizingvoca.ui.feature.calendar.Date
-import com.sandy.memorizingvoca.ui.feature.calendar.DateUtils
+import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import com.sandy.memorizingvoca.utils.DateUtils
 
 @Composable
 internal fun NormalCalendar(
