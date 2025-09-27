@@ -10,5 +10,6 @@ interface QuizRepository {
         incorrectedVocaId: List<Int>,
     )
     suspend fun deleteQuiz(quiz: VocaQuiz)
+    suspend fun deleteMultipleQuiz(quizList: List<VocaQuiz>)
 
 }

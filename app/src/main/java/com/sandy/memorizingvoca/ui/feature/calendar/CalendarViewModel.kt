@@ -3,9 +3,9 @@ package com.sandy.memorizingvoca.ui.feature.calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sandy.memorizingvoca.data.model.VocaQuiz
-import com.sandy.memorizingvoca.utils.DateUtils
 import com.sandy.memorizingvoca.data.repository.GetQuizRepository
 import com.sandy.memorizingvoca.data.repository.QuizRepository
+import com.sandy.memorizingvoca.utils.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -58,5 +58,17 @@ internal class CalendarViewModel @Inject constructor(
             }.launchIn(viewModelScope)
     }
 
+    fun deleteQuiz(quiz: VocaQuiz) = viewModelScope.launch {
+        quizRepository.deleteQuiz(quiz)
+    }
+
+    fun deleteMultipleQuiz() = viewModelScope.launch {
+        quizRepository.deleteMultipleQuiz(calendarUiState.value.quizList)
+    }
+
+    fun clearCalendar() = viewModelScope.launch {
+        val quizCalendar = calendarUiState.value.quizCalendar.flatMap { it.value }
+        quizRepository.deleteMultipleQuiz(quizCalendar)
+    }
 
 }

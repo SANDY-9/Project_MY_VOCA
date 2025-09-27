@@ -27,6 +27,9 @@ interface QuizDao {
     )
     suspend fun deleteWrongVoca(quizDate: String)
 
+    @Delete
+    suspend fun deleteMultipleQuiz(quizList: List<VocaQuiz>)
+
     @Query(
         "SELECT * FROM voca_quiz " +
                 "WHERE day = :day " +

@@ -6,8 +6,8 @@ import com.sandy.memorizingvoca.data.model.WrongVoca
 import com.sandy.memorizingvoca.data.repository.QuizRepository
 import com.sandy.memorizingvoca.data.room.dao.QuizDao
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 class QuizRepositoryImpl @Inject constructor(
@@ -41,5 +41,12 @@ class QuizRepositoryImpl @Inject constructor(
     override suspend fun deleteQuiz(quiz: VocaQuiz) = withContext(Dispatchers.IO) {
         dao.deleteQuiz(quiz)
         dao.deleteWrongVoca(quiz.date)
+    }
+
+    override suspend fun deleteMultipleQuiz(quizList: List<VocaQuiz>) = withContext(Dispatchers.IO) {
+        launch { dao.deleteMultipleQuiz(quizList) }
+        quizList.forEach { quiz ->
+            launch { dao.deleteWrongVoca(quiz.date) }
+        }
     }
 }
