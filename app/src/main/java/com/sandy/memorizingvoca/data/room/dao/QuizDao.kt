@@ -40,6 +40,12 @@ interface QuizDao {
     )
     suspend fun getQuiz(quizDate: String): VocaQuiz
 
+    @Query("SELECT * FROM voca_quiz WHERE date LIKE :date || '%'")
+    fun getQuizListForDate(date: String): Flow<List<VocaQuiz>>
+
+    @Query("SELECT * FROM voca_quiz WHERE date >= :startDay AND date < :endDay")
+    fun getQuizListForCalendar(startDay: String, endDay: String): Flow<List<VocaQuiz>>
+
     @Query(
         "SELECT DISTINCT day " +
                 "FROM voca_quiz"

@@ -8,13 +8,25 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import javax.inject.Inject
 
 class GetQuizRepositoryImpl @Inject constructor(
     private val dao: QuizDao,
 ) : GetQuizRepository {
-    override suspend fun getQuizList(day: Int): List<VocaQuiz> = withContext(Dispatchers.IO) {
-        return@withContext dao.getQuizList(day)
+
+    override fun getQuizListForDate(date: LocalDate): Flow<List<VocaQuiz>> {
+        return dao.getQuizListForDate(date.toString())
+    }
+
+    override fun getQuizListForCalendar(
+        startDay: LocalDate,
+        endDay: LocalDate
+    ): Flow<List<VocaQuiz>> {
+        return dao.getQuizListForCalendar(
+            startDay = startDay.toString(),
+            endDay = endDay.toString(),
+        )
     }
 
     override suspend fun getQuizResult(quizDate: String): VocaQuiz = withContext(Dispatchers.IO) {
