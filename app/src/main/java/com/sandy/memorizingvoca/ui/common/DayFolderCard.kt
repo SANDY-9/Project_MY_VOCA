@@ -1,9 +1,11 @@
 package com.sandy.memorizingvoca.ui.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -28,15 +30,17 @@ fun DayFolderCard(
 ) {
     Box(
         modifier = modifier
+            .padding(top = 1.dp)
             .folderShape()
             .clip(FolderShape())
             .clickable(onClick = onItemClick)
-            .padding(16.dp),
+            .padding(8.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
+            modifier = Modifier.align(Alignment.Center).padding(top = 8.dp),
             text = "Day " + String.format("%02d", day),
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.Light,
             fontSize = 16.sp,
             color = Color.DarkGray,
         )

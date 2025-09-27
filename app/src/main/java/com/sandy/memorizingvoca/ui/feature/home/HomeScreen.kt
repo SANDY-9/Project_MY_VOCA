@@ -3,7 +3,10 @@ package com.sandy.memorizingvoca.ui.feature.home
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -65,12 +68,14 @@ private fun HomeScreen(
         }
         LazyVerticalGrid(
             modifier = modifier,
-            columns = GridCells.Fixed(4),
+            contentPadding = PaddingValues(bottom = 16.dp),
+            columns = GridCells.Adaptive(70.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(15.dp),
         ) {
             items(days) { day ->
                 DayFolderCard(
+                    modifier = modifier.height(65.dp),
                     day = day,
                     onItemClick = { onItemClick(day) },
                 )
