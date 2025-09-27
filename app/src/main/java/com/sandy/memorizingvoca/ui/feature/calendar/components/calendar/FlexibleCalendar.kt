@@ -63,6 +63,7 @@ internal fun FlexibleCalendar(
                 month = month,
                 today = today,
                 onDateSelect = onDateSelect,
+                quizCalendar = quizCalendar,
             )
             CalendarType.SMALL_CALENDAR -> SmallCalendar(
                 selectDate = selectDate,
