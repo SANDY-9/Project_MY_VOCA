@@ -55,7 +55,7 @@ private fun SmallCalendarPreview() {
                 days = DateUtils.createCalendar(
                     year = date.year,
                     month = date.month,
-                )[2],
+                ).days[2],
                 month = date.month,
                 today = Date(),
                 selectDate = null,

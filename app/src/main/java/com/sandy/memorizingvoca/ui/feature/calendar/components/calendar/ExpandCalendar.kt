@@ -63,7 +63,7 @@ private fun ExpandCalendarPreview() {
                 calendar = DateUtils.createCalendar(
                     year = date.year,
                     month = date.month,
-                ),
+                ).days,
                 month = date.month,
                 today = Date(),
                 selectDate = null,

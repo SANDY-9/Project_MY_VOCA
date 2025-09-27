@@ -2,6 +2,7 @@ package com.sandy.memorizingvoca.ui.feature.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.data.repository.GetQuizRepository
 import com.sandy.memorizingvoca.data.repository.QuizRepository
@@ -30,11 +31,11 @@ internal class CalendarViewModel @Inject constructor(
 
     init {
         calendarUiState.map {
-            it.yearMonth
+            it.calendar
         }.distinctUntilChanged()
-            .flatMapMerge { yearMonth ->
-                val startDay = DateUtils.getStartOfMonth(yearMonth.year, yearMonth.month)
-                val endDate = DateUtils.getEndOfMonth(yearMonth.year, yearMonth.month)
+            .flatMapMerge { calendar ->
+                val startDay = DateUtils.getStartOfMonth(calendar.year, calendar.month)
+                val endDate = DateUtils.getEndOfMonth(calendar.year, calendar.month)
                 getQuizRepository.getQuizListForCalendar(startDay, endDate)
             }.onEach { quizCalendar ->
                 _calendarUiState.update {
@@ -69,6 +70,21 @@ internal class CalendarViewModel @Inject constructor(
     fun clearCalendar() = viewModelScope.launch {
         val quizCalendar = calendarUiState.value.quizCalendar.flatMap { it.value }
         quizRepository.deleteMultipleQuiz(quizCalendar)
+    }
+
+    fun onPageChange(page: Int) {
+        _calendarUiState.value = calendarUiState.value.run {
+            val newCalendar = calendarList[page]
+            val firstDay = DateUtils.getFirstDay(newCalendar.year, newCalendar.month)
+            copy(
+                calendar = newCalendar,
+                currentCalendarPage = page,
+                selectedDate = Date(
+                    localDate = firstDay,
+                    week = DateUtils.getWeekOfMonthForLocale(firstDay),
+                ),
+            )
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.utils
 
+import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.DayOfWeek
 import java.time.LocalDate
@@ -9,8 +10,7 @@ import java.util.Locale
 
 object DateUtils {
     fun getStartOfMonth(year: Int, month: Int): LocalDate {
-        val yearMonth = YearMonth.of(year, month)
-        val firstDay = yearMonth.atDay(1)
+        val firstDay = getFirstDay(year, month)
         val weekSize = DayOfWeek.entries.size.toLong()
         val startDay = firstDay.minusDays(
             firstDay.dayOfWeek.value % weekSize
@@ -18,14 +18,25 @@ object DateUtils {
         return startDay
     }
 
-    fun getEndOfMonth(year: Int, month: Int): LocalDate {
+    fun getFirstDay(year: Int, month: Int): LocalDate {
         val yearMonth = YearMonth.of(year, month)
-        val lastDay = yearMonth.atEndOfMonth()
+        val firstDay = yearMonth.atDay(1)
+        return firstDay
+    }
+
+    fun getEndOfMonth(year: Int, month: Int): LocalDate {
+        val lastDay = getEndDay(year, month)
         val weekSize = DayOfWeek.entries.size.toLong()
         val endDay = lastDay.plusDays(
             DayOfWeek.SATURDAY.dayOfWeek - (lastDay.dayOfWeek.value % weekSize)
         )
         return endDay
+    }
+
+    fun getEndDay(year: Int, month: Int): LocalDate {
+        val yearMonth = YearMonth.of(year, month)
+        val lastDay = yearMonth.atEndOfMonth()
+        return lastDay
     }
 
     fun getWeekOfMonthForLocale(date: LocalDate, locale: Locale = Locale.US): Int {
@@ -56,27 +67,35 @@ object DateUtils {
     fun createCalendar(
         year: Int,
         month: Int,
-    ): List<List<Date>> = getMonthCalendarByWeek(year, month)
-        .mapIndexed { index, week ->
-            week.map { localDate ->
-                Date(
-                    localDate = localDate,
-                    week = index
-                )
+    ): Calendar {
+        val days = getMonthCalendarByWeek(year, month)
+            .mapIndexed { index, week ->
+                week.map { localDate ->
+                    Date(
+                        localDate = localDate,
+                        week = index
+                    )
+                }
             }
-        }
+        return Calendar(
+            year = year,
+            month = month,
+            days = days,
+        )
+    }
 
-    // 기본값 : 2025(year)년 9(month)월부터 2년(size=24)
+    // 기본값 : 2025(year)년 9(month)월부터 2026년 12월까지(size=16)
     fun createCalendarList(
         year: Int = 2025,
         month: Int = 9,
-        size: Int = 24,
-    ): List<List<List<Date>>> {
-        return (1..size).map { next ->
-            val nextMonth = month + next
+        size: Int = 16,
+    ): List<Calendar> {
+        return (0..< size).map { next ->
+            val num = month + next
+            val nextMonth = if(num % 12 == 0) 12 else num % 12
             createCalendar(
-                year = if(nextMonth > 12) year + 1 else year,
-                month = if(nextMonth > 12) nextMonth - 12 else nextMonth,
+                year = year + num / 12,
+                month = nextMonth,
             )
         }
     }

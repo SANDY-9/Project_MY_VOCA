@@ -79,7 +79,7 @@ private fun FlexibleCalendarPreview() {
     MemorizingVocaTheme {
         FlexibleCalendar(
             selectDate = date,
-            calendar = calendar,
+            calendar = calendar.days,
             month = date.month,
             today = Date(),
             selectDateWeek = date.week,

@@ -3,27 +3,35 @@ package com.sandy.memorizingvoca.ui.feature.calendar
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sandy.memorizingvoca.data.model.Calendar
+import com.sandy.memorizingvoca.data.model.Date
+import com.sandy.memorizingvoca.data.model.DayOfWeek
 import com.sandy.memorizingvoca.ui.feature.calendar.components.CalendarHeader
 import com.sandy.memorizingvoca.ui.feature.calendar.components.CalendarPagerView
 import com.sandy.memorizingvoca.ui.feature.calendar.components.CalendarTopBar
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-
-private val date = Date()
-private val calendar = DateUtils.createCalendar(date.year, date.month)
+import com.sandy.memorizingvoca.utils.DateUtils
 
 @Composable
 internal fun CalendarRoute(
     navigateQuizResult: (String) -> Unit,
+    viewModel: CalendarViewModel = hiltViewModel(),
 ) {
+
+    val uiState by viewModel.calendarUiState.collectAsStateWithLifecycle()
+
     CalendarScreen(
-        year = 2005,
-        month = 9,
-        calendar = calendar,
-        dayOfWeeks = DayOfWeek.list(),
-        selectDate = null,
-        today = Date(),
+        calendar = uiState.calendar,
+        calendarList = uiState.calendarList,
+        dayOfWeeks = uiState.dayOfWeeks,
+        selectDate = uiState.selectedDate,
+        today = uiState.today,
+        onPageChange = viewModel::onPageChange,
         onDateSelect = { _, _ -> },
         onAllQuizClear = {},
     )
@@ -31,12 +39,12 @@ internal fun CalendarRoute(
 
 @Composable
 private fun CalendarScreen(
-    year: Int,
-    month: Int,
-    calendar: List<List<Date>>,
+    calendar: Calendar,
+    calendarList: List<Calendar>,
     dayOfWeeks: List<DayOfWeek>,
-    selectDate: Date?,
+    selectDate: Date,
     today: Date,
+    onPageChange: (Int) -> Unit,
     onDateSelect: (Date, Int) -> Unit,
     onAllQuizClear: () -> Unit,
     modifier: Modifier = Modifier,
@@ -48,15 +56,17 @@ private fun CalendarScreen(
             onAllQuizClearClick = onAllQuizClear,
         )
         CalendarHeader(
-            year = year,
-            month = month,
+            year = calendar.year,
+            month = calendar.month,
             dayOfWeeks = dayOfWeeks,
         )
         CalendarPagerView(
             selectDate = selectDate,
-            calendar = calendar,
-            month = month,
+            calendarList = calendarList,
+            initialCalendarPage = 0,
+            month = calendar.month,
             today = today,
+            onPageChange = onPageChange,
             onDateSelect = onDateSelect,
         )
     }
@@ -65,14 +75,15 @@ private fun CalendarScreen(
 @Preview
 @Composable
 private fun CalendarScreenPreview() {
+    val date = Date()
     MemorizingVocaTheme {
         CalendarScreen(
-            year = 2005,
-            month = 9,
+            calendar = DateUtils.createCalendar(date.year, date.month),
+            calendarList = DateUtils.createCalendarList(),
             dayOfWeeks = DayOfWeek.list(),
-            calendar = calendar,
-            selectDate = null,
-            today = Date(),
+            selectDate = date,
+            today = date,
+            onPageChange = {},
             onDateSelect = { _, _ -> },
             onAllQuizClear = {},
         )

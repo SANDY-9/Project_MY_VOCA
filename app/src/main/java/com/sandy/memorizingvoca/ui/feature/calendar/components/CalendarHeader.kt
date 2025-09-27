@@ -38,7 +38,7 @@ internal fun CalendarHeader(
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
         )
-        Spacer(modifier = modifier.height(12.dp))
+        Spacer(modifier = modifier.height(16.dp))
         Row(
             modifier = modifier
                 .fillMaxWidth()
