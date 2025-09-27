@@ -23,6 +23,7 @@ import com.sandy.memorizingvoca.ui.theme.Pink100
 @Composable
 internal fun BookmarkListHeader(
     itemCount: Int,
+    currentQueryText: String,
     onAllDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -38,7 +39,7 @@ internal fun BookmarkListHeader(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "전체 목록($itemCount)",
+                text = "$currentQueryText 목록($itemCount)",
                 color = Color.Gray,
                 fontWeight = FontWeight.Normal,
             )
@@ -63,6 +64,7 @@ private fun BookmarkListHeaderPreview() {
     MemorizingVocaTheme {
         BookmarkListHeader(
             itemCount = 3,
+            currentQueryText = "전체",
             onAllDeleteClick = {},
         )
     }

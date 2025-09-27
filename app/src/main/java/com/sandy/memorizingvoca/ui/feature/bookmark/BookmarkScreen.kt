@@ -37,6 +37,7 @@ internal fun BookmarkRoute(
         bookmarkCount = bookmarkUiState.bookmarkCount,
         blindMode = bookmarkUiState.blindMode,
         query = bookmarkUiState.query,
+        queryTitle = bookmarkUiState.currentQueryTitle,
         itemCount = bookmarkUiState.itemCount,
         bookmarkList = bookmarkUiState.filteredBookmarkMapByDay,
         onSearchVoca = viewModel::searchVoca,
@@ -45,7 +46,6 @@ internal fun BookmarkRoute(
         onNavigateQuiz1 = onNavigateQuiz1,
         onNavigateQuiz2 = onNavigateQuiz2,
         onNavigateDetails = onNavigateDetails,
-        onResetClick = viewModel::resetBookmarkList,
         onAllDeleteClick = viewModel::deleteMultipleBookmark,
         onBookmarkDelete = viewModel::deleteBookmark,
     )
@@ -56,11 +56,11 @@ private fun BookmarkScreen(
     bookmarkCount: Int,
     blindMode: Boolean,
     query: String?,
+    queryTitle: String,
     itemCount: Int,
     bookmarkList: Map<Int, List<Vocabulary>>,
     onSearchVoca: (String) -> Unit,
     onBlindModeChange: (Boolean) -> Unit,
-    onResetClick: () -> Unit,
     onAllDeleteClick: () -> Unit,
     onBookmarkDelete: (Vocabulary) -> Unit,
     onNavigateFullScreen: () -> Unit,
@@ -98,6 +98,7 @@ private fun BookmarkScreen(
         )
         BookmarkListHeader(
             itemCount = itemCount,
+            currentQueryText = queryTitle,
             onAllDeleteClick = onAllDeleteClick,
         )
         LazyColumn(
@@ -142,13 +143,13 @@ private fun BookmarkScreenPreview() {
             bookmarkCount = 10,
             blindMode = false,
             query = "Day 1",
+            queryTitle = "전체",
             itemCount = 7,
             onSearchVoca = {},
             onBlindModeChange = {},
             onNavigateFullScreen = {},
             onNavigateQuiz1 = {},
             onNavigateQuiz2 = {},
-            onResetClick = {},
             onAllDeleteClick = {},
             onBookmarkDelete = {},
             onNavigateDetails = {},

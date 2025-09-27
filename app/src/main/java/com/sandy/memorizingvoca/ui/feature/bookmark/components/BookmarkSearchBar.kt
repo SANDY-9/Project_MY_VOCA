@@ -61,10 +61,10 @@ internal fun BookmarkSearchBar(
         modifier = modifier.fillMaxWidth().padding(horizontal = 8.dp),
     ) {
         BookmarkSearchTextField(
-            input = input,
+            input = query ?: "",
             focusManager = focusManager,
             focusRequester = focusRequester,
-            onInputChange = { input = it },
+            onInputChange = onSearchVoca,
             onSearch = { onSearchVoca(input) },
         )
     }

@@ -76,23 +76,40 @@ internal class BookmarkViewModel @Inject constructor(
 
     fun searchVoca(query: String) {
         val newQuery = query.trim()
+        if(newQuery.isBlank()) {
+            resetBookmarkList()
+            return
+        }
         val result = getFilteredBookmarkMap(newQuery)
         _bookmarkUiState.update {
             it.copy(
                 filteredBookmarkMapByDay = result,
                 query = newQuery,
                 itemCount = result.itemCount(),
+                currentQueryTitle = getQueryTitle(newQuery)
             )
         }
     }
 
-    fun resetBookmarkList() {
+    private fun resetBookmarkList() {
         _bookmarkUiState.update {
             it.copy(
                 filteredBookmarkMapByDay = getFilteredBookmarkMap(null),
                 query = null,
                 itemCount = bookmarkUiState.value.bookmarkCount,
+                currentQueryTitle = "전체"
             )
+        }
+    }
+
+    private fun getQueryTitle(query: String): String {
+        try {
+            // query가 숫자일 경우
+            val day = query.toInt()
+            return "Day " + String.format("%02d", day) + "검색 결과"
+        } catch (e: Exception) {
+            // query가 숫자가 아닐 경우
+            return "'$query' 검색 결과"
         }
     }
 
@@ -115,6 +132,7 @@ internal class BookmarkViewModel @Inject constructor(
         bookmarkRepository.deleteMutipleBookmark(
             vocaList = updateList,
         )
+        resetBookmarkList()
     }
 
     private fun updateBookmarkUiState(param: Vocabulary) {
