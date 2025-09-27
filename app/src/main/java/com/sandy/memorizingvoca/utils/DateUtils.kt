@@ -66,10 +66,11 @@ object DateUtils {
             }
         }
 
+    // 기본값 : 2025(year)년 9(month)월부터 2년(size=24)
     fun createCalendarList(
-        year: Int,
-        month: Int,
-        size: Int = 12,
+        year: Int = 2025,
+        month: Int = 9,
+        size: Int = 24,
     ): List<List<List<Date>>> {
         return (1..size).map { next ->
             val nextMonth = month + next

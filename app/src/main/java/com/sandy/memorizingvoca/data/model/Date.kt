@@ -3,12 +3,13 @@ package com.sandy.memorizingvoca.data.model
 import androidx.compose.ui.graphics.Color
 import com.sandy.memorizingvoca.ui.theme.DarkBlue
 import com.sandy.memorizingvoca.ui.theme.DarkRed
+import com.sandy.memorizingvoca.utils.DateUtils
 import java.time.LocalDate
 
 
 data class Date(
     val localDate: LocalDate = LocalDate.now(),
-    val week: Int = 3,
+    val week: Int = DateUtils.getWeekOfMonthForLocale(localDate),
 ) {
     val year: Int = localDate.year
     val month: Int = localDate.monthValue
