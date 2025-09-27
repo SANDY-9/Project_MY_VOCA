@@ -39,9 +39,10 @@ object DateUtils {
         return lastDay
     }
 
-    fun getWeekOfMonthForLocale(date: LocalDate, locale: Locale = Locale.US): Int {
+    fun getWeekIndexOfMonthForLocale(date: LocalDate, locale: Locale = Locale.US): Int {
         val weekFields = WeekFields.of(locale)
-        return date.get(weekFields.weekOfMonth())
+        val week = date.get(weekFields.weekOfMonth())
+        return week - 1
     }
 
     fun getMonthCalendar(
@@ -73,7 +74,7 @@ object DateUtils {
                 week.map { localDate ->
                     Date(
                         localDate = localDate,
-                        week = index
+                        weekIndex = index,
                     )
                 }
             }
@@ -100,4 +101,10 @@ object DateUtils {
         }
     }
 
+}
+
+fun main() {
+    val a = DateUtils.getWeekIndexOfMonthForLocale(LocalDate.now())
+    println(LocalDate.now())
+    println(a)
 }

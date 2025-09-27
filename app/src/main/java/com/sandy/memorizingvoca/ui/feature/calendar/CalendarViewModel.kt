@@ -81,7 +81,7 @@ internal class CalendarViewModel @Inject constructor(
                 currentCalendarPage = page,
                 selectedDate = Date(
                     localDate = firstDay,
-                    week = DateUtils.getWeekOfMonthForLocale(firstDay),
+                    weekIndex = DateUtils.getWeekIndexOfMonthForLocale(firstDay),
                 ),
             )
         }

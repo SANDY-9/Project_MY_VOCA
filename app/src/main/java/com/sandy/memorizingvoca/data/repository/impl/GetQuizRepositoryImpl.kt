@@ -36,7 +36,7 @@ class GetQuizRepositoryImpl @Inject constructor(
                 val localDate = localDateTime.toLocalDate()
                 val date = Date(
                     localDate = localDate,
-                    week = DateUtils.getWeekOfMonthForLocale(localDate),
+                    weekIndex = DateUtils.getWeekIndexOfMonthForLocale(localDate),
                 )
                 date to quizList
             }.toSortedMap(
