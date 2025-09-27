@@ -22,7 +22,7 @@ internal object DateUtils {
         return endDay
     }
 
-    fun calculateMonth(
+    private fun calculateMonth(
         year: Int,
         month: Int,
     ): List<LocalDate> {
@@ -36,7 +36,7 @@ internal object DateUtils {
         }.toList()
     }
 
-    fun getMonthByWeek(
+    private fun getMonthByWeek(
         year: Int,
         month: Int,
     ): List<List<LocalDate>> {
@@ -46,10 +46,13 @@ internal object DateUtils {
     fun createCalendar(
         year: Int,
         month: Int
-    ): List<Week> = getMonthByWeek(year, month)
-        .map { week ->
+    ): List<List<Date>> = getMonthByWeek(year, month)
+        .mapIndexed { index, week ->
             week.map { localDate ->
-                Date(localDate = localDate,)
+                Date(
+                    localDate = localDate,
+                    week = index
+                )
             }
         }
 

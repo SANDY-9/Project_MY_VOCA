@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.calendar.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.feature.calendar.DayOfWeek
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import com.sandy.memorizingvoca.ui.theme.Pink10
 
 @Composable
 internal fun CalendarHeader(
@@ -28,12 +30,7 @@ internal fun CalendarHeader(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                start = 4.dp,
-                end = 4.dp,
-            ),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -43,7 +40,15 @@ internal fun CalendarHeader(
         )
         Spacer(modifier = modifier.height(12.dp))
         Row(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .background(
+                    color = Pink10,
+                )
+                .padding(
+                    horizontal = 8.dp,
+                    vertical = 4.dp,
+                ),
         ) {
             dayOfWeeks.forEach { dayOfWeek ->
                 Text(
@@ -55,8 +60,10 @@ internal fun CalendarHeader(
                 )
             }
         }
-        Spacer(modifier = modifier.height(4.dp))
-        HorizontalDivider(color = Gray30)
+        HorizontalDivider(
+            modifier = modifier.padding(horizontal = 8.dp),
+            color = Gray30,
+        )
     }
 }
 
