@@ -92,6 +92,7 @@ internal fun MyAppNavGraph(
             onNavigateFullScreen = navController::navigateToVocaFullScreen,
             onNavigateQuiz1 = navController::navigateToQuiz1,
             onNavigateQuiz2 = navController::navigateToQuiz2,
+            onNavigateDetails = navController::navigateToDetails,
         )
 
     }

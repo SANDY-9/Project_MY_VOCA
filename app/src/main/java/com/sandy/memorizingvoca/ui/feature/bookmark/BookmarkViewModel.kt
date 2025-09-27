@@ -7,6 +7,7 @@ import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetVocabularyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -96,6 +97,8 @@ internal class BookmarkViewModel @Inject constructor(
     }
 
     fun deleteBookmark(voca: Vocabulary) = viewModelScope.launch {
+        updateBookmarkUiState(voca)
+        delay(100L)
         bookmarkRepository.deleteBookmark(
             vocaId = voca.vocaId,
             day = voca.day,
@@ -107,9 +110,37 @@ internal class BookmarkViewModel @Inject constructor(
 
     fun deleteMultipleBookmark() = viewModelScope.launch {
         val updateList = bookmarkUiState.value.filteredBookmarkMapByDay.flatMap { it.value }
+        updateBookmarkUiState(updateList)
+        delay(100L)
         bookmarkRepository.deleteMutipleBookmark(
             vocaList = updateList,
         )
+    }
+
+    private fun updateBookmarkUiState(param: Vocabulary) {
+        val updateUiList = bookmarkUiState.value.filteredBookmarkMapByDay.flatMap {
+            it.value.map { voca ->
+                if(voca == param) voca.copy(bookmarked = false) else voca
+            }
+        }
+        _bookmarkUiState.update {
+            it.copy(
+                filteredBookmarkMapByDay = updateUiList.bookmarkMap(),
+            )
+        }
+    }
+
+    private fun updateBookmarkUiState(vocaList: List<Vocabulary>) {
+        val updateUiList = bookmarkUiState.value.filteredBookmarkMapByDay.flatMap {
+            it.value.map { voca ->
+                if(vocaList.contains(voca)) voca.copy(bookmarked = false) else voca
+            }
+        }
+        _bookmarkUiState.update {
+            it.copy(
+                filteredBookmarkMapByDay = updateUiList.bookmarkMap(),
+            )
+        }
     }
 
 }
