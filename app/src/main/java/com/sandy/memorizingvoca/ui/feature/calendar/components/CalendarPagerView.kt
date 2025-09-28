@@ -1,5 +1,7 @@
 package com.sandy.memorizingvoca.ui.feature.calendar.components
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -10,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
+import com.sandy.memorizingvoca.ui.feature.calendar.CalendarType
 import com.sandy.memorizingvoca.ui.feature.calendar.components.calendar.FlexibleCalendar
 import com.sandy.memorizingvoca.ui.feature.calendar.rememberFlexibleCalendarState
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
@@ -46,21 +49,39 @@ internal fun CalendarPagerView(
             }
     }
 
-    HorizontalPager(
-        modifier = modifier,
-        state = pagerState,
-    ) { page ->
-        val calendar = calendarList[page]
-        FlexibleCalendar(
-            calendarState = flexibleCalendarState,
-            selectDate = selectDate,
-            calendar = calendar.days,
-            quizCalendar = quizCalendar,
-            month = month,
-            today = today,
-            onQuizItemClick = onQuizItemClick,
-            onDateSelect = onDateSelect,
-        )
+    Column(
+        modifier = modifier.fillMaxSize()
+    ) {
+        HorizontalPager(
+            state = pagerState,
+        ) { page ->
+            val calendar = calendarList[page]
+            FlexibleCalendar(
+                calendarState = flexibleCalendarState,
+                selectDate = selectDate,
+                calendar = calendar.days,
+                quizCalendar = quizCalendar,
+                month = month,
+                today = today,
+                onQuizItemClick = onQuizItemClick,
+                onDateSelect = onDateSelect,
+            )
+        }
+        HorizontalPager(
+            modifier = modifier.weight(1f),
+            state = pagerState,
+        ) {
+            if(flexibleCalendarState.type != CalendarType.EXPANDED_CALENDAR) {
+                CalendarQuizListView(
+                    date = selectDate,
+                    quizList = quizCalendar[selectDate] ?: emptyList(),
+                    onDeleteListClick = {
+                    },
+                    onItemClick = {},
+                    onDeleteClick = {},
+                )
+            }
+        }
     }
 }
 

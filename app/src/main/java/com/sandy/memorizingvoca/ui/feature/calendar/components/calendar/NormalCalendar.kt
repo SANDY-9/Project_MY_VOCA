@@ -52,7 +52,7 @@ internal fun NormalCalendar(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        calendar.forEachIndexed { weekIndex, days ->
+        calendar.forEachIndexed { index, days ->
             Row(
                 modifier = Modifier.weight(1f),
                 horizontalArrangement = Arrangement.spacedBy(2.dp),
