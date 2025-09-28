@@ -29,7 +29,7 @@ internal fun FlexibleCalendar(
     month: Int,
     today: Date,
     onQuizItemClick: (String) -> Unit,
-    onDateSelect: (Date, Int) -> Unit,
+    onDateSelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
     calendarState: FlexibleCalendarState = rememberFlexibleCalendarState(),
 ) {
@@ -110,7 +110,7 @@ private fun FlexibleCalendarPreview() {
                 ),
             ),
             onQuizItemClick = {},
-            onDateSelect = { _, _ -> },
+            onDateSelect = {},
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.calendar
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sandy.memorizingvoca.data.model.Date
@@ -10,16 +11,12 @@ import com.sandy.memorizingvoca.utils.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@Suppress("OPT_IN_USAGE")
 @HiltViewModel
 internal class CalendarViewModel @Inject constructor(
     private val getQuizRepository: GetQuizRepository,
@@ -35,19 +32,7 @@ internal class CalendarViewModel @Inject constructor(
                 _calendarUiState.update {
                     it.copy(
                         quizCalendar = quizCalendar,
-                    )
-                }
-            }.launchIn(viewModelScope)
-
-        calendarUiState.map {
-            it.selectedDate
-        }.distinctUntilChanged()
-            .flatMapMerge { date ->
-                getQuizRepository.getQuizListForDate(date.localDate)
-            }.onEach { quizList ->
-                _calendarUiState.update {
-                    it.copy(
-                        quizList = quizList,
+                        quizList = quizCalendar[it.selectedDate] ?: emptyList()
                     )
                 }
             }.launchIn(viewModelScope)
@@ -69,14 +54,27 @@ internal class CalendarViewModel @Inject constructor(
     fun onPageChange(page: Int) {
         _calendarUiState.value = calendarUiState.value.run {
             val newCalendar = calendarList[page]
-            val firstDay = DateUtils.getFirstDay(newCalendar.year, newCalendar.month)
+            val firstDay = DateUtils.getFirstDay(newCalendar.year, newCalendar.month).let {
+                Date(
+                    localDate = it,
+                    weekIndex = DateUtils.getWeekIndexOfMonthForLocale(it),
+                )
+            }
             copy(
                 calendar = newCalendar,
                 currentCalendarPage = page,
-                selectedDate = Date(
-                    localDate = firstDay,
-                    weekIndex = DateUtils.getWeekIndexOfMonthForLocale(firstDay),
-                ),
+                selectedDate = firstDay,
+                quizList = quizCalendar[firstDay] ?: emptyList(),
+            )
+        }
+    }
+
+    fun onDateSelect(date: Date) {
+        Log.e("확인", "onDateSelect: 실행안됨?", )
+        _calendarUiState.update {
+            it.copy(
+                selectedDate = date,
+                quizList = it.quizCalendar[date] ?: emptyList(),
             )
         }
     }

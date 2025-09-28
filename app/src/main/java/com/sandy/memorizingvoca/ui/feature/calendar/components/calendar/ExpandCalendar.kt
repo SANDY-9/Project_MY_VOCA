@@ -2,12 +2,12 @@ package com.sandy.memorizingvoca.ui.feature.calendar.components.calendar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
+import com.sandy.memorizingvoca.ui.extensions.clickableSelectOutline
 import com.sandy.memorizingvoca.ui.extensions.percentageColor
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
@@ -39,29 +40,33 @@ internal fun ExpandCalendar(
     selectDate: Date?,
     quizCalendar: Map<Date, List<VocaQuiz>>,
     onQuizItemClick: (String) -> Unit,
-    onDateSelect: (Date, Int) -> Unit,
+    onDateSelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column (
         modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         calendar.forEachIndexed { week, days ->
             Row(
-                modifier = modifier.weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                modifier = Modifier.weight(1f),
             ) {
                 days.forEach { date ->
                     val quizList = quizCalendar[date] ?: emptyList()
                     FlowColumn (
-                        modifier = modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                            .clickableSelectOutline(
+                                selected = selectDate == date,
+                                onClick = { onDateSelect(date) },
+                            ),
                     ) {
                         DateHeader(
                             date = date,
                             isToday = date == today,
                             otherMonth = month != date.month,
                         )
-                        Spacer(modifier = modifier.height(2.dp))
+                        Spacer(modifier = Modifier.height(2.dp))
                         quizList.forEach { quiz ->
                             ExpandCalendarItem(
                                 quiz = quiz,
@@ -193,7 +198,7 @@ private fun ExpandCalendarPreview() {
                     ),
                 ),
                 onQuizItemClick = {},
-                onDateSelect = { _, _-> },
+                onDateSelect = {},
             )
         }
     }

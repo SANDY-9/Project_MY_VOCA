@@ -36,7 +36,7 @@ internal fun CalendarRoute(
         today = uiState.today,
         onPageChange = viewModel::onPageChange,
         onQuizItemClick = navigateQuizResult,
-        onDateSelect = { _, _ -> },
+        onDateSelect = viewModel::onDateSelect,
         onAllQuizClear = {},
     )
 }
@@ -51,7 +51,7 @@ private fun CalendarScreen(
     today: Date,
     onPageChange: (Int) -> Unit,
     onQuizItemClick: (String) -> Unit,
-    onDateSelect: (Date, Int) -> Unit,
+    onDateSelect: (Date) -> Unit,
     onAllQuizClear: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -115,7 +115,7 @@ private fun CalendarScreenPreview() {
             ),
             onPageChange = {},
             onQuizItemClick = {},
-            onDateSelect = { _, _ -> },
+            onDateSelect = {},
             onAllQuizClear = {},
         )
     }

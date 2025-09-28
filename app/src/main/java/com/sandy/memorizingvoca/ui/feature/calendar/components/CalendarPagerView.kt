@@ -31,7 +31,7 @@ internal fun CalendarPagerView(
     today: Date,
     onPageChange: (Int) -> Unit,
     onQuizItemClick: (String) -> Unit,
-    onDateSelect: (Date, Int) -> Unit,
+    onDateSelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val flexibleCalendarState = rememberFlexibleCalendarState()
@@ -120,7 +120,7 @@ private fun CalendarPagerViewPreview() {
             ),
             onPageChange = {},
             onQuizItemClick = {},
-            onDateSelect = { _, _ -> },
+            onDateSelect = {},
         )
     }
 }

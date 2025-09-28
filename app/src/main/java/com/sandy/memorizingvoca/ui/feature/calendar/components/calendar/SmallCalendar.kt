@@ -4,8 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowColumn
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
+import com.sandy.memorizingvoca.ui.extensions.clickableSelectOutline
 import com.sandy.memorizingvoca.ui.extensions.percentageColor
 import com.sandy.memorizingvoca.ui.feature.calendar.components.calendar.DateHeader
 import com.sandy.memorizingvoca.ui.theme.Gray30
@@ -36,38 +40,49 @@ internal fun SmallCalendar(
     quizCalendar: Map<Date, List<VocaQuiz>>,
     month: Int,
     today: Date,
-    selectDate: Date?,
-    onDateSelect: (Date, Int) -> Unit,
+    selectDate: Date,
+    onDateSelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.weight(1f),
             horizontalArrangement = Arrangement.spacedBy(2.dp),
         ) {
             days.forEach { date ->
-                val quiz = quizCalendar[date] ?: emptyList()
-                FlowColumn (
-                    modifier = Modifier.weight(1f),
+                val quizList = quizCalendar[date] ?: emptyList()
+                Column (
+                    modifier = modifier
+                        .weight(1f)
+                        .clickableSelectOutline(
+                            selected = selectDate == date,
+                            onClick = { onDateSelect(date) },
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     DateHeader(
                         date = date,
                         isToday = date == today,
                         otherMonth = month != date.month,
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    quiz.forEach {
-                        SmallCalendarItem(
-                            quiz = it,
-                        )
+                    Spacer(modifier = modifier.height(2.dp))
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(2.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
+                    ) {
+                        quizList.forEach { quiz ->
+                            SmallCalendarItem(
+                                quiz = quiz,
+                            )
+                        }
                     }
+                    Spacer(modifier = modifier.weight(1f))
                 }
             }
         }
-        Spacer(modifier = Modifier.weight(1f))
-        HorizontalDivider(color = Gray30)
+        HorizontalDivider(color = Gray30,)
     }
 }
 
@@ -79,26 +94,12 @@ private fun SmallCalendarItem(
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(bottom = 2.dp)
+            .fillMaxWidth(0.16f)
+            .aspectRatio(1f)
             .background(
                 color = quiz.correctPercentage.percentageColor(),
             )
-            .clickable(onClick = onItemClick)
-            .padding(
-                vertical = 2.dp,
-                horizontal = 4.dp,
-            ),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = quiz.quizName,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            color = Color.DarkGray,
-            fontSize = 12.sp,
-        )
-    }
+    )
 }
 
 @Preview
@@ -107,7 +108,7 @@ private fun SmallCalendarPreview() {
     MemorizingVocaTheme {
         val date = Date()
         Box(
-            modifier = Modifier.fillMaxWidth().height(120.dp)
+            modifier = Modifier.fillMaxWidth().height(80.dp)
         ) {
             SmallCalendar(
                 days = DateUtils.createCalendar(
@@ -116,7 +117,7 @@ private fun SmallCalendarPreview() {
                 ).days[4],
                 month = date.month,
                 today = Date(),
-                selectDate = null,
+                selectDate = date,
                 quizCalendar = mapOf(
                     date to listOf(
                         VocaQuiz(
@@ -173,7 +174,7 @@ private fun SmallCalendarPreview() {
                         ),
                     ),
                 ),
-                onDateSelect = { _, _-> },
+                onDateSelect = { },
             )
         }
     }

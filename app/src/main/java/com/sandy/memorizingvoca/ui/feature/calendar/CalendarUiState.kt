@@ -8,13 +8,13 @@ import com.sandy.memorizingvoca.utils.DateUtils
 
 
 internal data class CalendarUiState(
-    val today: Date = Date(),
-    val calendarList: List<Calendar> = DateUtils.createCalendarList(),
+    val today: Date = Date(), // 초기값 후 불변
+    val selectedDate: Date = today,
     val calendar: Calendar = DateUtils.createCalendar(today.year, today.month),
+    val calendarList: List<Calendar> = DateUtils.createCalendarList(), // 초기값 후 불변
     val quizCalendar: Map<Date, List<VocaQuiz>> = emptyMap(),
     val quizList: List<VocaQuiz> = emptyList(),
-    val initialCalendarPage: Int = calendarList.indexOf(calendar),
+    val initialCalendarPage: Int = calendarList.indexOf(calendar), // 초기값 후 불변
     val currentCalendarPage: Int = initialCalendarPage,
-    val selectedDate: Date = today,
-    val dayOfWeeks: List<DayOfWeek> = DayOfWeek.list(),
+    val dayOfWeeks: List<DayOfWeek> = DayOfWeek.list(), // 초기값 후 불변
 )
