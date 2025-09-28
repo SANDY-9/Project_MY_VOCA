@@ -62,7 +62,7 @@ internal fun NormalCalendar(
                     FlowRow (
                         modifier = Modifier.weight(1f),
                         horizontalArrangement = Arrangement.spacedBy(2.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         DateHeader(
                             date = date,

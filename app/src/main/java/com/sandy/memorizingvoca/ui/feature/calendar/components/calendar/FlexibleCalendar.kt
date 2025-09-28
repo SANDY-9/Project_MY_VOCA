@@ -23,8 +23,7 @@ import java.time.LocalDateTime
 
 @Composable
 internal fun FlexibleCalendar(
-    selectDate: Date?,
-    selectDateWeek: Int,
+    selectDate: Date,
     calendar: List<List<Date>>,
     quizCalendar: Map<Date, List<VocaQuiz>>,
     month: Int,
@@ -67,9 +66,10 @@ internal fun FlexibleCalendar(
             )
             CalendarType.SMALL_CALENDAR -> SmallCalendar(
                 selectDate = selectDate,
-                days = calendar[selectDateWeek],
+                days = calendar[selectDate.weekIndex],
                 month = month,
                 today = today,
+                quizCalendar = quizCalendar,
                 onDateSelect = onDateSelect,
             )
         }
@@ -87,7 +87,6 @@ private fun FlexibleCalendarPreview() {
             calendar = calendar.days,
             month = date.month,
             today = Date(),
-            selectDateWeek = date.weekIndex,
             quizCalendar = mapOf(
                 date to listOf(
                     VocaQuiz(

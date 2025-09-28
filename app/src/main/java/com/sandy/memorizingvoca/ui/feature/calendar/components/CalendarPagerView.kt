@@ -54,7 +54,6 @@ internal fun CalendarPagerView(
         FlexibleCalendar(
             calendarState = flexibleCalendarState,
             selectDate = selectDate,
-            selectDateWeek = selectDate.weekIndex,
             calendar = calendar.days,
             quizCalendar = quizCalendar,
             month = month,
