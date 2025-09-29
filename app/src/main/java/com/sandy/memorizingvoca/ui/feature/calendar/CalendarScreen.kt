@@ -29,7 +29,7 @@ internal fun CalendarRoute(
 
     CalendarScreen(
         calendar = uiState.calendar,
-        calendarList = uiState.calendarList,
+        calendarList = uiState.allCalendarList,
         quizCalendar = uiState.quizCalendar,
         dayOfWeeks = uiState.dayOfWeeks,
         selectDate = uiState.selectedDate,

@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.ui.extensions.clickableSelectOutline
@@ -31,8 +32,7 @@ import java.time.LocalDateTime
 
 @Composable
 internal fun NormalCalendar(
-    calendar: List<List<Date>>,
-    month: Int,
+    calendar: Calendar,
     today: Date,
     selectDate: Date,
     quizCalendar: Map<Date, List<VocaQuiz>>,
@@ -42,7 +42,7 @@ internal fun NormalCalendar(
     Column (
         modifier = modifier.fillMaxWidth(),
     ) {
-        calendar.forEach { days ->
+        calendar.days.forEach { days ->
             Row(
                 modifier = Modifier.weight(1f),
             ) {
@@ -61,7 +61,7 @@ internal fun NormalCalendar(
                         DateHeader(
                             date = date,
                             isToday = date == today,
-                            otherMonth = month != date.month,
+                            otherMonth = calendar.otherMonth[date] ?: false,
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         FlowRow(
@@ -108,11 +108,14 @@ private fun NormalCalendarPreview() {
             modifier = Modifier.height(400.dp)
         ) {
             NormalCalendar(
-                calendar = DateUtils.createCalendar(
+                calendar = Calendar(
                     year = date.year,
                     month = date.month,
-                ).days,
-                month = date.month,
+                    days = DateUtils.createCalendar(
+                        year = date.year,
+                        month = date.month,
+                    ).days
+                ),
                 today = Date(),
                 selectDate = date,
                 quizCalendar = mapOf(

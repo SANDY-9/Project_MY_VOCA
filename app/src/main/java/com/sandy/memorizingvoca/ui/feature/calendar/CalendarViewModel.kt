@@ -55,7 +55,7 @@ internal class CalendarViewModel @Inject constructor(
 
     fun onCalendarPageChange(page: Int) {
         _calendarUiState.value = current.run {
-            val newCalendar = calendarList[page]
+            val newCalendar = allCalendarList[page]
             val firstDay = DateUtils.getFirstDay(newCalendar.year, newCalendar.month).let {
                 Date(localDate = it,)
             }

@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.ui.extensions.clickableSelectOutline
@@ -36,9 +37,8 @@ import java.time.LocalDateTime
 
 @Composable
 internal fun SmallCalendar(
-    days: List<Date>,
+    calendar: Calendar,
     quizCalendar: Map<Date, List<VocaQuiz>>,
-    month: Int,
     today: Date,
     selectDate: Date,
     onDateSelect: (Date) -> Unit,
@@ -51,7 +51,8 @@ internal fun SmallCalendar(
             modifier = modifier.weight(1f),
             horizontalArrangement = Arrangement.spacedBy(2.dp),
         ) {
-            days.forEach { date ->
+            val weeks = calendar.days[selectDate.weekIndex]
+            weeks.forEach { date ->
                 val quizList = quizCalendar[date] ?: emptyList()
                 Column (
                     modifier = modifier
@@ -65,7 +66,7 @@ internal fun SmallCalendar(
                     DateHeader(
                         date = date,
                         isToday = date == today,
-                        otherMonth = month != date.month,
+                        otherMonth = calendar.otherMonth[date] ?: false,
                     )
                     Spacer(modifier = modifier.height(2.dp))
                     FlowRow(
@@ -111,11 +112,14 @@ private fun SmallCalendarPreview() {
             modifier = Modifier.fillMaxWidth().height(80.dp)
         ) {
             SmallCalendar(
-                days = DateUtils.createCalendar(
+                calendar = Calendar(
                     year = date.year,
                     month = date.month,
-                ).days[4],
-                month = date.month,
+                    days = DateUtils.createCalendar(
+                        year = date.year,
+                        month = date.month,
+                    ).days
+                ),
                 today = Date(),
                 selectDate = date,
                 quizCalendar = mapOf(

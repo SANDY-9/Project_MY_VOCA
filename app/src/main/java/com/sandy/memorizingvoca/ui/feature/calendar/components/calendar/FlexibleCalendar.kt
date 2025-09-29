@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.ui.feature.calendar.CalendarType
@@ -24,9 +25,8 @@ import java.time.LocalDateTime
 @Composable
 internal fun FlexibleCalendar(
     selectDate: Date,
-    calendar: List<List<Date>>,
+    calendar: Calendar,
     quizCalendar: Map<Date, List<VocaQuiz>>,
-    month: Int,
     today: Date,
     onQuizItemClick: (String) -> Unit,
     onDateSelect: (Date) -> Unit,
@@ -51,7 +51,6 @@ internal fun FlexibleCalendar(
                 selectDate = selectDate,
                 calendar = calendar,
                 quizCalendar = quizCalendar,
-                month = month,
                 today = today,
                 onQuizItemClick = onQuizItemClick,
                 onDateSelect = onDateSelect,
@@ -59,15 +58,13 @@ internal fun FlexibleCalendar(
             CalendarType.NORMAL_CALENDAR -> NormalCalendar(
                 selectDate = selectDate,
                 calendar = calendar,
-                month = month,
                 today = today,
                 onDateSelect = onDateSelect,
                 quizCalendar = quizCalendar,
             )
             CalendarType.SMALL_CALENDAR -> SmallCalendar(
                 selectDate = selectDate,
-                days = calendar[selectDate.weekIndex],
-                month = month,
+                calendar = calendar,
                 today = today,
                 quizCalendar = quizCalendar,
                 onDateSelect = onDateSelect,
@@ -84,8 +81,7 @@ private fun FlexibleCalendarPreview() {
     MemorizingVocaTheme {
         FlexibleCalendar(
             selectDate = date,
-            calendar = calendar.days,
-            month = date.month,
+            calendar = calendar,
             today = Date(),
             quizCalendar = mapOf(
                 date to listOf(

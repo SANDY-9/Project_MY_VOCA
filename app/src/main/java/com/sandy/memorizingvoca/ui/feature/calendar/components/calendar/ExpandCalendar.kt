@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.ui.extensions.clickableSelectOutline
@@ -34,8 +35,7 @@ import java.time.LocalDateTime
 
 @Composable
 internal fun ExpandCalendar(
-    calendar: List<List<Date>>,
-    month: Int,
+    calendar: Calendar,
     today: Date,
     selectDate: Date?,
     quizCalendar: Map<Date, List<VocaQuiz>>,
@@ -46,7 +46,7 @@ internal fun ExpandCalendar(
     Column (
         modifier = modifier.fillMaxSize(),
     ) {
-        calendar.forEachIndexed { week, days ->
+        calendar.days.forEachIndexed { week, days ->
             Row(
                 modifier = Modifier.weight(1f),
             ) {
@@ -64,7 +64,7 @@ internal fun ExpandCalendar(
                         DateHeader(
                             date = date,
                             isToday = date == today,
-                            otherMonth = month != date.month,
+                            otherMonth = calendar.otherMonth[date] ?: false,
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         quizList.forEach { quiz ->
@@ -78,7 +78,7 @@ internal fun ExpandCalendar(
                     }
                 }
             }
-            if(week != calendar.lastIndex) {
+            if(week != calendar.days.lastIndex) {
                 HorizontalDivider(color = Gray30)
             }
         }
@@ -124,11 +124,14 @@ private fun ExpandCalendarPreview() {
             modifier = Modifier.fillMaxSize()
         ) {
             ExpandCalendar(
-                calendar = DateUtils.createCalendar(
+                calendar = Calendar(
                     year = date.year,
                     month = date.month,
-                ).days,
-                month = date.month,
+                    days = DateUtils.createCalendar(
+                        year = date.year,
+                        month = date.month,
+                    ).days
+                ),
                 today = date,
                 selectDate = date,
                 quizCalendar = mapOf(
