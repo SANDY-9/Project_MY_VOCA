@@ -9,8 +9,8 @@ import java.time.LocalDate
 
 data class Date(
     val localDate: LocalDate = LocalDate.now(),
-    val weekIndex: Int = DateUtils.getWeekIndexOfMonthForLocale(localDate),
 ) {
+    val weekIndex: Int = DateUtils.getWeekIndexOfMonthForLocale(localDate)
     val year: Int = localDate.year
     val month: Int = localDate.monthValue
     val day: Int = localDate.dayOfMonth

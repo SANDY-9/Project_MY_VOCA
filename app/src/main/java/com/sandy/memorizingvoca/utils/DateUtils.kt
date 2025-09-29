@@ -72,10 +72,7 @@ object DateUtils {
         val days = getMonthCalendarByWeek(year, month)
             .mapIndexed { index, week ->
                 week.map { localDate ->
-                    Date(
-                        localDate = localDate,
-                        weekIndex = index,
-                    )
+                    Date(localDate = localDate,)
                 }
             }
         return Calendar(
@@ -101,10 +98,4 @@ object DateUtils {
         }
     }
 
-}
-
-fun main() {
-    val a = DateUtils.getWeekIndexOfMonthForLocale(LocalDate.now())
-    println(LocalDate.now())
-    println(a)
 }

@@ -5,7 +5,6 @@ import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.data.repository.GetQuizRepository
 import com.sandy.memorizingvoca.data.room.dao.QuizDao
-import com.sandy.memorizingvoca.utils.DateUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -28,10 +27,7 @@ class GetQuizRepositoryImpl @Inject constructor(
             quizList.associate { quiz ->
                 val localDateTime = LocalDateTime.parse(quiz.date)
                 val localDate = localDateTime.toLocalDate()
-                val date = Date(
-                    localDate = localDate,
-                    weekIndex = DateUtils.getWeekIndexOfMonthForLocale(localDate),
-                )
+                val date = Date(localDate = localDate,)
                 date to quizList
             }
         }.flowOn(Dispatchers.IO)

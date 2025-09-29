@@ -59,6 +59,7 @@ internal class CalendarViewModel @Inject constructor(
                     localDate = it,
                     weekIndex = DateUtils.getWeekIndexOfMonthForLocale(it),
                 )
+                Date(localDate = it,)
             }
             copy(
                 calendar = newCalendar,
