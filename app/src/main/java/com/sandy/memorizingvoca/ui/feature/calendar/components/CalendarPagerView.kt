@@ -27,10 +27,10 @@ internal fun CalendarPagerView(
     calendarList: List<Calendar>,
     quizCalendar: Map<Date, List<VocaQuiz>>,
     initialCalendarPage: Int,
+    currentCalendarPage: Int,
     initialListPage: Int,
     currentListPage: Int,
     dateSize: Int,
-    month: Int,
     today: Date,
     onCalendarPageChange: (Int) -> Unit,
     onListPageChange: (Int) -> Unit,
@@ -53,6 +53,11 @@ internal fun CalendarPagerView(
                 onCalendarPageChange(page)
             }
     }
+    LaunchedEffect(currentCalendarPage) {
+        if(currentCalendarPage != calendarPagerState.currentPage) {
+            calendarPagerState.scrollToPage(currentCalendarPage)
+        }
+    }
 
     val listPagerState = rememberPagerState(
         initialPage = initialListPage,
@@ -67,7 +72,6 @@ internal fun CalendarPagerView(
                 onListPageChange(page)
             }
     }
-
     LaunchedEffect(currentListPage) {
         if(currentListPage != listPagerState.currentPage) {
             listPagerState.scrollToPage(currentListPage)
@@ -118,7 +122,7 @@ private fun CalendarPagerViewPreview() {
             selectDate = date,
             calendarList = DateUtils.createCalendarList(),
             initialCalendarPage = 0,
-            month = date.month,
+            currentCalendarPage = 0,
             today = date,
             initialListPage = 3,
             dateSize = 10,

@@ -56,10 +56,12 @@ internal class CalendarViewModel @Inject constructor(
     fun onCalendarPageChange(page: Int) {
         _calendarUiState.value = current.run {
             val newCalendar = allCalendarList[page]
-            val firstDay = DateUtils.getFirstDay(newCalendar.year, newCalendar.month).let {
-                Date(localDate = it,)
-            }
-            val newSelectedDate = today.takeIf {
+            val firstDay = Date(
+                localDate = DateUtils.getFirstDay(newCalendar.year, newCalendar.month),
+                )
+            val newSelectedDate = selectedDate.takeIf {
+                calendar.month != selectedDate.month
+            } ?: today.takeIf {
                 firstDay.month == today.month && firstDay.year == today.year
             } ?: firstDay
             copy(
@@ -67,7 +69,6 @@ internal class CalendarViewModel @Inject constructor(
                 currentCalendarPage = page,
                 selectedDate = newSelectedDate,
                 quizList = quizCalendar[newSelectedDate] ?: emptyList(),
-                currentListPage = allDateList[newSelectedDate] ?: currentListPage,
             )
         }
     }
@@ -81,17 +82,45 @@ internal class CalendarViewModel @Inject constructor(
                 if(page > curPage) plusDays(1) else minusDays(1)
             }
         )
+        _calendarUiState.value = current.run {
+            copy(
+                currentListPage = page,
+                selectedDate = newSelectDate,
+                quizList = quizCalendar[newSelectDate] ?: emptyList(),
+            )
+        }
         onDateSelect(newSelectDate)
     }
 
     fun onDateSelect(date: Date) {
+        val nextCalendarPage = calculateNextCalendarPage(date)
         _calendarUiState.update {
             it.copy(
                 selectedDate = date,
+                currentCalendarPage = nextCalendarPage,
                 quizList = it.quizCalendar[date] ?: emptyList(),
                 currentListPage = current.allDateList[date] ?: current.currentListPage,
             )
         }
     }
 
+    private fun calculateNextCalendarPage(date: Date): Int {
+        val currentMonth = current.calendar.month
+        val selectedMonth = date.month
+        val currentPage = current.currentCalendarPage
+
+        return currentPage + when {
+            currentMonth < selectedMonth -> {
+                if (currentMonth == 1 && selectedMonth == 12) -1 else 1
+            }
+            currentMonth > selectedMonth -> {
+                when {
+                    currentMonth == 12 && selectedMonth == 1 -> 1
+                    currentPage == 0 -> 0
+                    else -> -1
+                }
+            }
+            else -> 0
+        }
+    }
 }
