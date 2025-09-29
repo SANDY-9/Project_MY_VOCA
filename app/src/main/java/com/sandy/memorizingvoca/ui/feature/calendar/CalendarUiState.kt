@@ -16,5 +16,14 @@ internal data class CalendarUiState(
     val quizList: List<VocaQuiz> = emptyList(),
     val initialCalendarPage: Int = calendarList.indexOf(calendar), // 초기값 후 불변
     val currentCalendarPage: Int = initialCalendarPage,
+    val allDateList: Map<Date, Int> = calendarList.flatMap {
+        it.days.flatten()
+    }.mapIndexed { index, date ->
+        date to index
+    }.toMap(),
+    val listPageSize: Int = allDateList.size, // 초기값 후 불변
+    val initialListPage: Int = allDateList[today] ?: 0, // 초기값 후 불변
+    val currentListPage: Int = initialListPage,
     val dayOfWeeks: List<DayOfWeek> = DayOfWeek.list(), // 초기값 후 불변
 )
+

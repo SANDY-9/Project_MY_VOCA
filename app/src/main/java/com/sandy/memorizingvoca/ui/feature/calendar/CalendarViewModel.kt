@@ -1,6 +1,5 @@
 package com.sandy.memorizingvoca.ui.feature.calendar
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sandy.memorizingvoca.data.model.Date
@@ -26,6 +25,9 @@ internal class CalendarViewModel @Inject constructor(
     private val _calendarUiState = MutableStateFlow(CalendarUiState())
     val calendarUiState = _calendarUiState.asStateFlow()
 
+    private val current
+        get() = calendarUiState.value
+
     init {
         getQuizRepository.getQuizListForCalendar()
             .onEach { quizCalendar ->
@@ -43,39 +45,51 @@ internal class CalendarViewModel @Inject constructor(
     }
 
     fun deleteMultipleQuiz() = viewModelScope.launch {
-        quizRepository.deleteMultipleQuiz(calendarUiState.value.quizList)
+        quizRepository.deleteMultipleQuiz(current.quizList)
     }
 
     fun clearCalendar() = viewModelScope.launch {
-        val quizCalendar = calendarUiState.value.quizCalendar.flatMap { it.value }
+        val quizCalendar = current.quizCalendar.flatMap { it.value }
         quizRepository.deleteMultipleQuiz(quizCalendar)
     }
 
-    fun onPageChange(page: Int) {
-        _calendarUiState.value = calendarUiState.value.run {
+    fun onCalendarPageChange(page: Int) {
+        _calendarUiState.value = current.run {
             val newCalendar = calendarList[page]
             val firstDay = DateUtils.getFirstDay(newCalendar.year, newCalendar.month).let {
-                Date(
-                    localDate = it,
-                    weekIndex = DateUtils.getWeekIndexOfMonthForLocale(it),
-                )
                 Date(localDate = it,)
             }
+            val newSelectedDate = today.takeIf {
+                firstDay.month == today.month && firstDay.year == today.year
+            } ?: firstDay
             copy(
                 calendar = newCalendar,
                 currentCalendarPage = page,
-                selectedDate = firstDay,
-                quizList = quizCalendar[firstDay] ?: emptyList(),
+                selectedDate = newSelectedDate,
+                quizList = quizCalendar[newSelectedDate] ?: emptyList(),
+                currentListPage = allDateList[newSelectedDate] ?: currentListPage,
             )
         }
     }
 
+    fun onListPageChange(page: Int) {
+        val curPage = current.currentListPage
+        if(page == curPage) return
+
+        val newSelectDate = Date(
+            localDate = current.selectedDate.localDate.run {
+                if(page > curPage) plusDays(1) else minusDays(1)
+            }
+        )
+        onDateSelect(newSelectDate)
+    }
+
     fun onDateSelect(date: Date) {
-        Log.e("확인", "onDateSelect: 실행안됨?", )
         _calendarUiState.update {
             it.copy(
                 selectedDate = date,
                 quizList = it.quizCalendar[date] ?: emptyList(),
+                currentListPage = current.allDateList[date] ?: current.currentListPage,
             )
         }
     }

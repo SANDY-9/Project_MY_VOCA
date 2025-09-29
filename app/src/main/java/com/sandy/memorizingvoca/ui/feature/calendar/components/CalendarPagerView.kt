@@ -27,33 +27,58 @@ internal fun CalendarPagerView(
     calendarList: List<Calendar>,
     quizCalendar: Map<Date, List<VocaQuiz>>,
     initialCalendarPage: Int,
+    initialListPage: Int,
+    currentListPage: Int,
+    dateSize: Int,
     month: Int,
     today: Date,
-    onPageChange: (Int) -> Unit,
+    onCalendarPageChange: (Int) -> Unit,
+    onListPageChange: (Int) -> Unit,
     onQuizItemClick: (String) -> Unit,
     onDateSelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val flexibleCalendarState = rememberFlexibleCalendarState()
-    val pagerState = rememberPagerState(
+
+    val calendarPagerState = rememberPagerState(
         initialPage = initialCalendarPage,
         pageCount = { calendarList.size }
     )
-    LaunchedEffect(pagerState) {
+    LaunchedEffect(calendarPagerState) {
         snapshotFlow {
-            pagerState.currentPage
+            calendarPagerState.currentPage
         }
             .distinctUntilChanged()
             .collectLatest { page ->
-                onPageChange(page)
+                onCalendarPageChange(page)
             }
+    }
+
+    val listPagerState = rememberPagerState(
+        initialPage = initialListPage,
+        pageCount = { dateSize }
+    )
+    LaunchedEffect(listPagerState) {
+        snapshotFlow {
+            listPagerState.currentPage
+        }
+            .distinctUntilChanged()
+            .collectLatest { page ->
+                onListPageChange(page)
+            }
+    }
+
+    LaunchedEffect(currentListPage) {
+        if(currentListPage != listPagerState.currentPage) {
+            listPagerState.scrollToPage(currentListPage)
+        }
     }
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         HorizontalPager(
-            state = pagerState,
+            state = calendarPagerState,
         ) { page ->
             val calendar = calendarList[page]
             FlexibleCalendar(
@@ -69,7 +94,7 @@ internal fun CalendarPagerView(
         }
         HorizontalPager(
             modifier = modifier.weight(1f),
-            state = pagerState,
+            state = listPagerState,
         ) {
             if(flexibleCalendarState.type != CalendarType.EXPANDED_CALENDAR) {
                 CalendarQuizListView(
@@ -96,6 +121,9 @@ private fun CalendarPagerViewPreview() {
             initialCalendarPage = 0,
             month = date.month,
             today = date,
+            initialListPage = 3,
+            dateSize = 10,
+            currentListPage = 1,
             quizCalendar = mapOf(
                 date to listOf(
                     VocaQuiz(
@@ -118,7 +146,8 @@ private fun CalendarPagerViewPreview() {
                     ),
                 ),
             ),
-            onPageChange = {},
+            onCalendarPageChange = {},
+            onListPageChange = {},
             onQuizItemClick = {},
             onDateSelect = {},
         )
