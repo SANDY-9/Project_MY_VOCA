@@ -91,8 +91,9 @@ object DateUtils {
         return (0..< size).map { next ->
             val num = month + next
             val nextMonth = if(num % 12 == 0) 12 else num % 12
+            val nextYear = num / 12  - if(num % 12 == 0) 1 else 0
             createCalendar(
-                year = year + num / 12,
+                year = year + nextYear,
                 month = nextMonth,
             )
         }
