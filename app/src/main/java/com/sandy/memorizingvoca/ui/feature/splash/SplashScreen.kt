@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
+import kotlinx.coroutines.delay
 
 @Composable
 internal fun SplashRoute(
@@ -41,6 +42,7 @@ internal fun SplashRoute(
     }
     LaunchedEffect(uiState) {
         if(uiState == SplashUiState.Complete) {
+            delay(300)
             onDownloadComplete()
         }
     }
