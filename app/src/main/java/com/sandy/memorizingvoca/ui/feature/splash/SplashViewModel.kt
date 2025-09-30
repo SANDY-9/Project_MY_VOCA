@@ -34,6 +34,7 @@ internal class SplashViewModel @Inject constructor(
                         day = token[1].toInt(),
                         word = token[2].trim(),
                         meaning = token[3].trim(),
+                        pron = token[4].trim().takeIf { pron -> pron != "null" },
                     )
                 }
             emit(vocabularyRepository.addVocabularyList(data))

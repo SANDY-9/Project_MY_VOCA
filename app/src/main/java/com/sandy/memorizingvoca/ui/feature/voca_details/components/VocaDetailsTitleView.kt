@@ -29,7 +29,7 @@ internal fun VocaDetailsTitleView(
     word: String,
     meaning: String,
     highlighted: Boolean,
-    pron: String = "[ˌɪˌlɛkˈtrɑnɪkəˌli]",
+    pron: String,
     modifier: Modifier = Modifier,
 )  {
     val ttsManager = rememberTTSManager()
@@ -87,5 +87,6 @@ private fun VocaTitleViewPreview() {
         word = "dictate",
         meaning = "[동] ① 명령하다, 지시하다 ② 받아쓰게 하다, 구술하다 [명] 명령, 지시[주로 pl.]",
         highlighted = true,
+        pron = "",
     )
 }

@@ -65,6 +65,7 @@ private fun VocaDetailsScreen(
                     word = voca?.word ?: "",
                     meaning = voca?.meaning ?: "",
                     highlighted = voca?.highlighted ?: false,
+                    pron = voca?.pron ?: "",
                 )
             }
             item {
