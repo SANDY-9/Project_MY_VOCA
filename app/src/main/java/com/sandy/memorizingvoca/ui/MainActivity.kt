@@ -129,7 +129,7 @@ private fun MyAppBottomNav(
                 val icon = if(selected) des.selectedIcon else des.unselectedIcon
                 Column(
                     modifier = modifier.size(55.dp).clickable {
-                        onItemClick(des)
+                        if(!selected) { onItemClick(des) }
                     },
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
