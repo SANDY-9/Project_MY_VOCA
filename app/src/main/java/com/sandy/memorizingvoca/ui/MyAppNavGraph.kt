@@ -1,5 +1,8 @@
 package com.sandy.memorizingvoca.ui
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -36,7 +39,13 @@ internal fun MyAppNavGraph(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { it },
+            ) + fadeIn(initialAlpha = 0.3f)
+        },
+        exitTransition = { fadeOut() },
     ) {
         val navOptionBuilder = NavOptions.Builder()
         val splashNavOptions = navOptionBuilder.setPopUpTo<SplashRoute>(inclusive = true).build()
