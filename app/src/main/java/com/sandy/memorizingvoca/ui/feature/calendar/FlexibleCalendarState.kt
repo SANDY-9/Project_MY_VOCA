@@ -10,6 +10,7 @@ import androidx.compose.ui.input.pointer.PointerInputChange
 
 internal class FlexibleCalendarState(
     defaultType: CalendarType,
+    defaultFraction: Float,
     private val expandFraction: Float,
     private val normalFraction: Float,
     private val smallFraction: Float,
@@ -18,7 +19,7 @@ internal class FlexibleCalendarState(
     var type by mutableStateOf(defaultType)
         private set
 
-    var fraction by mutableFloatStateOf(expandFraction)
+    var fraction by mutableFloatStateOf(defaultFraction)
         private set
 
     private var scrollState by mutableStateOf(CalendarScroll.NONE)
@@ -59,6 +60,7 @@ internal class FlexibleCalendarState(
 @Composable
 internal fun rememberFlexibleCalendarState(
     defaultType: CalendarType = CalendarType.EXPANDED_CALENDAR,
+    defaultFraction: Float = 1f,
     expandFraction: Float = 1f,
     normalFraction: Float = 0.5f,
     smallFraction: Float = 0.1f,
@@ -66,6 +68,7 @@ internal fun rememberFlexibleCalendarState(
     val state = remember {
         FlexibleCalendarState(
             defaultType = defaultType,
+            defaultFraction = defaultFraction,
             expandFraction = expandFraction,
             normalFraction = normalFraction,
             smallFraction = smallFraction,

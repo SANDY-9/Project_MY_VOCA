@@ -65,6 +65,12 @@ internal class CalendarViewModel @Inject constructor(
         )
     }
 
+    fun onCalendarFractionChange(fraction: Float) {
+        _calendarUiState.value = current.copy(
+            calendarFraction = fraction,
+        )
+    }
+
     fun onCalendarPageChange(page: Int) {
         if(page == current.currentCalendarPage) return
 

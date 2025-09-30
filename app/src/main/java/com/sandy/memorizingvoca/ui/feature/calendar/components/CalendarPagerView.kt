@@ -1,11 +1,11 @@
 package com.sandy.memorizingvoca.ui.feature.calendar.components
 
+import android.util.Log
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,7 +22,6 @@ import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.ui.feature.calendar.CalendarType
 import com.sandy.memorizingvoca.ui.feature.calendar.components.calendar.FlexibleCalendar
 import com.sandy.memorizingvoca.ui.feature.calendar.rememberFlexibleCalendarState
-import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.utils.DateUtils
 import kotlinx.coroutines.flow.collectLatest
@@ -33,6 +32,7 @@ import java.time.LocalDateTime
 @Composable
 internal fun CalendarPagerView(
     calendarType: CalendarType,
+    calendarFraction: Float,
     today: Date,
     calendar: Calendar,
     selectDate: Date,
@@ -47,18 +47,25 @@ internal fun CalendarPagerView(
     initialListPage: Int,
     currentListPage: Int,
     onDateSelect: (Date) -> Unit,
-    onCalendarTypeChange: (CalendarType) -> Unit,
     onCalendarPageChange: (Int) -> Unit,
     onSmallCalendarPageChange: (Int) -> Unit,
     onListPageChange: (Int) -> Unit,
     onQuizItemClick: (String) -> Unit,
     onDeleteQuizClick: (VocaQuiz) -> Unit,
     onDeleteListClick: () -> Unit,
+    onCalendarTypeChange: (CalendarType) -> Unit,
+    onCalendarFractionChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val flexibleCalendarState = rememberFlexibleCalendarState(calendarType)
-    LaunchedEffect(flexibleCalendarState) {
+    val flexibleCalendarState = rememberFlexibleCalendarState(
+        defaultType = calendarType,
+        defaultFraction = calendarFraction,
+    )
+    LaunchedEffect(flexibleCalendarState.type) {
         onCalendarTypeChange(flexibleCalendarState.type)
+    }
+    LaunchedEffect(flexibleCalendarState.fraction) {
+        onCalendarFractionChange(flexibleCalendarState.fraction)
     }
 
     val calendarPagerState = rememberPagerState(
@@ -147,7 +154,8 @@ internal fun CalendarPagerView(
 
     val isSmallCalendar = flexibleCalendarState.type == CalendarType.SMALL_CALENDAR
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
             .pointerInput(Unit) {
                 detectVerticalDragGestures(
                     onVerticalDrag = flexibleCalendarState::onVerticalDrag,
@@ -289,6 +297,8 @@ private fun CalendarPagerViewPreview() {
             onDateSelect = {},
             onDeleteQuizClick = {},
             onDeleteListClick = {},
+            onCalendarFractionChange = {},
+            calendarFraction = 1f,
         )
     }
 }

@@ -32,6 +32,7 @@ internal fun CalendarRoute(
         selectDate = uiState.selectedDate,
         today = uiState.today,
         calendarType = uiState.calendarType,
+        calendarFraction = uiState.calendarFraction,
         calendar = uiState.calendar,
         quizCalendar = uiState.quizCalendar,
         calendarList = uiState.allCalendarList,
@@ -53,6 +54,7 @@ internal fun CalendarRoute(
         onDeleteQuizClick = viewModel::deleteQuiz,
         onDeleteListClick = viewModel::deleteMultipleQuiz,
         onAllQuizClear = viewModel::clearCalendar,
+        onCalendarFractionChange = viewModel::onCalendarFractionChange,
     )
 }
 
@@ -60,7 +62,6 @@ internal fun CalendarRoute(
 private fun CalendarScreen(
     selectDate: Date,
     today: Date,
-    calendarType: CalendarType,
     calendar: Calendar,
     calendarList: List<Calendar>,
     quizCalendar: Map<Date, List<VocaQuiz>>,
@@ -73,7 +74,6 @@ private fun CalendarScreen(
     initialListPage: Int,
     currentListPage: Int,
     onDateSelect: (Date) -> Unit,
-    onCalendarTypeChange: (CalendarType) -> Unit,
     onCalendarPageChange: (Int) -> Unit,
     onSmallCalendarPageChange: (Int) -> Unit,
     onListPageChange: (Int) -> Unit,
@@ -82,6 +82,10 @@ private fun CalendarScreen(
     onDeleteListClick: () -> Unit,
     onAllQuizClear: () -> Unit,
     dayOfWeeks: List<DayOfWeek>,
+    calendarFraction: Float,
+    calendarType: CalendarType,
+    onCalendarTypeChange: (CalendarType) -> Unit,
+    onCalendarFractionChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -102,7 +106,6 @@ private fun CalendarScreen(
             today = today,
             selectDate = selectDate,
             calendar = calendar,
-            calendarType = calendarType,
             calendarList = calendarList,
             quizCalendar = quizCalendar,
             quizList = quizList,
@@ -114,13 +117,16 @@ private fun CalendarScreen(
             initialListPage = initialListPage,
             currentListPage = currentListPage,
             onDateSelect = onDateSelect,
-            onCalendarTypeChange = onCalendarTypeChange,
             onCalendarPageChange = onCalendarPageChange,
             onSmallCalendarPageChange = onSmallCalendarPageChange,
             onListPageChange = onListPageChange,
             onQuizItemClick = onQuizItemClick,
             onDeleteListClick = onDeleteListClick,
             onDeleteQuizClick = onDeleteQuizClick,
+            calendarType = calendarType,
+            calendarFraction = calendarFraction,
+            onCalendarTypeChange = onCalendarTypeChange,
+            onCalendarFractionChange = onCalendarFractionChange,
         )
     }
 }
@@ -132,6 +138,7 @@ private fun CalendarScreenPreview() {
     MemorizingVocaTheme {
         CalendarScreen(
             calendarType = CalendarType.EXPANDED_CALENDAR,
+            calendarFraction = 1f,
             calendar = DateUtils.createCalendar(date.year, date.month),
             calendarList = DateUtils.createCalendarList(),
             dayOfWeeks = DayOfWeek.list(),
@@ -219,6 +226,7 @@ private fun CalendarScreenPreview() {
             onAllQuizClear = {},
             onDeleteQuizClick = {},
             onDeleteListClick = {},
+            onCalendarFractionChange = {},
         )
     }
 }

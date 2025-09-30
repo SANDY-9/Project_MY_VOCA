@@ -12,6 +12,7 @@ internal data class CalendarUiState(
     val selectedDate: Date = today,
 
     val calendarType: CalendarType = CalendarType.EXPANDED_CALENDAR,
+    val calendarFraction: Float = 1f,
 
     val allCalendarList: List<Calendar> = DateUtils.createCalendarList(), // 초기값 후 불변
     val calendar: Calendar = DateUtils.createCalendar(today.year, today.month),
