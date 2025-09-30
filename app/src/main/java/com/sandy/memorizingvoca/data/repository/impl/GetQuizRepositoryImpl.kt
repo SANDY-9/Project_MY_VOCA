@@ -28,7 +28,9 @@ class GetQuizRepositoryImpl @Inject constructor(
                 val localDateTime = LocalDateTime.parse(quiz.date)
                 val localDate = localDateTime.toLocalDate()
                 val date = Date(localDate = localDate,)
-                date to quizList
+                date to quizList.filter {
+                    it.date.contains(localDate.toString())
+                }
             }
         }.flowOn(Dispatchers.IO)
     }
