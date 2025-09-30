@@ -99,4 +99,40 @@ object DateUtils {
         }
     }
 
+    // 기본값 : 2025(year)년 9(month)월부터 2026년 12월까지(size=16)
+    fun createWeekList(
+        year: Int = 2025,
+        month: Int = 9,
+        maxYear: Int = 2026,
+        maxMonth: Int = 12,
+    ): List<List<Date>> {
+        val startDay = getStartOfMonth(year, month)
+        val endDay = getEndOfMonth(maxYear, maxMonth)
+        return generateSequence(startDay) {
+            it.plusDays(1)
+        }.takeWhile {
+            !it.isAfter(endDay)
+        }.map {
+            Date(localDate = it)
+        }.toList().chunked(7)
+    }
+
+    // 기본값 : 2025(year)년 9(month)월부터 2026년 12월까지(size=16)
+    fun createDateMap(
+        year: Int = 2025,
+        month: Int = 9,
+        maxYear: Int = 2026,
+        maxMonth: Int = 12,
+    ): Map<Date, Int> {
+        val startDay = getStartOfMonth(year, month)
+        val endDay = getEndOfMonth(maxYear, maxMonth)
+        return generateSequence(startDay) {
+            it.plusDays(1)
+        }.takeWhile {
+            !it.isAfter(endDay)
+        }.mapIndexed { index, localDate ->
+            Date(localDate = localDate) to index
+        }.toMap()
+    }
+
 }

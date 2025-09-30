@@ -9,12 +9,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.pointer.PointerInputChange
 
 internal class FlexibleCalendarState(
+    defaultType: CalendarType,
     private val expandFraction: Float,
     private val normalFraction: Float,
     private val smallFraction: Float,
 ) {
 
-    var type by mutableStateOf(CalendarType.EXPANDED_CALENDAR)
+    var type by mutableStateOf(defaultType)
         private set
 
     var fraction by mutableFloatStateOf(expandFraction)
@@ -57,12 +58,14 @@ internal class FlexibleCalendarState(
 
 @Composable
 internal fun rememberFlexibleCalendarState(
+    defaultType: CalendarType = CalendarType.EXPANDED_CALENDAR,
     expandFraction: Float = 1f,
     normalFraction: Float = 0.5f,
     smallFraction: Float = 0.1f,
 ): FlexibleCalendarState {
     val state = remember {
         FlexibleCalendarState(
+            defaultType = defaultType,
             expandFraction = expandFraction,
             normalFraction = normalFraction,
             smallFraction = smallFraction,

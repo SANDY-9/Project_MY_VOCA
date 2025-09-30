@@ -19,26 +19,37 @@ import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.utils.DateUtils
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Composable
 internal fun CalendarPagerView(
+    calendarType: CalendarType,
+    today: Date,
+    calendar: Calendar,
     selectDate: Date,
     calendarList: List<Calendar>,
+    weekList: List<List<Date>>,
+    initialWeekIndex: Int,
+    currentWeekIndex: Int,
     quizCalendar: Map<Date, List<VocaQuiz>>,
     initialCalendarPage: Int,
     currentCalendarPage: Int,
     initialListPage: Int,
     currentListPage: Int,
     dateSize: Int,
-    today: Date,
+    onCalendarTypeChange: (CalendarType) -> Unit,
     onCalendarPageChange: (Int) -> Unit,
+    onSmallCalendarPageChange: (Int) -> Unit,
     onListPageChange: (Int) -> Unit,
     onQuizItemClick: (String) -> Unit,
     onDateSelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val flexibleCalendarState = rememberFlexibleCalendarState()
+    val flexibleCalendarState = rememberFlexibleCalendarState(calendarType)
+    LaunchedEffect(flexibleCalendarState) {
+        onCalendarTypeChange(flexibleCalendarState.type)
+    }
 
     val calendarPagerState = rememberPagerState(
         initialPage = initialCalendarPage,
@@ -55,9 +66,29 @@ internal fun CalendarPagerView(
     }
     LaunchedEffect(currentCalendarPage) {
         if(currentCalendarPage != calendarPagerState.currentPage) {
-            calendarPagerState.scrollToPage(currentCalendarPage)
+            calendarPagerState.animateScrollToPage(currentCalendarPage)
         }
     }
+
+    val smallCalendarPagerState = rememberPagerState(
+        initialPage = initialWeekIndex,
+        pageCount = { weekList.size }
+    )
+    LaunchedEffect(smallCalendarPagerState) {
+        snapshotFlow {
+            smallCalendarPagerState.currentPage
+        }
+            .distinctUntilChanged()
+            .collectLatest { page ->
+                onSmallCalendarPageChange(page)
+            }
+    }
+    LaunchedEffect(currentWeekIndex) {
+        if(currentWeekIndex != smallCalendarPagerState.currentPage) {
+            smallCalendarPagerState.scrollToPage(currentWeekIndex)
+        }
+    }
+
 
     val listPagerState = rememberPagerState(
         initialPage = initialListPage,
@@ -78,19 +109,23 @@ internal fun CalendarPagerView(
         }
     }
 
+    val isSmallCalendar = flexibleCalendarState.type == CalendarType.SMALL_CALENDAR
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         HorizontalPager(
-            state = calendarPagerState,
+            state = if(isSmallCalendar) smallCalendarPagerState else calendarPagerState,
         ) { page ->
-            val calendar = calendarList[page]
             FlexibleCalendar(
+                page = page,
+                month = calendar.month,
+                today = today,
                 calendarState = flexibleCalendarState,
                 selectDate = selectDate,
-                calendar = calendar,
+                calendarList = calendarList,
+                weekList = weekList,
+                weekIndex = if(isSmallCalendar) page else currentWeekIndex,
                 quizCalendar = quizCalendar,
-                today = today,
                 onQuizItemClick = onQuizItemClick,
                 onDateSelect = onDateSelect,
             )
@@ -105,7 +140,7 @@ internal fun CalendarPagerView(
                     quizList = quizCalendar[selectDate] ?: emptyList(),
                     onDeleteListClick = {
                     },
-                    onItemClick = {},
+                    onItemClick = onQuizItemClick,
                     onDeleteClick = {},
                 )
             }
@@ -119,7 +154,9 @@ private fun CalendarPagerViewPreview() {
     val date = Date()
     MemorizingVocaTheme {
         CalendarPagerView(
+            calendarType = CalendarType.NORMAL_CALENDAR,
             selectDate = date,
+            calendar = DateUtils.createCalendar(date.year, date.month),
             calendarList = DateUtils.createCalendarList(),
             initialCalendarPage = 0,
             currentCalendarPage = 0,
@@ -149,7 +186,34 @@ private fun CalendarPagerViewPreview() {
                     ),
                 ),
             ),
+            weekList = listOf(
+                listOf(
+                    Date(
+                        localDate = LocalDate.now().minusDays(1),
+                    ),
+                    Date(),
+                    Date(
+                        localDate = LocalDate.now().plusDays(1),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(2),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(3),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(4),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(5),
+                    ),
+                )
+            ),
+            currentWeekIndex = 0,
+            initialWeekIndex = 0,
+            onCalendarTypeChange = {},
             onCalendarPageChange = {},
+            onSmallCalendarPageChange = {},
             onListPageChange = {},
             onQuizItemClick = {},
             onDateSelect = {},

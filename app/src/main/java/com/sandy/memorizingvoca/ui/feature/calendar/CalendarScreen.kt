@@ -17,6 +17,7 @@ import com.sandy.memorizingvoca.ui.feature.calendar.components.CalendarPagerView
 import com.sandy.memorizingvoca.ui.feature.calendar.components.CalendarTopBar
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.utils.DateUtils
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Composable
@@ -28,18 +29,24 @@ internal fun CalendarRoute(
     val uiState by viewModel.calendarUiState.collectAsStateWithLifecycle()
 
     CalendarScreen(
+        selectDate = uiState.selectedDate,
+        today = uiState.today,
+        calendarType = uiState.calendarType,
         calendar = uiState.calendar,
         calendarList = uiState.allCalendarList,
         quizCalendar = uiState.quizCalendar,
+        weekList = uiState.weekList,
+        initialWeekIndex = uiState.initialWeekIndex,
+        currentWeekIndex = uiState.currentWeekIndex,
         dayOfWeeks = uiState.dayOfWeeks,
-        selectDate = uiState.selectedDate,
-        today = uiState.today,
         initialCalendarPage = uiState.initialCalendarPage,
         currentCalendarPage = uiState.currentCalendarPage,
         initialListPage = uiState.initialListPage,
         currentListPage = uiState.currentListPage,
         dateSize = uiState.listPageSize,
+        onCalendarTypeChange = viewModel::onCalendarTypeChange,
         onCalendarPageChange = viewModel::onCalendarPageChange,
+        onSmallCalendarPageChange = viewModel::onSmallCalendarPageChange,
         onListPageChange = viewModel::onListPageChange,
         onQuizItemClick = navigateQuizResult,
         onDateSelect = viewModel::onDateSelect,
@@ -49,22 +56,28 @@ internal fun CalendarRoute(
 
 @Composable
 private fun CalendarScreen(
+    selectDate: Date,
+    today: Date,
+    calendarType: CalendarType,
     calendar: Calendar,
     calendarList: List<Calendar>,
     quizCalendar: Map<Date, List<VocaQuiz>>,
-    dayOfWeeks: List<DayOfWeek>,
-    selectDate: Date,
-    today: Date,
+    weekList: List<List<Date>>,
+    initialWeekIndex: Int,
+    currentWeekIndex: Int,
     initialCalendarPage: Int,
     currentCalendarPage: Int,
     initialListPage: Int,
     currentListPage: Int,
     dateSize: Int,
+    onCalendarTypeChange: (CalendarType) -> Unit,
     onCalendarPageChange: (Int) -> Unit,
+    onSmallCalendarPageChange: (Int) -> Unit,
     onListPageChange: (Int) -> Unit,
     onQuizItemClick: (String) -> Unit,
     onDateSelect: (Date) -> Unit,
     onAllQuizClear: () -> Unit,
+    dayOfWeeks: List<DayOfWeek>,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -79,16 +92,23 @@ private fun CalendarScreen(
             dayOfWeeks = dayOfWeeks,
         )
         CalendarPagerView(
+            today = today,
             selectDate = selectDate,
+            calendar = calendar,
+            calendarType = calendarType,
             calendarList = calendarList,
             quizCalendar = quizCalendar,
+            weekList = weekList,
+            initialWeekIndex = initialWeekIndex,
+            currentWeekIndex = currentWeekIndex,
             initialCalendarPage = initialCalendarPage,
             currentCalendarPage = currentCalendarPage,
             initialListPage = initialListPage,
             currentListPage = currentListPage,
             dateSize = dateSize,
-            today = today,
+            onCalendarTypeChange = onCalendarTypeChange,
             onCalendarPageChange = onCalendarPageChange,
+            onSmallCalendarPageChange = onSmallCalendarPageChange,
             onListPageChange = onListPageChange,
             onQuizItemClick = onQuizItemClick,
             onDateSelect = onDateSelect,
@@ -102,6 +122,7 @@ private fun CalendarScreenPreview() {
     val date = Date()
     MemorizingVocaTheme {
         CalendarScreen(
+            calendarType = CalendarType.EXPANDED_CALENDAR,
             calendar = DateUtils.createCalendar(date.year, date.month),
             calendarList = DateUtils.createCalendarList(),
             dayOfWeeks = DayOfWeek.list(),
@@ -129,12 +150,39 @@ private fun CalendarScreenPreview() {
                     ),
                 ),
             ),
+            weekList = listOf(
+                listOf(
+                    Date(
+                        localDate = LocalDate.now().minusDays(1),
+                    ),
+                    Date(),
+                    Date(
+                        localDate = LocalDate.now().plusDays(1),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(2),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(3),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(4),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(5),
+                    ),
+                )
+            ),
+            initialWeekIndex = 0,
+            currentWeekIndex = 0,
             initialCalendarPage = 0,
             currentCalendarPage = 0,
             initialListPage = 3,
             currentListPage = 1,
             dateSize = 10,
+            onCalendarTypeChange = {},
             onCalendarPageChange = {},
+            onSmallCalendarPageChange = {},
             onListPageChange = {},
             onQuizItemClick = {},
             onDateSelect = {},

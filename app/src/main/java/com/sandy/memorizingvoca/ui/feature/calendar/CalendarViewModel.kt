@@ -2,6 +2,7 @@ package com.sandy.memorizingvoca.ui.feature.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.data.repository.GetQuizRepository
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class CalendarViewModel @Inject constructor(
-    private val getQuizRepository: GetQuizRepository,
+    getQuizRepository: GetQuizRepository,
     private val quizRepository: QuizRepository,
 ): ViewModel() {
 
@@ -53,58 +54,93 @@ internal class CalendarViewModel @Inject constructor(
         quizRepository.deleteMultipleQuiz(quizCalendar)
     }
 
+    fun onCalendarTypeChange(type: CalendarType) {
+        _calendarUiState.value = current.copy(
+            calendarType = type,
+        )
+    }
+
     fun onCalendarPageChange(page: Int) {
-        _calendarUiState.value = current.run {
+        if(page == current.currentCalendarPage) return
+        _calendarUiState.value = with(current) {
             val newCalendar = allCalendarList[page]
-            val firstDay = Date(
-                localDate = DateUtils.getFirstDay(newCalendar.year, newCalendar.month),
-                )
-            val newSelectedDate = selectedDate.takeIf {
-                calendar.month != selectedDate.month
-            } ?: today.takeIf {
-                firstDay.month == today.month && firstDay.year == today.year
-            } ?: firstDay
+            val newSelectedDate = getNewSelectedDate(newCalendar)
             copy(
                 calendar = newCalendar,
                 currentCalendarPage = page,
                 selectedDate = newSelectedDate,
+                currentWeekIndex = getWeekIndex(newSelectedDate),
                 quizList = quizCalendar[newSelectedDate] ?: emptyList(),
             )
         }
     }
 
-    fun onListPageChange(page: Int) {
-        val curPage = current.currentListPage
-        if(page == curPage) return
-
-        val newSelectDate = Date(
-            localDate = current.selectedDate.localDate.run {
-                if(page > curPage) plusDays(1) else minusDays(1)
-            }
+    private fun getNewSelectedDate(newCalendar: Calendar) = with(current) {
+        val firstDay = Date(
+            localDate = DateUtils.getFirstDay(newCalendar.year, newCalendar.month),
         )
-        _calendarUiState.value = current.run {
+        return@with selectedDate.takeIf {
+            calendar.month != selectedDate.month
+        } ?: today.takeIf {
+            firstDay.month == today.month && firstDay.year == today.year
+        } ?: firstDay
+    }
+
+    fun onSmallCalendarPageChange(page: Int) {
+        if(page == current.currentWeekIndex) return
+        _calendarUiState.value = with(current) {
+
+            val newSelectDate = weekList[page].first()
+            val newCalendar = DateUtils.createCalendar(newSelectDate.year, newSelectDate.month)
             copy(
-                currentListPage = page,
+                calendar = DateUtils.createCalendar(newSelectDate.year, newSelectDate.month),
+                currentCalendarPage = allCalendarList.indexOf(newCalendar),
                 selectedDate = newSelectDate,
+                currentWeekIndex = getWeekIndex(newSelectDate),
                 quizList = quizCalendar[newSelectDate] ?: emptyList(),
             )
         }
+    }
+
+    fun onListPageChange(page: Int) = current.apply {
+        if(page == currentListPage) return@apply
+
+        val newSelectDate = Date(
+            localDate = with(selectedDate.localDate) {
+                if(page > currentListPage) plusDays(1) else minusDays(1)
+            }
+        )
+        _calendarUiState.value = copy(
+            currentListPage = page,
+            selectedDate = newSelectDate,
+            quizList = quizCalendar[newSelectDate] ?: emptyList(),
+            currentWeekIndex = getWeekIndex(newSelectDate),
+        )
         onDateSelect(newSelectDate)
+    }
+
+    private fun getWeekIndex(date: Date): Int {
+        return current.weekList.indexOfFirst { it.contains(date) }
     }
 
     fun onDateSelect(date: Date) {
         val nextCalendarPage = calculateNextCalendarPage(date)
         _calendarUiState.update {
             it.copy(
+                calendar = DateUtils.createCalendar(date.year, date.month),
                 selectedDate = date,
                 currentCalendarPage = nextCalendarPage,
+                currentWeekIndex = getWeekIndex(date),
                 quizList = it.quizCalendar[date] ?: emptyList(),
                 currentListPage = current.allDateList[date] ?: current.currentListPage,
             )
         }
     }
 
+    // 다음페이지로 넘어가느냐 안넘어가느냐 이전페이지로 가느냐
+    // 안넘어갈때 -> 같은 달 클릭했을 때
     private fun calculateNextCalendarPage(date: Date): Int {
+
         val currentMonth = current.calendar.month
         val selectedMonth = date.month
         val currentPage = current.currentCalendarPage

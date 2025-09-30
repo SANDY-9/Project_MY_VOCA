@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,14 +21,19 @@ import com.sandy.memorizingvoca.ui.feature.calendar.FlexibleCalendarState
 import com.sandy.memorizingvoca.ui.feature.calendar.rememberFlexibleCalendarState
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.utils.DateUtils
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Composable
 internal fun FlexibleCalendar(
-    selectDate: Date,
-    calendar: Calendar,
-    quizCalendar: Map<Date, List<VocaQuiz>>,
+    page: Int,
+    month: Int,
     today: Date,
+    selectDate: Date,
+    calendarList: List<Calendar>,
+    quizCalendar: Map<Date, List<VocaQuiz>>,
+    weekList: List<List<Date>>,
+    weekIndex: Int,
     onQuizItemClick: (String) -> Unit,
     onDateSelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
@@ -49,7 +55,7 @@ internal fun FlexibleCalendar(
         when(calendarState.type) {
             CalendarType.EXPANDED_CALENDAR -> ExpandCalendar(
                 selectDate = selectDate,
-                calendar = calendar,
+                calendar = calendarList[page],
                 quizCalendar = quizCalendar,
                 today = today,
                 onQuizItemClick = onQuizItemClick,
@@ -57,15 +63,16 @@ internal fun FlexibleCalendar(
             )
             CalendarType.NORMAL_CALENDAR -> NormalCalendar(
                 selectDate = selectDate,
-                calendar = calendar,
+                calendar = calendarList[page],
                 today = today,
                 onDateSelect = onDateSelect,
                 quizCalendar = quizCalendar,
             )
             CalendarType.SMALL_CALENDAR -> SmallCalendar(
                 selectDate = selectDate,
-                calendar = calendar,
+                month = month,
                 today = today,
+                weekList = weekList[weekIndex],
                 quizCalendar = quizCalendar,
                 onDateSelect = onDateSelect,
             )
@@ -80,8 +87,10 @@ private fun FlexibleCalendarPreview() {
     val calendar = DateUtils.createCalendar(date.year, date.month)
     MemorizingVocaTheme {
         FlexibleCalendar(
+            page = 0,
+            month = 9,
             selectDate = date,
-            calendar = calendar,
+            calendarList = DateUtils.createCalendarList(),
             today = Date(),
             quizCalendar = mapOf(
                 date to listOf(
@@ -105,6 +114,30 @@ private fun FlexibleCalendarPreview() {
                     ),
                 ),
             ),
+            weekList = listOf(
+                listOf(
+                    Date(
+                        localDate = LocalDate.now().minusDays(1),
+                    ),
+                    Date(),
+                    Date(
+                        localDate = LocalDate.now().plusDays(1),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(2),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(3),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(4),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(5),
+                    ),
+                )
+            ),
+            weekIndex = 0,
             onQuizItemClick = {},
             onDateSelect = {},
         )
