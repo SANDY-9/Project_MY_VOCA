@@ -67,20 +67,13 @@ internal class CalendarViewModel @Inject constructor(
 
     fun onCalendarPageChange(page: Int) {
         if(page == current.currentCalendarPage) return
-        _calendarUiState.value = with(current) {
-            val newCalendar = allCalendarList[page]
-            val newSelectedDate = getNewSelectedDate(newCalendar)
-            copy(
-                calendar = newCalendar,
-                currentCalendarPage = page,
-                selectedDate = newSelectedDate,
-                currentWeekIndex = getWeekIndex(newSelectedDate),
-                quizList = quizCalendar[newSelectedDate] ?: emptyList(),
-            )
-        }
+
+        val newSelectedDate = getNewCalendarSelectedDate(page)
+        onDateSelect(newSelectedDate)
     }
 
-    private fun getNewSelectedDate(newCalendar: Calendar) = with(current) {
+    private fun getNewCalendarSelectedDate(page: Int) = with(current) {
+        val newCalendar = allCalendarList[page]
         val firstDay = Date(
             localDate = DateUtils.getFirstDay(newCalendar.year, newCalendar.month),
         )
@@ -93,31 +86,17 @@ internal class CalendarViewModel @Inject constructor(
 
     fun onSmallCalendarPageChange(page: Int) {
         if(page == current.currentWeekIndex) return
-        _calendarUiState.value = with(current) {
-            val newSelectDate = weekList[page].first()
-            val newCalendar = DateUtils.createCalendar(newSelectDate.year, newSelectDate.month)
-            copy(
-                calendar = DateUtils.createCalendar(newSelectDate.year, newSelectDate.month),
-                currentCalendarPage = allCalendarList.indexOf(newCalendar),
-                selectedDate = newSelectDate,
-                currentWeekIndex = getWeekIndex(newSelectDate),
-                quizList = quizCalendar[newSelectDate] ?: emptyList(),
-            )
-        }
+        val newSelectDate = current.weekList[page].first()
+        onDateSelect(newSelectDate)
     }
 
-    fun onListPageChange(page: Int) = current.apply {
-        if(page == currentListPage) return@apply
+    fun onListPageChange(page: Int) {
+        val prevPage = current.currentListPage
+        if(page == prevPage) return
         val newSelectDate = Date(
-            localDate = with(selectedDate.localDate) {
-                if(page > currentListPage) plusDays(1) else minusDays(1)
+            localDate = with(current.selectedDate.localDate) {
+                if(page > prevPage) plusDays(1) else minusDays(1)
             }
-        )
-        _calendarUiState.value = copy(
-            currentListPage = page,
-            selectedDate = newSelectDate,
-            quizList = quizCalendar[newSelectDate] ?: emptyList(),
-            currentWeekIndex = getWeekIndex(newSelectDate),
         )
         onDateSelect(newSelectDate)
     }
@@ -127,6 +106,8 @@ internal class CalendarViewModel @Inject constructor(
     }
 
     fun onDateSelect(date: Date) {
+        if(date == current.selectedDate) return
+
         // 2025년 8월 31일만 특별하게 9월로 처리
         val d20250831 = date == Date(localDate = LocalDate.of(2025, 8, 31))
         _calendarUiState.update {
@@ -135,8 +116,7 @@ internal class CalendarViewModel @Inject constructor(
                 selectedDate = date,
                 currentCalendarPage = if (d20250831) 0 else calculateNextCalendarPage(date),
                 currentWeekIndex = getWeekIndex(date),
-                quizList = it.quizCalendar[date] ?: emptyList(),
-                currentListPage = current.allDateList[date] ?: current.currentListPage,
+                currentListPage = DateUtils.getDateDiff(date.localDate),
             )
         }
     }
