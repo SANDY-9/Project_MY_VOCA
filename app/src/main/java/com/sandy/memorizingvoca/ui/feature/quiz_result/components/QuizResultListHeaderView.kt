@@ -10,7 +10,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +26,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.resources.Visibility
+import com.sandy.memorizingvoca.ui.resources.VisibilityOff
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink100
@@ -30,6 +37,8 @@ import com.sandy.memorizingvoca.ui.theme.roundedCornerShape16
 @Composable
 internal fun QuizResultListHeaderView(
     incorrectCount: Int?,
+    blindMode: Boolean,
+    onBlindModeChange: (Boolean) -> Unit,
     onAllBookmarkClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -57,6 +66,17 @@ internal fun QuizResultListHeaderView(
                 text = ")",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
+            )
+            Spacer(modifier = modifier.width(8.dp))
+            Icon(
+                modifier = modifier
+                    .size(20.dp)
+                    .noRippleClickable {
+                        onBlindModeChange(!blindMode)
+                    },
+                imageVector = if (blindMode) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
+                contentDescription = null,
+                tint = if (blindMode) Color.Gray else Pink100,
             )
             Spacer(modifier = modifier.weight(1f))
             Box(
@@ -92,6 +112,8 @@ private fun QuizResultListHeaderViewPreview() {
     MemorizingVocaTheme {
         QuizResultListHeaderView(
             incorrectCount = 0,
+            blindMode = false,
+            onBlindModeChange = {},
             onAllBookmarkClick = {},
         )
     }

@@ -78,6 +78,10 @@ internal class QuizResultViewModel @Inject constructor(
         return dateTime.format(formatter)
     }
 
+    fun onBlindModeChange(isBlindMode: Boolean) {
+        _quizResultUiState.update { it?.copy(blindMode = isBlindMode) }
+    }
+
     fun deleteQuizResult() = viewModelScope.launch {
         quizResultUiState.value?.let {
             quizRepository.deleteQuiz(it.quiz)

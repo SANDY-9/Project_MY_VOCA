@@ -11,4 +11,5 @@ internal data class QuizResultUiState(
     val totalCount: Int,
     val percentage: Int,
     val deleted: Boolean,
+    val blindMode: Boolean = false,
 )

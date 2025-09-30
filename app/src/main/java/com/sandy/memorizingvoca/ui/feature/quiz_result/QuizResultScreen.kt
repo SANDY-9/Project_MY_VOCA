@@ -51,6 +51,8 @@ internal fun QuizResultRoute(
         incorrectedList = incorrectedList,
         onNavigateBack = onNavigateBack,
         onDeleteClick = viewModel::deleteQuizResult,
+        blindMode = quizResult?.blindMode ?: false,
+        onBlindModeChange = viewModel::onBlindModeChange,
         onAllBookmarkClick = viewModel::addMultipleBookmark,
         onBookmarkChange = viewModel::updateBookmark,
         onNavigateVocaDetails = onNavigateVocaDetails,
@@ -66,6 +68,8 @@ private fun QuizResultScreen(
     percentage: Int?,
     date: String?,
     incorrectedList: List<Vocabulary>,
+    blindMode: Boolean,
+    onBlindModeChange: (Boolean) -> Unit,
     onNavigateBack: () -> Unit,
     onDeleteClick: () -> Unit,
     onAllBookmarkClick: () -> Unit,
@@ -94,7 +98,9 @@ private fun QuizResultScreen(
                     percentage = percentage,
                 )
                 QuizResultListHeaderView(
+                    blindMode = blindMode,
                     incorrectCount = incorrectCount,
+                    onBlindModeChange = onBlindModeChange,
                     onAllBookmarkClick = onAllBookmarkClick,
                 )
             }
@@ -104,6 +110,7 @@ private fun QuizResultScreen(
                     meaning = voca.meaning,
                     highlighted = voca.highlighted,
                     bookmarked = voca.bookmarked,
+                    blindMode = blindMode,
                     onSpeak = {
                         ttsManager.speak(voca.word)
                     },
@@ -163,6 +170,8 @@ private fun QuizResultScreenPreview() {
                     meaning = "ing 하는 데 어려움[곤란]을 겪다"
                 )
             ),
+            blindMode = false,
+            onBlindModeChange = {},
             onNavigateBack = {},
             onDeleteClick = {},
             onAllBookmarkClick = {},
