@@ -1,11 +1,9 @@
 package com.sandy.memorizingvoca.ui.common
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -22,6 +20,8 @@ import com.sandy.memorizingvoca.ui.extensions.FolderShape
 import com.sandy.memorizingvoca.ui.extensions.folderShape
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import com.sandy.memorizingvoca.ui.theme.PastelYellow
+import com.sandy.memorizingvoca.ui.theme.Pink10
 import com.sandy.memorizingvoca.ui.theme.Pink80
 
 @Composable
@@ -36,6 +36,7 @@ fun DayFolderCard(
             .padding(top = 1.dp)
             .folderShape(
                 backgroundColor = if(exist) Pink80 else Gray30,
+                folderColor = if(exist) Pink10 else PastelYellow,
             )
             .clip(FolderShape())
             .clickable(onClick = onItemClick)

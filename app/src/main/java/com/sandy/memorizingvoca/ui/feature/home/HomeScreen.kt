@@ -1,6 +1,11 @@
 package com.sandy.memorizingvoca.ui.feature.home
 
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.ui.common.DayFolderCard
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import com.sandy.memorizingvoca.ui.theme.Pink10
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
@@ -57,18 +64,16 @@ private fun HomeScreen(
         ) {
             Text(
                 text = "심슨 VOCA 2026 단어장",
-                fontFamily = PyeoginGothic,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                letterSpacing = (-0.1).sp,
             )
         }
         LazyVerticalGrid(
             modifier = modifier,
             contentPadding = PaddingValues(bottom = 16.dp),
             columns = GridCells.Adaptive(70.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(15.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             days.forEach { (day, quizExist) ->
                 item(day) {
