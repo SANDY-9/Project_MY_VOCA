@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -124,11 +125,13 @@ internal class CalendarViewModel @Inject constructor(
     }
 
     fun onDateSelect(date: Date) {
+        // 2025년 8월 31일만 특별하게 9월로 처리
+        val d20250831 = date == Date(localDate = LocalDate.of(2025, 8, 31))
         _calendarUiState.update {
             it.copy(
-                calendar = DateUtils.createCalendar(date.year, date.month),
+                calendar = DateUtils.createCalendar(date.year, if(d20250831) 9 else date.month),
                 selectedDate = date,
-                currentCalendarPage = calculateNextCalendarPage(date),
+                currentCalendarPage = if (d20250831) 0 else calculateNextCalendarPage(date),
                 currentWeekIndex = getWeekIndex(date),
                 quizList = it.quizCalendar[date] ?: emptyList(),
                 currentListPage = current.allDateList[date] ?: current.currentListPage,
