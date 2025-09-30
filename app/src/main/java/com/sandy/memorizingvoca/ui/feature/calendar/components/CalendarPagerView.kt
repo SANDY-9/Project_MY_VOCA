@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.calendar.components
 
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
@@ -13,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
@@ -124,9 +126,7 @@ internal fun CalendarPagerView(
         pageCount = { dateSize }
     )
     LaunchedEffect(listPagerState) {
-        snapshotFlow {
-            listPagerState.currentPage
-        }
+        snapshotFlow { listPagerState.currentPage }
             .distinctUntilChanged()
             .collectLatest { page ->
                 onListPageChange(page)
@@ -148,6 +148,12 @@ internal fun CalendarPagerView(
     val isSmallCalendar = flexibleCalendarState.type == CalendarType.SMALL_CALENDAR
     Column(
         modifier = modifier.fillMaxSize()
+            .pointerInput(Unit) {
+                detectVerticalDragGestures(
+                    onVerticalDrag = flexibleCalendarState::onVerticalDrag,
+                    onDragEnd = flexibleCalendarState::onDragEnd,
+                )
+            }
     ) {
         HorizontalPager(
             state = if(isSmallCalendar) smallCalendarPagerState else calendarPagerState,
@@ -156,7 +162,7 @@ internal fun CalendarPagerView(
                 page = page,
                 month = calendar.month,
                 today = today,
-                calendarState = flexibleCalendarState,
+                flexibleCalendarState = flexibleCalendarState,
                 selectDate = selectDate,
                 calendarList = calendarList,
                 weekList = weekList,

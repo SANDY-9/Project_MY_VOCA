@@ -37,22 +37,16 @@ internal fun FlexibleCalendar(
     onQuizItemClick: (String) -> Unit,
     onDateSelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
-    calendarState: FlexibleCalendarState = rememberFlexibleCalendarState(),
+    flexibleCalendarState: FlexibleCalendarState = rememberFlexibleCalendarState(),
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
             .animateContentSize()
-            .fillMaxHeight(calendarState.fraction)
-            .pointerInput(Unit) {
-                detectVerticalDragGestures(
-                    onVerticalDrag = calendarState::onVerticalDrag,
-                    onDragEnd = calendarState::onDragEnd,
-                )
-            }
+            .fillMaxHeight(flexibleCalendarState.fraction)
     ) {
-        when(calendarState.type) {
+        when(flexibleCalendarState.type) {
             CalendarType.EXPANDED_CALENDAR -> ExpandCalendar(
                 selectDate = selectDate,
                 calendar = calendarList[page],
@@ -84,7 +78,6 @@ internal fun FlexibleCalendar(
 @Composable
 private fun FlexibleCalendarPreview() {
     val date = Date()
-    val calendar = DateUtils.createCalendar(date.year, date.month)
     MemorizingVocaTheme {
         FlexibleCalendar(
             page = 0,

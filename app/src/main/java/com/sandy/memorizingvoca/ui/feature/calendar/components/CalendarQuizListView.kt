@@ -41,12 +41,11 @@ internal fun CalendarQuizListView(
     onDeleteItemClick: (VocaQuiz) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if(quizList.isEmpty()) {
-        EmptyItem()
-    }
-    else {
+    Column(
+        modifier = modifier.fillMaxSize()
+    ) {
         LazyColumn(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier.fillMaxWidth(),
         ) {
             itemsIndexed(
                 items = quizList
@@ -57,6 +56,16 @@ internal fun CalendarQuizListView(
                     onDeleteClick = { onDeleteItemClick(it) },
                 )
             }
+        }
+        Column(
+            modifier = modifier.weight(1f).fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = if(quizList.isEmpty()) "학습한 내용이 아직 없어요." else "",
+                color = Color.Gray,
+            )
         }
     }
 }
@@ -121,22 +130,6 @@ private fun QuizListItem(
             }
         }
         HorizontalDivider(color = Gray30)
-    }
-}
-
-@Composable
-private fun EmptyItem(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text(
-            text = "학습한 내용이 아직 없어요.",
-            color = Color.Gray,
-        )
     }
 }
 
