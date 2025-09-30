@@ -6,6 +6,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,18 +59,29 @@ internal fun CalendarPagerView(
         initialPage = initialCalendarPage,
         pageCount = { calendarList.size }
     )
+    var isAnimatingCalendar by remember { mutableStateOf(false) }
     LaunchedEffect(calendarPagerState) {
-        snapshotFlow {
-            calendarPagerState.currentPage
-        }
+        snapshotFlow { calendarPagerState.currentPage }
             .distinctUntilChanged()
             .collectLatest { page ->
-                onCalendarPageChange(page)
+                if (!isAnimatingCalendar) {
+                    onCalendarPageChange(page)
+                }
             }
     }
     LaunchedEffect(currentCalendarPage) {
-        if(currentCalendarPage != calendarPagerState.currentPage) {
-            calendarPagerState.animateScrollToPage(currentCalendarPage)
+        calendarPagerState.run {
+            val changePage = currentCalendarPage != currentPage
+            if (changePage && !isAnimatingCalendar) {
+                val cannotScrolled = !canScrollForward && !canScrollBackward
+                if(cannotScrolled) {
+                    requestScrollToPage(currentCalendarPage)
+                    return@run
+                }
+                isAnimatingCalendar = true
+                animateScrollToPage(currentCalendarPage)
+                isAnimatingCalendar = false
+            }
         }
     }
 
@@ -74,21 +89,31 @@ internal fun CalendarPagerView(
         initialPage = initialWeekIndex,
         pageCount = { weekList.size }
     )
+    var isAnimatingSmallCalendar by remember { mutableStateOf(false) }
     LaunchedEffect(smallCalendarPagerState) {
-        snapshotFlow {
-            smallCalendarPagerState.currentPage
-        }
+        snapshotFlow { smallCalendarPagerState.currentPage }
             .distinctUntilChanged()
             .collectLatest { page ->
-                onSmallCalendarPageChange(page)
+                if(!isAnimatingSmallCalendar) {
+                    onSmallCalendarPageChange(page)
+                }
             }
     }
     LaunchedEffect(currentWeekIndex) {
-        if(currentWeekIndex != smallCalendarPagerState.currentPage) {
-            smallCalendarPagerState.scrollToPage(currentWeekIndex)
+        smallCalendarPagerState.run {
+            val changeWeek = currentWeekIndex != currentPage
+            if(changeWeek && !isAnimatingSmallCalendar) {
+                val cannotScrolled = !canScrollForward && !canScrollBackward
+                if(cannotScrolled) {
+                    requestScrollToPage(currentWeekIndex)
+                    return@run
+                }
+                isAnimatingSmallCalendar = true
+                animateScrollToPage(currentWeekIndex)
+                isAnimatingSmallCalendar = false
+            }
         }
     }
-
 
     val listPagerState = rememberPagerState(
         initialPage = initialListPage,
@@ -104,8 +129,15 @@ internal fun CalendarPagerView(
             }
     }
     LaunchedEffect(currentListPage) {
-        if(currentListPage != listPagerState.currentPage) {
-            listPagerState.scrollToPage(currentListPage)
+        listPagerState.run {
+            if(currentListPage != currentPage) {
+                val cannotScrolled = !canScrollForward && !canScrollBackward
+                if(cannotScrolled) {
+                    requestScrollToPage(currentListPage)
+                    return@run
+                }
+                scrollToPage(currentListPage)
+            }
         }
     }
 

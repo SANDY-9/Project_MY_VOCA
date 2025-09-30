@@ -90,6 +90,9 @@ private fun CalendarScreen(
             year = calendar.year,
             month = calendar.month,
             dayOfWeeks = dayOfWeeks,
+            onTodayButtonClick = {
+                onDateSelect(today)
+            },
         )
         CalendarPagerView(
             today = today,

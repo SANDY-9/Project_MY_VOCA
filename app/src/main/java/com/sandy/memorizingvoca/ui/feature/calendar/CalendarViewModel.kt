@@ -89,7 +89,6 @@ internal class CalendarViewModel @Inject constructor(
     fun onSmallCalendarPageChange(page: Int) {
         if(page == current.currentWeekIndex) return
         _calendarUiState.value = with(current) {
-
             val newSelectDate = weekList[page].first()
             val newCalendar = DateUtils.createCalendar(newSelectDate.year, newSelectDate.month)
             copy(
@@ -104,7 +103,6 @@ internal class CalendarViewModel @Inject constructor(
 
     fun onListPageChange(page: Int) = current.apply {
         if(page == currentListPage) return@apply
-
         val newSelectDate = Date(
             localDate = with(selectedDate.localDate) {
                 if(page > currentListPage) plusDays(1) else minusDays(1)
@@ -124,12 +122,11 @@ internal class CalendarViewModel @Inject constructor(
     }
 
     fun onDateSelect(date: Date) {
-        val nextCalendarPage = calculateNextCalendarPage(date)
         _calendarUiState.update {
             it.copy(
                 calendar = DateUtils.createCalendar(date.year, date.month),
                 selectedDate = date,
-                currentCalendarPage = nextCalendarPage,
+                currentCalendarPage = calculateNextCalendarPage(date),
                 currentWeekIndex = getWeekIndex(date),
                 quizList = it.quizCalendar[date] ?: emptyList(),
                 currentListPage = current.allDateList[date] ?: current.currentListPage,
@@ -137,13 +134,12 @@ internal class CalendarViewModel @Inject constructor(
         }
     }
 
-    // 다음페이지로 넘어가느냐 안넘어가느냐 이전페이지로 가느냐
-    // 안넘어갈때 -> 같은 달 클릭했을 때
-    private fun calculateNextCalendarPage(date: Date): Int {
+    private fun calculateNextCalendarPage(date: Date): Int = with(current) {
+        if(date == today) return@with initialCalendarPage
 
-        val currentMonth = current.calendar.month
+        val currentMonth = calendar.month
         val selectedMonth = date.month
-        val currentPage = current.currentCalendarPage
+        val currentPage = currentCalendarPage
 
         return currentPage + when {
             currentMonth < selectedMonth -> {
