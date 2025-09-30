@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,6 +20,7 @@ import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.ui.feature.calendar.CalendarType
 import com.sandy.memorizingvoca.ui.feature.calendar.components.calendar.FlexibleCalendar
 import com.sandy.memorizingvoca.ui.feature.calendar.rememberFlexibleCalendarState
+import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.utils.DateUtils
 import kotlinx.coroutines.flow.collectLatest
@@ -164,15 +166,20 @@ internal fun CalendarPagerView(
                 onDateSelect = onDateSelect,
             )
         }
-        HorizontalPager(
-            modifier = modifier.weight(1f),
-            state = listPagerState,
-        ) {
-            if(flexibleCalendarState.type != CalendarType.EXPANDED_CALENDAR) {
+        if(flexibleCalendarState.type != CalendarType.EXPANDED_CALENDAR) {
+            CalendarQuizListHeader(
+                year = selectDate.year,
+                month = selectDate.month,
+                day = selectDate.day,
+                dayOfWeekName = selectDate.dayOfWeek.fullName,
+                onDeleteListClick = onDeleteListClick,
+            )
+            HorizontalPager(
+                modifier = modifier.weight(1f),
+                state = listPagerState,
+            ) {
                 CalendarQuizListView(
-                    date = selectDate,
                     quizList = quizCalendar[selectDate] ?: emptyList(),
-                    onDeleteListClick = onDeleteListClick,
                     onItemClick = onQuizItemClick,
                     onDeleteItemClick = onDeleteQuizClick,
                 )

@@ -2,7 +2,7 @@ package com.sandy.memorizingvoca.ui.feature.calendar.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -27,7 +26,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.ui.extensions.percentageColor
 import com.sandy.memorizingvoca.ui.theme.Gray30
@@ -38,70 +36,28 @@ import java.time.LocalDateTime
 
 @Composable
 internal fun CalendarQuizListView(
-    date: Date,
     quizList: List<VocaQuiz>,
-    onDeleteListClick: () -> Unit,
     onItemClick: (String) -> Unit,
     onDeleteItemClick: (VocaQuiz) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize()
-    ) {
-        stickyHeader {
-            QuizListHeader(
-                year = date.year,
-                month = date.month,
-                day = date.day,
-                dayOfWeekName = date.dayOfWeek.fullName,
-                onDeleteListClick = onDeleteListClick,
-            )
-            HorizontalDivider(color = Gray30)
-        }
-        itemsIndexed(
-            items = quizList
-        ) { index, it ->
-            QuizListItem(
-                quiz = it,
-                onItemClick = { onItemClick(it.date) },
-                onDeleteClick = { onDeleteItemClick(it) },
-            )
-        }
+    if(quizList.isEmpty()) {
+        EmptyItem()
     }
-}
-
-@Composable
-private fun QuizListHeader(
-    year: Int,
-    month: Int,
-    day: Int,
-    dayOfWeekName: String,
-    onDeleteListClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.background)
-            .padding(start = 16.dp)
-    ) {
-        Text(
-            modifier = modifier.align(Alignment.CenterStart),
-            text = "${year}년 ${month}월 ${day}일 ${dayOfWeekName}",
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp,
-        )
-        TextButton(
-            modifier = modifier.align(Alignment.CenterEnd),
-            onClick = onDeleteListClick,
+    else {
+        LazyColumn(
+            modifier = modifier.fillMaxSize()
         ) {
-            Text(
-                text = "전체삭제",
-                fontFamily = PyeoginGothic,
-                color = Pink100,
-            )
+            itemsIndexed(
+                items = quizList
+            ) { index, it ->
+                QuizListItem(
+                    quiz = it,
+                    onItemClick = { onItemClick(it.date) },
+                    onDeleteClick = { onDeleteItemClick(it) },
+                )
+            }
         }
-        Spacer(modifier = modifier.width(8.dp),)
     }
 }
 
@@ -168,14 +124,29 @@ private fun QuizListItem(
     }
 }
 
+@Composable
+private fun EmptyItem(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            text = "학습한 내용이 아직 없어요.",
+            color = Color.Gray,
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun CalendarQuizListViewPreview() {
     MemorizingVocaTheme {
         CalendarQuizListView(
-            date = Date(),
             quizList = listOf(
-                VocaQuiz(
+                /*VocaQuiz(
                     date = LocalDateTime.now().toString(),
                     day = 3,
                     wrongCount = 0,
@@ -198,9 +169,8 @@ private fun CalendarQuizListViewPreview() {
                     day = 10,
                     wrongCount = 7,
                     totalCount = 10,
-                ),
+                ),*/
             ),
-            onDeleteListClick = {},
             onItemClick = {},
             onDeleteItemClick = {},
         )
