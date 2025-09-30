@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetQuizRepository
@@ -30,7 +29,6 @@ internal class QuizResultViewModel @Inject constructor(
 ): ViewModel() {
 
     private val date = savedStateHandle.toRoute<QuizResultRoute>().date
-    private var vocaQuiz: VocaQuiz? = null
 
     private val _quizResultUiState = MutableStateFlow<QuizResultUiState?>(null)
     val quizResultUiState = _quizResultUiState.asStateFlow()
@@ -47,6 +45,7 @@ internal class QuizResultViewModel @Inject constructor(
                 val correctCount = totalCount - wrongCount
                 val percentage = calculatePercentage(totalCount, correctCount)
                 val quizResultState = QuizResultUiState(
+                    quiz = this,
                     title = getQuizResultTitle(day),
                     date = getQuizResultDate(date),
                     correctCount = correctCount,
@@ -80,11 +79,11 @@ internal class QuizResultViewModel @Inject constructor(
     }
 
     fun deleteQuizResult() = viewModelScope.launch {
-        vocaQuiz?.let { quiz ->
-            quizRepository.deleteQuiz(quiz)
+        quizResultUiState.value?.let {
+            quizRepository.deleteQuiz(it.quiz)
         }
     }.invokeOnCompletion {
-        _quizResultUiState.update { it?.copy(deleted = true) }
+        _quizResultUiState.value = quizResultUiState.value?.copy(deleted = true)
     }
 
     fun addMultipleBookmark() = viewModelScope.launch {
