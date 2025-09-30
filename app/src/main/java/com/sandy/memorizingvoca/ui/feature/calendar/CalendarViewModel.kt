@@ -50,8 +50,10 @@ internal class CalendarViewModel @Inject constructor(
     }
 
     fun clearCalendar() = viewModelScope.launch {
-        val quizCalendar = current.quizCalendar.flatMap { it.value }
-        quizRepository.deleteMultipleQuiz(quizCalendar)
+        val quizList = current.quizCalendar.filterKeys {
+            it.month == current.calendar.month && it.year == current.calendar.year
+        }.flatMap { it.value }
+        quizRepository.deleteMultipleQuiz(quizList)
     }
 
     fun onCalendarTypeChange(type: CalendarType) {

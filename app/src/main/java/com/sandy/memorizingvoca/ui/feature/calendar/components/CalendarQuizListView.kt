@@ -42,7 +42,7 @@ internal fun CalendarQuizListView(
     quizList: List<VocaQuiz>,
     onDeleteListClick: () -> Unit,
     onItemClick: (String) -> Unit,
-    onDeleteClick: () -> Unit,
+    onDeleteItemClick: (VocaQuiz) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -64,8 +64,7 @@ internal fun CalendarQuizListView(
             QuizListItem(
                 quiz = it,
                 onItemClick = { onItemClick(it.date) },
-                onDeleteClick = onDeleteClick,
-                lastIndex = index == quizList.lastIndex,
+                onDeleteClick = { onDeleteItemClick(it) },
             )
         }
     }
@@ -112,7 +111,6 @@ private fun QuizListItem(
     onItemClick: () -> Unit,
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
-    lastIndex: Boolean = false,
 ) {
     Column(
         modifier = modifier
@@ -151,7 +149,7 @@ private fun QuizListItem(
                 }
                 Spacer(modifier = modifier.height(4.dp))
                 Text(
-                    text = quiz.date,
+                    text = quiz.timeString,
                     fontSize = 12.sp,
                     color = Color.Gray,
                 )
@@ -166,7 +164,7 @@ private fun QuizListItem(
                 )
             }
         }
-        if(!lastIndex) HorizontalDivider(color = Gray30)
+        HorizontalDivider(color = Gray30)
     }
 }
 
@@ -204,7 +202,7 @@ private fun CalendarQuizListViewPreview() {
             ),
             onDeleteListClick = {},
             onItemClick = {},
-            onDeleteClick = {},
+            onDeleteItemClick = {},
         )
     }
 }

@@ -44,13 +44,15 @@ internal fun CalendarRoute(
         initialListPage = uiState.initialListPage,
         currentListPage = uiState.currentListPage,
         dateSize = uiState.listPageSize,
+        onDateSelect = viewModel::onDateSelect,
         onCalendarTypeChange = viewModel::onCalendarTypeChange,
         onCalendarPageChange = viewModel::onCalendarPageChange,
         onSmallCalendarPageChange = viewModel::onSmallCalendarPageChange,
         onListPageChange = viewModel::onListPageChange,
         onQuizItemClick = navigateQuizResult,
-        onDateSelect = viewModel::onDateSelect,
-        onAllQuizClear = {},
+        onDeleteQuizClick = viewModel::deleteQuiz,
+        onDeleteListClick = viewModel::deleteMultipleQuiz,
+        onAllQuizClear = viewModel::clearCalendar,
     )
 }
 
@@ -70,12 +72,14 @@ private fun CalendarScreen(
     initialListPage: Int,
     currentListPage: Int,
     dateSize: Int,
+    onDateSelect: (Date) -> Unit,
     onCalendarTypeChange: (CalendarType) -> Unit,
     onCalendarPageChange: (Int) -> Unit,
     onSmallCalendarPageChange: (Int) -> Unit,
     onListPageChange: (Int) -> Unit,
     onQuizItemClick: (String) -> Unit,
-    onDateSelect: (Date) -> Unit,
+    onDeleteQuizClick: (VocaQuiz) -> Unit,
+    onDeleteListClick: () -> Unit,
     onAllQuizClear: () -> Unit,
     dayOfWeeks: List<DayOfWeek>,
     modifier: Modifier = Modifier,
@@ -109,12 +113,14 @@ private fun CalendarScreen(
             initialListPage = initialListPage,
             currentListPage = currentListPage,
             dateSize = dateSize,
+            onDateSelect = onDateSelect,
             onCalendarTypeChange = onCalendarTypeChange,
             onCalendarPageChange = onCalendarPageChange,
             onSmallCalendarPageChange = onSmallCalendarPageChange,
             onListPageChange = onListPageChange,
             onQuizItemClick = onQuizItemClick,
-            onDateSelect = onDateSelect,
+            onDeleteListClick = onDeleteListClick,
+            onDeleteQuizClick = onDeleteQuizClick,
         )
     }
 }
@@ -183,13 +189,15 @@ private fun CalendarScreenPreview() {
             initialListPage = 3,
             currentListPage = 1,
             dateSize = 10,
+            onDateSelect = {},
             onCalendarTypeChange = {},
             onCalendarPageChange = {},
             onSmallCalendarPageChange = {},
             onListPageChange = {},
             onQuizItemClick = {},
-            onDateSelect = {},
             onAllQuizClear = {},
+            onDeleteQuizClick = {},
+            onDeleteListClick = {},
         )
     }
 }

@@ -42,12 +42,14 @@ internal fun CalendarPagerView(
     initialListPage: Int,
     currentListPage: Int,
     dateSize: Int,
+    onDateSelect: (Date) -> Unit,
     onCalendarTypeChange: (CalendarType) -> Unit,
     onCalendarPageChange: (Int) -> Unit,
     onSmallCalendarPageChange: (Int) -> Unit,
     onListPageChange: (Int) -> Unit,
     onQuizItemClick: (String) -> Unit,
-    onDateSelect: (Date) -> Unit,
+    onDeleteQuizClick: (VocaQuiz) -> Unit,
+    onDeleteListClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val flexibleCalendarState = rememberFlexibleCalendarState(calendarType)
@@ -170,10 +172,9 @@ internal fun CalendarPagerView(
                 CalendarQuizListView(
                     date = selectDate,
                     quizList = quizCalendar[selectDate] ?: emptyList(),
-                    onDeleteListClick = {
-                    },
+                    onDeleteListClick = onDeleteListClick,
                     onItemClick = onQuizItemClick,
-                    onDeleteClick = {},
+                    onDeleteItemClick = onDeleteQuizClick,
                 )
             }
         }
@@ -249,6 +250,8 @@ private fun CalendarPagerViewPreview() {
             onListPageChange = {},
             onQuizItemClick = {},
             onDateSelect = {},
+            onDeleteQuizClick = {},
+            onDeleteListClick = {},
         )
     }
 }
