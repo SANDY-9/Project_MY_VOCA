@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,8 +34,9 @@ internal fun FlexibleCalendar(
     month: Int,
     today: Date,
     selectDate: Date,
-    calendarList: List<Calendar>,
     quizCalendar: Map<Date, List<VocaQuiz>>,
+    calendarList: List<Calendar>,
+    quizList: List<List<VocaQuiz>>,
     weekList: List<List<Date>>,
     weekIndex: Int,
     onQuizItemClick: (String) -> Unit,
@@ -39,6 +44,14 @@ internal fun FlexibleCalendar(
     modifier: Modifier = Modifier,
     flexibleCalendarState: FlexibleCalendarState = rememberFlexibleCalendarState(),
 ) {
+    var quizItem by remember {
+        mutableStateOf(
+            quizList.chunked(7)[weekIndex]
+        )
+    }
+    LaunchedEffect(quizList, weekIndex) {
+        quizItem = quizList.chunked(7)[weekIndex]
+    }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -48,26 +61,26 @@ internal fun FlexibleCalendar(
     ) {
         when(flexibleCalendarState.type) {
             CalendarType.EXPANDED_CALENDAR -> ExpandCalendar(
+                today = today,
                 selectDate = selectDate,
                 calendar = calendarList[page],
                 quizCalendar = quizCalendar,
-                today = today,
                 onQuizItemClick = onQuizItemClick,
                 onDateSelect = onDateSelect,
             )
             CalendarType.NORMAL_CALENDAR -> NormalCalendar(
                 selectDate = selectDate,
                 calendar = calendarList[page],
+                quizCalendar = quizCalendar,
                 today = today,
                 onDateSelect = onDateSelect,
-                quizCalendar = quizCalendar,
             )
             CalendarType.SMALL_CALENDAR -> SmallCalendar(
                 selectDate = selectDate,
                 month = month,
                 today = today,
                 weekList = weekList[weekIndex],
-                quizCalendar = quizCalendar,
+                quizList = quizItem,
                 onDateSelect = onDateSelect,
             )
         }
@@ -85,51 +98,9 @@ private fun FlexibleCalendarPreview() {
             selectDate = date,
             calendarList = DateUtils.createCalendarList(),
             today = Date(),
-            quizCalendar = mapOf(
-                date to listOf(
-                    VocaQuiz(
-                        date = LocalDateTime.now().toString(),
-                        day = 0,
-                        wrongCount = 0,
-                        totalCount = 10,
-                    ),
-                    VocaQuiz(
-                        date = LocalDateTime.now().toString(),
-                        day = 2,
-                        wrongCount = 0,
-                        totalCount = 10,
-                    ),
-                    VocaQuiz(
-                        date = LocalDateTime.now().toString(),
-                        day = 0,
-                        wrongCount = 0,
-                        totalCount = 10,
-                    ),
-                ),
-            ),
-            weekList = listOf(
-                listOf(
-                    Date(
-                        localDate = LocalDate.now().minusDays(1),
-                    ),
-                    Date(),
-                    Date(
-                        localDate = LocalDate.now().plusDays(1),
-                    ),
-                    Date(
-                        localDate = LocalDate.now().plusDays(2),
-                    ),
-                    Date(
-                        localDate = LocalDate.now().plusDays(3),
-                    ),
-                    Date(
-                        localDate = LocalDate.now().plusDays(4),
-                    ),
-                    Date(
-                        localDate = LocalDate.now().plusDays(5),
-                    ),
-                )
-            ),
+            quizCalendar = emptyMap(),
+            quizList = emptyList(),
+            weekList = emptyList(),
             weekIndex = 0,
             onQuizItemClick = {},
             onDateSelect = {},

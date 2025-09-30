@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -32,7 +32,6 @@ import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink100
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
-import java.time.LocalDateTime
 
 @Composable
 internal fun CalendarQuizListView(
@@ -47,9 +46,7 @@ internal fun CalendarQuizListView(
         LazyColumn(
             modifier = modifier.fillMaxWidth(),
         ) {
-            itemsIndexed(
-                items = quizList
-            ) { index, it ->
+            items(quizList) {
                 QuizListItem(
                     quiz = it,
                     onItemClick = { onItemClick(it.date) },

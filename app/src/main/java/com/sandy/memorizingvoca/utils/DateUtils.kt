@@ -5,6 +5,7 @@ import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.temporal.ChronoUnit
 import java.time.temporal.WeekFields
 import java.util.Locale
 
@@ -118,21 +119,28 @@ object DateUtils {
     }
 
     // 기본값 : 2025(year)년 9(month)월부터 2026년 12월까지(size=16)
-    fun createDateMap(
+    fun createDateList(
         year: Int = 2025,
         month: Int = 9,
         maxYear: Int = 2026,
         maxMonth: Int = 12,
-    ): Map<Date, Int> {
+    ): List<Date> {
         val startDay = getStartOfMonth(year, month)
         val endDay = getEndOfMonth(maxYear, maxMonth)
         return generateSequence(startDay) {
             it.plusDays(1)
         }.takeWhile {
             !it.isAfter(endDay)
-        }.mapIndexed { index, localDate ->
-            Date(localDate = localDate) to index
-        }.toMap()
+        }.map { localDate ->
+            Date(localDate = localDate)
+        }.toList()
+    }
+
+    fun getDateDiff(
+        endDate: LocalDate,
+        startDate: LocalDate = LocalDate.of(2025, 8, 31)
+    ): Int {
+        return ChronoUnit.DAYS.between(startDate, endDate).toInt()
     }
 
 }

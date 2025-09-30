@@ -29,7 +29,7 @@ import java.time.LocalDateTime
 internal fun SmallCalendar(
     today: Date,
     month: Int,
-    quizCalendar: Map<Date, List<VocaQuiz>>,
+    quizList: List<List<VocaQuiz>>,
     weekList: List<Date>,
     selectDate: Date,
     onDateSelect: (Date) -> Unit,
@@ -42,8 +42,8 @@ internal fun SmallCalendar(
             modifier = modifier.weight(1f),
             horizontalArrangement = Arrangement.spacedBy(2.dp),
         ) {
-            weekList.forEach { date ->
-                val quizList = quizCalendar[date] ?: emptyList()
+            weekList.forEachIndexed { index, date ->
+                val quizItem = quizList[index]
                 Column (
                     modifier = modifier
                         .weight(1f)
@@ -63,7 +63,7 @@ internal fun SmallCalendar(
                         horizontalArrangement = Arrangement.spacedBy(2.dp),
                         verticalArrangement = Arrangement.spacedBy(2.dp),
                     ) {
-                        quizList.forEach { quiz ->
+                        quizItem.forEach { quiz ->
                             SmallCalendarItem(
                                 quiz = quiz,
                             )
@@ -125,8 +125,8 @@ private fun SmallCalendarPreview() {
                         localDate = LocalDate.now().plusDays(5),
                     ),
                 ),
-                quizCalendar = mapOf(
-                    date to listOf(
+                quizList = listOf(
+                    listOf(
                         VocaQuiz(
                             date = LocalDateTime.now().toString(),
                             day = 0,
@@ -158,9 +158,7 @@ private fun SmallCalendarPreview() {
                             totalCount = 10,
                         ),
                     ),
-                    Date(
-                        localDate = LocalDate.now().plusDays(2)
-                    ) to listOf(
+                    listOf(
                         VocaQuiz(
                             date = LocalDateTime.now().toString(),
                             day = 0,

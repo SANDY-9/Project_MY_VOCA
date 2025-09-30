@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,7 +44,7 @@ internal fun NormalCalendar(
             Row(
                 modifier = Modifier.weight(1f),
             ) {
-                days.forEach { date ->
+                days.forEach{ date ->
                     val quizList = quizCalendar[date] ?: emptyList()
                     Column (
                         modifier = Modifier
@@ -138,6 +136,16 @@ private fun NormalCalendarPreview() {
                             wrongCount = 1,
                             totalCount = 10,
                         ),
+                    ),
+                    Date(
+                        localDate = LocalDate.now().plusDays(1)
+                    ) to listOf(
+                        VocaQuiz(
+                            date = LocalDateTime.now().toString(),
+                            day = 0,
+                            wrongCount = 3,
+                            totalCount = 10,
+                        ),
                         VocaQuiz(
                             date = LocalDateTime.now().toString(),
                             day = 2,
@@ -150,21 +158,9 @@ private fun NormalCalendarPreview() {
                             wrongCount = 0,
                             totalCount = 10,
                         ),
-                        VocaQuiz(
-                            date = LocalDateTime.now().toString(),
-                            day = 0,
-                            wrongCount = 0,
-                            totalCount = 10,
-                        ),
-                        VocaQuiz(
-                            date = LocalDateTime.now().toString(),
-                            day = 2,
-                            wrongCount = 3,
-                            totalCount = 10,
-                        ),
                     ),
                     Date(
-                        localDate = LocalDate.now().plusDays(1)
+                        localDate = LocalDate.now().plusDays(2)
                     ) to listOf(
                         VocaQuiz(
                             date = LocalDateTime.now().toString(),

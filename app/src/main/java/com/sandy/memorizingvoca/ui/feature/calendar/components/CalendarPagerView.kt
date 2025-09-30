@@ -36,16 +36,16 @@ internal fun CalendarPagerView(
     today: Date,
     calendar: Calendar,
     selectDate: Date,
+    quizCalendar: Map<Date, List<VocaQuiz>>,
     calendarList: List<Calendar>,
     weekList: List<List<Date>>,
     initialWeekIndex: Int,
     currentWeekIndex: Int,
-    quizCalendar: Map<Date, List<VocaQuiz>>,
+    quizList: List<List<VocaQuiz>>,
     initialCalendarPage: Int,
     currentCalendarPage: Int,
     initialListPage: Int,
     currentListPage: Int,
-    dateSize: Int,
     onDateSelect: (Date) -> Unit,
     onCalendarTypeChange: (CalendarType) -> Unit,
     onCalendarPageChange: (Int) -> Unit,
@@ -123,7 +123,7 @@ internal fun CalendarPagerView(
 
     val listPagerState = rememberPagerState(
         initialPage = initialListPage,
-        pageCount = { dateSize }
+        pageCount = { quizList.size }
     )
     LaunchedEffect(listPagerState) {
         snapshotFlow { listPagerState.currentPage }
@@ -165,9 +165,10 @@ internal fun CalendarPagerView(
                 flexibleCalendarState = flexibleCalendarState,
                 selectDate = selectDate,
                 calendarList = calendarList,
+                quizCalendar = quizCalendar,
                 weekList = weekList,
                 weekIndex = if(isSmallCalendar) page else currentWeekIndex,
-                quizCalendar = quizCalendar,
+                quizList = quizList,
                 onQuizItemClick = onQuizItemClick,
                 onDateSelect = onDateSelect,
             )
@@ -183,9 +184,9 @@ internal fun CalendarPagerView(
             HorizontalPager(
                 modifier = modifier.weight(1f),
                 state = listPagerState,
-            ) {
+            ) { page ->
                 CalendarQuizListView(
-                    quizList = quizCalendar[selectDate] ?: emptyList(),
+                    quizList = quizList[page],
                     onItemClick = onQuizItemClick,
                     onDeleteItemClick = onDeleteQuizClick,
                 )
@@ -208,10 +209,33 @@ private fun CalendarPagerViewPreview() {
             currentCalendarPage = 0,
             today = date,
             initialListPage = 3,
-            dateSize = 10,
             currentListPage = 1,
             quizCalendar = mapOf(
-                date to listOf(
+                Date(
+                    localDate = LocalDate.now().plusDays(1)
+                ) to listOf(
+                    VocaQuiz(
+                        date = LocalDateTime.now().toString(),
+                        day = 0,
+                        wrongCount = 3,
+                        totalCount = 10,
+                    ),
+                    VocaQuiz(
+                        date = LocalDateTime.now().toString(),
+                        day = 2,
+                        wrongCount = 10,
+                        totalCount = 10,
+                    ),
+                    VocaQuiz(
+                        date = LocalDateTime.now().toString(),
+                        day = 0,
+                        wrongCount = 0,
+                        totalCount = 10,
+                    ),
+                ),
+            ),
+            quizList = listOf(
+                listOf(
                     VocaQuiz(
                         date = LocalDateTime.now().toString(),
                         day = 0,

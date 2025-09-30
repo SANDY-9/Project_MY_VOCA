@@ -2,7 +2,6 @@ package com.sandy.memorizingvoca.ui.feature.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.data.repository.GetQuizRepository
@@ -33,10 +32,13 @@ internal class CalendarViewModel @Inject constructor(
     init {
         getQuizRepository.getQuizListForCalendar()
             .onEach { quizCalendar ->
+                val quizList = current.allDateList.map { date ->
+                    quizCalendar[date] ?: emptyList()
+                }
                 _calendarUiState.update {
                     it.copy(
                         quizCalendar = quizCalendar,
-                        quizList = quizCalendar[it.selectedDate] ?: emptyList()
+                        quizList = quizList,
                     )
                 }
             }.launchIn(viewModelScope)
@@ -47,7 +49,7 @@ internal class CalendarViewModel @Inject constructor(
     }
 
     fun deleteMultipleQuiz() = viewModelScope.launch {
-        quizRepository.deleteMultipleQuiz(current.quizList)
+        quizRepository.deleteMultipleQuiz(current.quizList[current.currentListPage])
     }
 
     fun clearCalendar() = viewModelScope.launch {
