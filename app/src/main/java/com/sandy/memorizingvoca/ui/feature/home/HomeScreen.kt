@@ -1,11 +1,8 @@
 package com.sandy.memorizingvoca.ui.feature.home
 
-import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
+import android.content.Context
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalActivity
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,10 +15,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,8 +30,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.ui.common.DayFolderCard
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink10
-import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
 internal fun HomeRoute(
@@ -39,10 +37,13 @@ internal fun HomeRoute(
     onItemClick: (Int) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
+    BackPressTwiceToExit(
+        context = context,
+        onFinish = onAppFinish,
+    )
+
     val days by viewModel.days.collectAsStateWithLifecycle()
-    BackHandler(enabled = true) {
-        onAppFinish()
-    }
     HomeScreen(
         days = days,
         onItemClick = onItemClick,
@@ -86,6 +87,26 @@ private fun HomeScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun BackPressTwiceToExit(
+    context: Context,
+    onFinish: () -> Unit,
+) {
+    var backPressedState by remember { mutableStateOf(true) }
+    var backPressedTime = 0L
+
+    BackHandler(enabled = backPressedState) {
+        if(System.currentTimeMillis() - backPressedTime <= 2000L) {
+            // 앱 종료
+            onFinish()
+        } else {
+            backPressedState = true
+            Toast.makeText(context, "한 번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+        }
+        backPressedTime = System.currentTimeMillis()
     }
 }
 
