@@ -24,7 +24,8 @@ class HighlightRepositoryImpl @Inject constructor(
         day: Int,
         word: String,
         meaning: String,
-        bookmarked: Boolean
+        pron: String?,
+        bookmarked: Boolean,
     ) = withContext(Dispatchers.IO) {
         dao.updateHighlight(
             Vocabulary(
@@ -33,6 +34,7 @@ class HighlightRepositoryImpl @Inject constructor(
                 word = word,
                 meaning = meaning,
                 bookmarked = bookmarked,
+                pron = pron,
                 highlighted = true,
             )
         )
@@ -43,7 +45,8 @@ class HighlightRepositoryImpl @Inject constructor(
         day: Int,
         word: String,
         meaning: String,
-        bookmarked: Boolean
+        pron: String?,
+        bookmarked: Boolean,
     ) = withContext(Dispatchers.IO) {
         dao.updateHighlight(
             Vocabulary(
@@ -51,6 +54,7 @@ class HighlightRepositoryImpl @Inject constructor(
                 day = day,
                 word = word,
                 meaning = meaning,
+                pron = pron,
                 bookmarked = bookmarked,
                 highlighted = false,
             )

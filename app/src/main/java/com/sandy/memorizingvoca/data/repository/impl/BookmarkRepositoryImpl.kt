@@ -16,7 +16,8 @@ class BookmarkRepositoryImpl @Inject constructor(
         day: Int,
         word: String,
         meaning: String,
-        highlighted: Boolean
+        pron: String?,
+        highlighted: Boolean,
     ) = withContext(Dispatchers.IO) {
         dao.updateBookmark(
             Vocabulary(
@@ -24,6 +25,7 @@ class BookmarkRepositoryImpl @Inject constructor(
                 day = day,
                 word = word,
                 meaning = meaning,
+                pron = pron,
                 highlighted = highlighted,
                 bookmarked = true,
             )
@@ -39,6 +41,7 @@ class BookmarkRepositoryImpl @Inject constructor(
         day: Int,
         word: String,
         meaning: String,
+        pron: String?,
         highlighted: Boolean
     ) = withContext(Dispatchers.IO) {
         dao.updateBookmark(
@@ -48,6 +51,7 @@ class BookmarkRepositoryImpl @Inject constructor(
                 word = word,
                 meaning = meaning,
                 highlighted = highlighted,
+                pron = pron,
                 bookmarked = false,
             )
         )

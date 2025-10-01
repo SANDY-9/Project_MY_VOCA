@@ -111,6 +111,7 @@ internal class QuizResultViewModel @Inject constructor(
             day = voca.day,
             word = voca.word,
             meaning = voca.meaning,
+            pron = voca.pron,
             highlighted = voca.highlighted,
         )
     }
@@ -121,6 +122,7 @@ internal class QuizResultViewModel @Inject constructor(
             day = voca.day,
             word = voca.word,
             meaning = voca.meaning,
+            pron = voca.pron,
             highlighted = voca.highlighted,
         )
     }

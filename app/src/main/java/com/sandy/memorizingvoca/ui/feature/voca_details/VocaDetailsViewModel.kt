@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.sandy.memorizingvoca.data.model.Vocabulary
-import com.sandy.memorizingvoca.data.model.VocabularyDetails
 import com.sandy.memorizingvoca.data.repository.BookmarkRepository
 import com.sandy.memorizingvoca.data.repository.GetVocabularyRepository
 import com.sandy.memorizingvoca.data.repository.HighlightRepository
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -70,6 +68,7 @@ internal class VocaDetailsViewModel @Inject constructor(
             day = voca.day,
             word = voca.word,
             meaning = voca.meaning,
+            pron = voca.pron,
             bookmarked = voca.bookmarked,
         )
     }
@@ -80,6 +79,7 @@ internal class VocaDetailsViewModel @Inject constructor(
             day = voca.day,
             word = voca.word,
             meaning = voca.meaning,
+            pron = voca.pron,
             bookmarked = voca.bookmarked,
         )
     }
@@ -99,6 +99,7 @@ internal class VocaDetailsViewModel @Inject constructor(
             day = voca.day,
             word = voca.word,
             meaning = voca.meaning,
+            pron = voca.pron,
             highlighted = voca.highlighted,
         )
     }
@@ -109,6 +110,7 @@ internal class VocaDetailsViewModel @Inject constructor(
             day = voca.day,
             word = voca.word,
             meaning = voca.meaning,
+            pron = voca.pron,
             highlighted = voca.highlighted,
         )
     }

@@ -10,6 +10,7 @@ interface HighlightRepository {
         day: Int,
         word: String,
         meaning: String,
+        pron: String?,
         bookmarked: Boolean,
     )
     suspend fun deleteHighlight(
@@ -17,6 +18,7 @@ interface HighlightRepository {
         day: Int,
         word: String,
         meaning: String,
+        pron: String?,
         bookmarked: Boolean,
     )
 }

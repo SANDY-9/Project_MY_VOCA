@@ -8,6 +8,7 @@ interface BookmarkRepository {
         day: Int,
         word: String,
         meaning: String,
+        pron: String?,
         highlighted: Boolean,
     )
     suspend fun addMutipleBookmark(
@@ -18,6 +19,7 @@ interface BookmarkRepository {
         day: Int,
         word: String,
         meaning: String,
+        pron: String?,
         highlighted: Boolean,
     )
     suspend fun deleteMutipleBookmark(
