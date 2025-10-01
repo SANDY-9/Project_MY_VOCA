@@ -73,7 +73,6 @@ internal class Quiz2ViewModel @Inject constructor(
             .filter {
                 it.gameStatus != GameSetStatus.NONE
             }
-            .distinctUntilChanged()
             .onEach {
                 val prvGameSetState = gameSetState.value
                 delay(200L)
