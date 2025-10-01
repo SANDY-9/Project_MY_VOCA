@@ -110,8 +110,3 @@ internal class VocaDetailsViewModel @Inject constructor(
     }
 
 }
-
-data class Grammar(
-    val sort: String,
-    val words: Map<String, String>
-)

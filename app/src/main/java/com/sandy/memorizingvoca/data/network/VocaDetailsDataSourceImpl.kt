@@ -36,7 +36,11 @@ class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
         val path = Jsoup.connect(url).get()
             .select(PATH_FIND_QUERY)
             .first {
-                it.text().compare() == word.compare()
+                val elementText = it.text().compare()
+                val wordText = word.compare()
+                elementText == wordText ||
+                        elementText.contains(wordText) ||
+                        wordText.contains(elementText)
             }
             .select(A_TAG)
             .attr(HREF_ATTR)
