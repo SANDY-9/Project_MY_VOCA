@@ -56,10 +56,10 @@ private fun ExampleItem(
     htmlMean: String,
     modifier: Modifier = Modifier,
 ) {
-
     Column(
         modifier = modifier
-            .fillMaxWidth().padding(top = 16.dp),
+            .fillMaxWidth()
+            .padding(top = 16.dp),
     ) {
         Text(
             modifier = modifier.fillMaxWidth(1f),
@@ -72,18 +72,20 @@ private fun ExampleItem(
             ),
         )
         Spacer(modifier = modifier.height(8.dp))
-        Text(
-            modifier = modifier.fillMaxWidth(),
-            text = AnnotatedString.fromHtml(htmlMean),
-            color = Color.DarkGray,
-            lineHeight = 18.sp,
-            textAlign = TextAlign.Justify,
-            style = TextStyle.Default.copy(
-                lineBreak = LineBreak.Paragraph,
-                fontFamily = PyeoginGothic,
-            ),
-        )
-        Spacer(modifier = modifier.height(16.dp))
+        if(htmlMean.isNotBlank()) {
+            Text(
+                modifier = modifier.fillMaxWidth(),
+                text = AnnotatedString.fromHtml(htmlMean),
+                color = Color.DarkGray,
+                textAlign = TextAlign.Justify,
+                style = TextStyle.Default.copy(
+                    lineBreak = LineBreak.Paragraph,
+                    fontFamily = PyeoginGothic,
+                ),
+            )
+            Spacer(modifier = modifier.height(12.dp))
+        }
+        Spacer(modifier = modifier.height(4.dp))
         HorizontalDivider(
             color = Gray30,
         )

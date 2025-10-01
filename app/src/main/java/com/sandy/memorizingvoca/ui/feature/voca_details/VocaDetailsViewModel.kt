@@ -14,6 +14,7 @@ import com.sandy.memorizingvoca.ui.feature.voca_details.navigation.VocaDetailsRo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
@@ -36,17 +37,20 @@ internal class VocaDetailsViewModel @Inject constructor(
         initialValue = null,
     )
 
-    private val _details = MutableStateFlow<VocabularyDetails?>(null)
-    val details = _details.asStateFlow()
+    private val _detailsState = MutableStateFlow<VocaDetailsState>(VocaDetailsState.Loading)
+    val detailsState: StateFlow<VocaDetailsState> = _detailsState.asStateFlow()
+
 
     init {
         viewModelScope.launch {
+            _detailsState.value = VocaDetailsState.Loading
             try {
                 val item = voca.first { it != null }
                 val details = getVocabularyRepository.getVocabularyDetails(item!!.word)
-                _details.update { details }
+                _detailsState.value = VocaDetailsState.Success(details)
             } catch (e: Exception) {
                 Log.e("[NETWORK_ERROR]", "${e.message}")
+                _detailsState.value = VocaDetailsState.Fail
             }
         }
     }

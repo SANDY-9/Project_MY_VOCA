@@ -1,12 +1,15 @@
 package com.sandy.memorizingvoca.ui.feature.voca_details
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,6 +24,8 @@ import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaExampleVi
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaFamilyView
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaGrammarView
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import com.sandy.memorizingvoca.ui.theme.Pink100
+import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
@@ -29,10 +34,10 @@ internal fun VocaDetailsRoute(
     viewModel: VocaDetailsViewModel = hiltViewModel(),
 ) {
     val voca by viewModel.voca.collectAsStateWithLifecycle()
-    val vocaDetails by viewModel.details.collectAsStateWithLifecycle()
+    val vocaDetailsState by viewModel.detailsState.collectAsStateWithLifecycle()
     VocaDetailsScreen(
         voca = voca,
-        details = vocaDetails,
+        vocaDetailsState = vocaDetailsState,
         onNavigateBack = onNavigateBack,
         onHighlightChange = viewModel::updateHighlight,
         onBookmarkChange = viewModel::updateBookmark,
@@ -41,7 +46,7 @@ internal fun VocaDetailsRoute(
 @Composable
 private fun VocaDetailsScreen(
     voca: Vocabulary?,
-    details: VocabularyDetails?,
+    vocaDetailsState: VocaDetailsState,
     onNavigateBack: () -> Unit,
     onHighlightChange: (Boolean) -> Unit,
     onBookmarkChange: (Boolean) -> Unit,
@@ -68,26 +73,40 @@ private fun VocaDetailsScreen(
                     pron = voca?.pron ?: "",
                 )
             }
-            item {
-                VocaGrammarView(
-                    item = details?.grammar ?: emptyMap(),
-                )
-                VocaFamilyView(
-                    title = "파생어",
-                    item = details?.wordFamily ?: emptyList(),
-                )
-                VocaFamilyView(
-                    title = "반의어",
-                    item = details?.oppositeWord ?: emptyList(),
-                )
-                VocaFamilyView(
-                    title = "유의어",
-                    item = details?.similarWord ?: emptyList(),
-                )
-                VocaExampleView(
-                    item = details?.exampleList ?: emptyList(),
-                )
+            if(vocaDetailsState is VocaDetailsState.Success) {
+                with(vocaDetailsState.details) {
+                    item {
+                        VocaGrammarView(
+                            item = grammar,
+                        )
+                        VocaFamilyView(
+                            title = "파생어",
+                            item = wordFamily,
+                        )
+                        VocaFamilyView(
+                            title = "반의어",
+                            item = oppositeWord,
+                        )
+                        VocaFamilyView(
+                            title = "유의어",
+                            item = similarWord,
+                        )
+                        VocaExampleView(
+                            item = exampleList,
+                        )
+                    }
+                }
             }
+        }
+        if(vocaDetailsState == VocaDetailsState.Loading) {
+            VocaDetailsLoadingView(
+                modifier = modifier.fillMaxWidth().weight(1f),
+            )
+        }
+        if(vocaDetailsState == VocaDetailsState.Fail) {
+            VocaDetailsFailView(
+                modifier = modifier.fillMaxWidth().weight(1f),
+            )
         }
     }
 
@@ -104,83 +123,85 @@ private fun VocaDetailsScreenPreview() {
                 word = "dictate",
                 meaning = "[동] ① 명령하다, 지시하다 ② 받아쓰게 하다, 구술하다 [명] 명령, 지시[주로 pl.]",
             ),
-            details = VocabularyDetails(
-                word = "dictate",
-                grammar = mapOf(
-                    "동사" to listOf(
+            vocaDetailsState = VocaDetailsState.Success(
+                details = VocabularyDetails(
+                    word = "dictate",
+                    grammar = mapOf(
+                        "동사" to listOf(
+                            Word(
+                                word = "earnest",
+                                mean = "기본"
+                            ),
+                            Word(
+                                word = "earnested",
+                                mean = "과거"
+                            ),
+                            Word(
+                                word = "earnested",
+                                mean = "과거분사"
+                            ),
+                            Word(
+                                word = "earnesting",
+                                mean = "현재분사"
+                            ),
+                            Word(
+                                word = "earnests",
+                                mean = "3인칭단수"
+                            ),
+                        ),
+                        "명사" to listOf(
+                            Word(
+                                word = "earnest",
+                                mean = "기본"
+                            ),
+                        ),
+                        "형용사" to listOf(
+                            Word(
+                                word = "earnest",
+                                mean = "기본"
+                            ),
+                            Word(
+                                word = "more earnest, earnester",
+                                mean = "비교급"
+                            ),
+                            Word(
+                                word = "most earnest, earnestest",
+                                mean = "최상급"
+                            ),
+                        )
+                    ),
+                    wordFamily = listOf(
                         Word(
-                            word = "earnest",
-                            mean = "기본"
+                            word = "withdrawal",
+                            mean = "탈퇴, 철수, 철회, 인출, 금단 증상"
                         ),
                         Word(
-                            word = "earnested",
-                            mean = "과거"
-                        ),
-                        Word(
-                            word = "earnested",
-                            mean = "과거분사"
-                        ),
-                        Word(
-                            word = "earnesting",
-                            mean = "현재분사"
-                        ),
-                        Word(
-                            word = "earnests",
-                            mean = "3인칭단수"
+                            word = "serious",
+                            mean = "심각한, 진지한, 정말, 중대한, 어려운"
                         ),
                     ),
-                    "명사" to listOf(
+                    similarWord = listOf(
                         Word(
-                            word = "earnest",
-                            mean = "기본"
+                            word = "withdrawal",
+                            mean = "탈퇴, 철수, 철회, 인출, 금단 증상"
+                        ),
+                        Word(
+                            word = "serious",
+                            mean = "심각한, 진지한, 정말, 중대한, 어려운"
                         ),
                     ),
-                    "형용사" to listOf(
+                    oppositeWord = listOf(
                         Word(
-                            word = "earnest",
-                            mean = "기본"
+                            word = "withdrawal",
+                            mean = "탈퇴, 철수, 철회, 인출, 금단 증상"
                         ),
                         Word(
-                            word = "more earnest, earnester",
-                            mean = "비교급"
+                            word = "serious",
+                            mean = "심각한, 진지한, 정말, 중대한, 어려운"
                         ),
-                        Word(
-                            word = "most earnest, earnestest",
-                            mean = "최상급"
-                        ),
-                    )
+                    ),
+                    exampleList = emptyList(),
                 ),
-                wordFamily = listOf(
-                    Word(
-                        word = "withdrawal",
-                        mean = "탈퇴, 철수, 철회, 인출, 금단 증상"
-                    ),
-                    Word(
-                        word = "serious",
-                        mean = "심각한, 진지한, 정말, 중대한, 어려운"
-                    ),
-                ),
-                similarWord = listOf(
-                    Word(
-                        word = "withdrawal",
-                        mean = "탈퇴, 철수, 철회, 인출, 금단 증상"
-                    ),
-                    Word(
-                        word = "serious",
-                        mean = "심각한, 진지한, 정말, 중대한, 어려운"
-                    ),
-                ),
-                oppositeWord = listOf(
-                    Word(
-                        word = "withdrawal",
-                        mean = "탈퇴, 철수, 철회, 인출, 금단 증상"
-                    ),
-                    Word(
-                        word = "serious",
-                        mean = "심각한, 진지한, 정말, 중대한, 어려운"
-                    ),
-                ),
-                exampleList = emptyList(),
             ),
             onNavigateBack = {},
             onHighlightChange = {},
