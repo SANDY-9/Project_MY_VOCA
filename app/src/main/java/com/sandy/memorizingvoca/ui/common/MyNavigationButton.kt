@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import com.sandy.memorizingvoca.ui.extensions.singleClick
 
 @Composable
 fun MyNavigationButton(
@@ -17,7 +18,7 @@ fun MyNavigationButton(
 ) {
     val haptic = LocalHapticFeedback.current
     IconButton(
-        onClick = {
+        onClick = singleClick {
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             onNavigateBack()
         },

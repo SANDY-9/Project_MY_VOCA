@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import com.sandy.memorizingvoca.ui.extensions.singleClick
 import com.sandy.memorizingvoca.ui.theme.Pink100
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
@@ -18,7 +19,7 @@ fun MyTextButton(
     val haptic = LocalHapticFeedback.current
     TextButton (
         modifier = modifier,
-        onClick = {
+        onClick = singleClick {
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             onClick()
         },

@@ -27,6 +27,7 @@ import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.ui.extensions.clickableSelectOutline
 import com.sandy.memorizingvoca.ui.extensions.percentageColor
+import com.sandy.memorizingvoca.ui.extensions.singleClick
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.utils.DateUtils
@@ -70,7 +71,7 @@ internal fun ExpandCalendar(
                         quizList.forEach { quiz ->
                             ExpandCalendarItem(
                                 quiz = quiz,
-                                onItemClick = {
+                                onItemClick = singleClick {
                                     onDateSelect(date)
                                     onQuizItemClick(quiz.date)
                                 },

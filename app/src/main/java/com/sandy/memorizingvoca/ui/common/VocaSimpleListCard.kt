@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.extensions.singleClick
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
@@ -44,7 +45,7 @@ fun VocaSimpleListCard(
             .background(
                 color = highlightColor,
             )
-            .clickable(onClick = onClick),
+            .singleClick(onClick = onClick),
     ) {
         Spacer(modifier = modifier.height(16.dp))
         Row(

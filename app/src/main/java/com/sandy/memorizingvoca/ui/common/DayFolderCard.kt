@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.FolderShape
 import com.sandy.memorizingvoca.ui.extensions.folderShape
+import com.sandy.memorizingvoca.ui.extensions.singleClick
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.PastelYellow
@@ -39,7 +40,7 @@ fun DayFolderCard(
                 folderColor = if(exist) Pink10 else PastelYellow,
             )
             .clip(FolderShape())
-            .clickable(onClick = onItemClick)
+            .singleClick (onClick = onItemClick)
             .padding(8.dp),
         contentAlignment = Alignment.Center,
     ) {

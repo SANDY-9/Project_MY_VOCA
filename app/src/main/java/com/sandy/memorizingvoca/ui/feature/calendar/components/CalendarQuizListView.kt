@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.ui.common.MyTextButton
 import com.sandy.memorizingvoca.ui.extensions.percentageColor
+import com.sandy.memorizingvoca.ui.extensions.singleClick
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
@@ -79,7 +80,7 @@ private fun QuizListItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(onClick = onItemClick),
+            .singleClick(onClick = onItemClick),
     ) {
         Row(
             modifier = modifier
