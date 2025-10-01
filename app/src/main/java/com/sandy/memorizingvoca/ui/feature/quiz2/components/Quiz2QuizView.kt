@@ -24,8 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
@@ -35,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Vocabulary
+import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.feature.quiz2.GameSetStatus
 import com.sandy.memorizingvoca.ui.feature.quiz2.VocaCardState
 import com.sandy.memorizingvoca.ui.feature.quiz2.VocaCardType
@@ -55,7 +54,6 @@ internal fun Quiz2QuizView(
     onSpeak: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val haptic = LocalHapticFeedback.current
     val answerEffectManager = rememberAnswerEffectManager()
     LaunchedEffect(status) {
         if(status == GameSetStatus.INCORRECTED) {
@@ -89,8 +87,7 @@ internal fun Quiz2QuizView(
                         status = status,
                         isAnswered = item.isAnswered,
                         onSpeak = onSpeak,
-                        onClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onClick = clickEffect {
                             onCardSelect(item)
                         },
                     )
@@ -99,8 +96,7 @@ internal fun Quiz2QuizView(
                         selected = selected,
                         status = status,
                         isAnswered = item.isAnswered,
-                        onClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onClick = clickEffect {
                             onCardSelect(item)
                         },
                     )

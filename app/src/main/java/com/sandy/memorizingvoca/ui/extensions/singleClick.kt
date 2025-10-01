@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 @Composable
 fun singleClick(
     intervalMillis: Long = 500L,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ): () -> Unit {
     var lastClickTime by remember { mutableLongStateOf(0L) }
-    return {
+    return clickEffect {
         val currentTime = SystemClock.elapsedRealtime()
         if (currentTime - lastClickTime > intervalMillis) {
             lastClickTime = currentTime
@@ -30,11 +30,13 @@ fun Modifier.singleClick(
     onClick: () -> Unit
 ): Modifier {
     var lastClickTime by remember { mutableLongStateOf(0L) }
-    return this.clickable {
-        val currentTime = SystemClock.elapsedRealtime()
-        if (currentTime - lastClickTime > interval) {
-            lastClickTime = currentTime
-            onClick()
+    return this.clickable(
+        onClick = clickEffect {
+            val currentTime = SystemClock.elapsedRealtime()
+            if (currentTime - lastClickTime > interval) {
+                lastClickTime = currentTime
+                onClick()
+            }
         }
-    }
+    )
 }

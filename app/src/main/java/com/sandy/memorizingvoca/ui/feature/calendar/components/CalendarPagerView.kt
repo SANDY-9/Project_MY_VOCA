@@ -13,9 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
@@ -153,8 +151,6 @@ internal fun CalendarPagerView(
         }
     }
 
-    val haptic = LocalHapticFeedback.current
-
     val isSmallCalendar = flexibleCalendarState.type == CalendarType.SMALL_CALENDAR
     Column(
         modifier = modifier
@@ -181,11 +177,9 @@ internal fun CalendarPagerView(
                 weekIndex = if(isSmallCalendar) page else currentWeekIndex,
                 quizList = quizList,
                 onQuizItemClick = { id ->
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     onQuizItemClick(id)
                 },
                 onDateSelect = { date ->
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     onDateSelect(date)
                 },
             )
@@ -205,7 +199,6 @@ internal fun CalendarPagerView(
                 CalendarQuizListView(
                     quizList = quizList[page],
                     onItemClick = { id ->
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onQuizItemClick(id)
                     },
                     onDeleteItemClick = onDeleteQuizClick,

@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sandy.memorizingvoca.data.model.Vocabulary
@@ -22,7 +20,6 @@ internal fun VocaListView(
     modifier: Modifier = Modifier,
 ) {
     val ttsManager = rememberTTSManager()
-    val haptic = LocalHapticFeedback.current
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 16.dp)
@@ -34,7 +31,6 @@ internal fun VocaListView(
                 highlighted = voca.highlighted,
                 blindMode = blindMode,
                 onClick = {
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     onItemClick(voca.vocaId)
                 },
                 onSpeak = {

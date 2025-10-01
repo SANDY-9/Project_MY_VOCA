@@ -21,9 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,7 +56,6 @@ private fun HomeScreen(
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val haptic = LocalHapticFeedback.current
     Column(
         modifier = modifier.fillMaxSize().padding(horizontal = 16.dp)
     ) {
@@ -86,7 +83,6 @@ private fun HomeScreen(
                         day = day,
                         exist = quizExist,
                         onItemClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             onItemClick(day)
                         },
                     )

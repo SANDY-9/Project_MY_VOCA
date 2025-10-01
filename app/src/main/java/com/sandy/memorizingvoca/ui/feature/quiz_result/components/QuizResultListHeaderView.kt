@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.resources.Visibility
 import com.sandy.memorizingvoca.ui.resources.VisibilityOff
@@ -91,7 +92,9 @@ internal fun QuizResultListHeaderView(
                         shape = roundedCornerShape16,
                     )
                     .clip(roundedCornerShape16)
-                    .clickable(onClick = onAllBookmarkClick)
+                    .clickable(
+                        onClick = clickEffect { onAllBookmarkClick() }
+                    )
                     .padding(horizontal = 16.dp, vertical = 6.dp),
             ) {
                 Text(

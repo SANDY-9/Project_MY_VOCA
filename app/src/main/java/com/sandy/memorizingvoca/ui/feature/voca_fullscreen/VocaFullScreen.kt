@@ -10,12 +10,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
+import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenButtonFooter
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenPageHeader
 import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.components.FullScreenTopBar
@@ -113,7 +112,6 @@ private fun VocaFullScreen(
             }
     }
 
-    val haptic = LocalHapticFeedback.current
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -150,15 +148,13 @@ private fun VocaFullScreen(
         FullScreenButtonFooter(
             prevButtonEnabled = page > 1,
             nextButtonEnabled = page < totalPage,
-            onPrevButtonClick = {
+            onPrevButtonClick = clickEffect {
                 scope.launch {
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     pagerState.animateScrollToPage(pagerState.currentPage - 1)
                 }
             },
-            onNextButtonClick = {
+            onNextButtonClick = clickEffect {
                 scope.launch {
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
                 }
             },

@@ -24,8 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
@@ -35,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.feature.quiz1.Quiz1Status
 import com.sandy.memorizingvoca.ui.theme.DarkBlue
@@ -128,7 +127,6 @@ private fun OptionsList(
     onOptionSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val haptic = LocalHapticFeedback.current
     Column(
         modifier = modifier.fillMaxWidth(0.85f),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -141,8 +139,7 @@ private fun OptionsList(
                 )
                 else -> OptionsItem(
                     text = option,
-                    onSelect = {
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onSelect = clickEffect {
                         onOptionSelect(index)
                     },
                 )

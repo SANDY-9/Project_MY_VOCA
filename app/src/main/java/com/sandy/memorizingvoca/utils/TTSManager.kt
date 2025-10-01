@@ -26,7 +26,7 @@ class TTSManager(
                 tts?.run {
                     language = Locale.US
                     setPitch(0.95f)
-                    setSpeechRate(0.7f)
+                    setSpeechRate(0.85f)
                 }
             }
         }

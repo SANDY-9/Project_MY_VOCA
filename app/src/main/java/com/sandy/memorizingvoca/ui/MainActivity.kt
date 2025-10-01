@@ -31,8 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
@@ -41,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.rememberNavController
+import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.SplashRoute
 import com.sandy.memorizingvoca.ui.theme.Gray20
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
@@ -77,7 +76,9 @@ private fun MainApp(
         modifier = modifier.fillMaxSize(),
     ) { innerPadding ->
         Column(
-            modifier = modifier.fillMaxSize().padding(innerPadding)
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ){
             MyAppNavGraph(
                 modifier = modifier.weight(1f),
@@ -114,7 +115,6 @@ private fun MyAppBottomNav(
     modifier: Modifier = Modifier,
     items: List<MyAppBottomNavDestination> = MyAppBottomNavDestination.entries,
 ) {
-    val haptic = LocalHapticFeedback.current
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -131,12 +131,15 @@ private fun MyAppBottomNav(
                 val color = if(selected) des.selectedColor else des.unselectedColor
                 val icon = if(selected) des.selectedIcon else des.unselectedIcon
                 Column(
-                    modifier = modifier.size(55.dp).clickable {
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        if(!selected) {
-                            onItemClick(des)
-                        }
-                    },
+                    modifier = modifier
+                        .size(55.dp)
+                        .clickable(
+                            onClick = clickEffect {
+                                if (!selected) {
+                                    onItemClick(des)
+                                }
+                            }
+                        ),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {

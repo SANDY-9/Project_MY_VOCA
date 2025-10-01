@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -14,6 +12,7 @@ import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.DayOfWeek
 import com.sandy.memorizingvoca.data.model.VocaQuiz
+import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.feature.calendar.components.CalendarHeader
 import com.sandy.memorizingvoca.ui.feature.calendar.components.CalendarPagerView
 import com.sandy.memorizingvoca.ui.feature.calendar.components.CalendarTopBar
@@ -90,7 +89,6 @@ private fun CalendarScreen(
     onCalendarFractionChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val haptic = LocalHapticFeedback.current
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -101,8 +99,7 @@ private fun CalendarScreen(
             year = calendar.year,
             month = calendar.month,
             dayOfWeeks = dayOfWeeks,
-            onTodayButtonClick = {
-                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+            onTodayButtonClick = clickEffect {
                 onDateSelect(today)
             },
         )
