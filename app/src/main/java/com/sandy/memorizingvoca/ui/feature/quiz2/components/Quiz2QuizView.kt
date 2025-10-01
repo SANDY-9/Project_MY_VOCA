@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +43,7 @@ import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink40
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape10
+import com.sandy.memorizingvoca.utils.rememberAnswerEffectManager
 
 @Composable
 internal fun Quiz2QuizView(
@@ -54,6 +56,15 @@ internal fun Quiz2QuizView(
     modifier: Modifier = Modifier,
 ) {
     val haptic = LocalHapticFeedback.current
+    val answerEffectManager = rememberAnswerEffectManager()
+    LaunchedEffect(status) {
+        if(status == GameSetStatus.INCORRECTED) {
+            answerEffectManager.vibrate(duration = 350L)
+        }
+        if(status == GameSetStatus.CORRECTED) {
+            answerEffectManager.playSound()
+        }
+    }
     FlowRow (
         modifier = modifier
             .fillMaxSize()

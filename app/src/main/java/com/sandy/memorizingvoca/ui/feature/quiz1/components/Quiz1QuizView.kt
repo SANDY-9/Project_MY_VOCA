@@ -44,6 +44,7 @@ import com.sandy.memorizingvoca.ui.theme.Pink40
 import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape16
+import com.sandy.memorizingvoca.utils.rememberAnswerEffectManager
 import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
@@ -57,9 +58,16 @@ internal fun Quiz1QuizView(
     modifier: Modifier = Modifier,
 ) {
     val ttsManager = rememberTTSManager()
+    val answerEffectManager = rememberAnswerEffectManager()
     LaunchedEffect(quiz1Status) {
         if(quiz1Status != Quiz1Status.NONE) {
             ttsManager.speak(questionWord)
+        }
+        if (quiz1Status == Quiz1Status.CORRECT) {
+            answerEffectManager.playSound()
+        }
+        if (quiz1Status == Quiz1Status.INCORRECT) {
+            answerEffectManager.vibrate()
         }
     }
     Column(

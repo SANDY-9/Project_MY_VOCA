@@ -34,3 +34,4 @@ google-services.json
 *.hprof
 app/src/main/assets/voca.txt
 app/src/main/res/font
+app/src/main/res/raw/
