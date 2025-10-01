@@ -106,7 +106,7 @@ internal class BookmarkViewModel @Inject constructor(
         try {
             // query가 숫자일 경우
             val day = query.toInt()
-            return "Day " + String.format("%02d", day) + "검색 결과"
+            return "DAY " + String.format("%02d", day) + "검색 결과"
         } catch (e: Exception) {
             // query가 숫자가 아닐 경우
             return "'$query' 검색 결과"

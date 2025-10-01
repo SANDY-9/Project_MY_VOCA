@@ -96,14 +96,17 @@ private fun ExpandCalendarItem(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 2.dp)
+            .padding(
+                bottom = 2.dp
+            )
             .background(
                 color = quiz.correctPercentage.percentageColor(),
             )
-            .clickable(onClick = onItemClick)
+            .clickable(
+                onClick = onItemClick
+            )
             .padding(
                 vertical = 2.dp,
-                horizontal = 4.dp,
             ),
         contentAlignment = Alignment.Center,
     ) {

@@ -29,7 +29,7 @@ internal fun VocaDetailsTopBar(
     onBookmarkChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val title = if(voca?.day != null) "Day " + String.format("%02d", voca.day) else ""
+    val title = if(voca?.day != null) "DAY " + String.format("%02d", voca.day) else ""
     Row(
         modifier = modifier
             .fillMaxWidth()

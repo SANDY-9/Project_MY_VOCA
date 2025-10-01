@@ -82,7 +82,7 @@ internal class Quiz1ViewModel @Inject constructor(
 
     private fun getQuiz1Title(day: Int): String {
         return when {
-            day > 0 -> "Day " + String.format("%02d", day)
+            day > 0 -> "DAY " + String.format("%02d", day)
             else -> "북마크"
         }
     }

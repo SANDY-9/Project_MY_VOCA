@@ -45,7 +45,7 @@ internal fun VocaListTopBar(
             onNavigateBack = onNavigateBack,
         )
         Text(
-            text = "Day " + String.format("%02d", day),
+            text = "DAY " + String.format("%02d", day),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
         )

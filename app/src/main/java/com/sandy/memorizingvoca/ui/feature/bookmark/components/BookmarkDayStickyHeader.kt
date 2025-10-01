@@ -13,7 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink40
-import com.sandy.memorizingvoca.ui.theme.Pink80
 
 @Composable
 internal fun BookmarkDayStickyHeader(
@@ -30,7 +29,7 @@ internal fun BookmarkDayStickyHeader(
         )
     ) {
         Text(
-            text = "Day " + String.format("%02d", day),
+            text = "DAY " + String.format("%02d", day),
             color = Color.DarkGray,
         )
         Spacer(modifier = modifier.weight(1f))
