@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
 import com.sandy.memorizingvoca.ui.extensions.singleClick
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.Pink80
@@ -56,7 +56,7 @@ fun VocaWithBookmarkCard (
                 modifier = modifier.fillMaxWidth(0.9f)
             ) {
                 Text(
-                    modifier = modifier.noRippleClickable(onClick = onSpeak),
+                    modifier = modifier.noRippleClickableNotSound(onClick = onSpeak),
                     text = word,
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp,

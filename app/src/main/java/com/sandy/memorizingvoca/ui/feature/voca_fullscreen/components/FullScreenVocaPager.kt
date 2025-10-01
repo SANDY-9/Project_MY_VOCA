@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
@@ -76,7 +77,7 @@ private fun FullScreenVocaView(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                modifier = modifier.noRippleClickable(onClick = onSpeak),
+                modifier = modifier.noRippleClickableNotSound(onClick = onSpeak),
                 text = word,
                 fontWeight = FontWeight.Black,
                 fontSize = 45.sp,

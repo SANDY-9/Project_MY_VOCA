@@ -11,25 +11,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Done
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Word
-import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
 import com.sandy.memorizingvoca.ui.theme.Pink100
-import com.sandy.memorizingvoca.ui.theme.Pink40
-import com.sandy.memorizingvoca.ui.theme.Pink80
-import com.sandy.memorizingvoca.ui.theme.roundedCornerShape4
 import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
@@ -90,7 +82,7 @@ private fun WordItem(
             )
             Spacer(modifier = modifier.width(8.dp))
             Text(
-                modifier = modifier.noRippleClickable(onClick = onSpeak),
+                modifier = modifier.noRippleClickableNotSound(onClick = onSpeak),
                 text = word,
                 fontWeight = FontWeight.Medium,
                 fontSize = 18.sp,

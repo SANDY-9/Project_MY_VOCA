@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.utils.rememberTTSManager
@@ -48,7 +48,7 @@ internal fun VocaDetailsTitleView(
                     .background(
                         color = highlightColor,
                         shape = RectangleShape
-                    ).noRippleClickable{
+                    ).noRippleClickableNotSound {
                         ttsManager.speak(word)
                     },
                 text = word,

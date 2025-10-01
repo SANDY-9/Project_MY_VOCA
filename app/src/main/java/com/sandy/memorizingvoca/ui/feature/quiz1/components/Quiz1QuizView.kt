@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.clickEffect
-import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
 import com.sandy.memorizingvoca.ui.feature.quiz1.Quiz1Status
 import com.sandy.memorizingvoca.ui.theme.DarkBlue
 import com.sandy.memorizingvoca.ui.theme.DarkRed
@@ -84,7 +84,7 @@ internal fun Quiz1QuizView(
         )
         Spacer(modifier = modifier.height(16.dp))
         Text(
-            modifier = modifier.noRippleClickable(
+            modifier = modifier.noRippleClickableNotSound (
               onClick = {
                   ttsManager.speak(questionWord)
               }
