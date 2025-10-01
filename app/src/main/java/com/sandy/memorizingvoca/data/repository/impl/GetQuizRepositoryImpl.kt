@@ -4,6 +4,7 @@ import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.data.repository.GetQuizRepository
+import com.sandy.memorizingvoca.data.room.dao.DayCount
 import com.sandy.memorizingvoca.data.room.dao.QuizDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +44,7 @@ class GetQuizRepositoryImpl @Inject constructor(
         return dao.getWrongVocaList(quizDate).flowOn(Dispatchers.IO)
     }
 
-    override fun getExistDays(): Flow<List<Int>> {
-        return dao.getExistDays()
+    override fun getAllDaysWithCount(): Flow<List<DayCount>> {
+        return dao.getAllDaysWithCount()
     }
 }

@@ -51,10 +51,11 @@ interface QuizDao {
     fun getQuizListForCalendar(): Flow<List<VocaQuiz>>
 
     @Query(
-        "SELECT DISTINCT day " +
-                "FROM voca_quiz"
+        "SELECT day, COUNT(day) as count " +
+                "FROM voca_quiz " +
+                "GROUP BY day "
     )
-    fun getExistDays(): Flow<List<Int>>
+    fun getAllDaysWithCount(): Flow<List<DayCount>>
 
     @Transaction
     @Query(
@@ -64,5 +65,9 @@ interface QuizDao {
                 "WHERE w.quizDate = :quizDate"
     )
     fun getWrongVocaList(quizDate: String): Flow<List<Vocabulary>>
-
 }
+
+data class DayCount(
+    val day: Int,
+    val count: Int
+)

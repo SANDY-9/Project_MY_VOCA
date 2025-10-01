@@ -52,7 +52,7 @@ internal fun HomeRoute(
 
 @Composable
 private fun HomeScreen(
-    days: Map<Int, Boolean>,
+    days: Map<Int, Int>,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -73,15 +73,16 @@ private fun HomeScreen(
             modifier = modifier,
             contentPadding = PaddingValues(bottom = 16.dp),
             columns = GridCells.Adaptive(70.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            days.forEach { (day, quizExist) ->
+            days.forEach { (day, count) ->
                 item(day) {
                     DayFolderCard(
-                        modifier = modifier.height(65.dp),
+                        modifier = modifier.height(75.dp),
                         day = day,
-                        exist = quizExist,
+                        count = count,
+                        exist = count != 0,
                         onItemClick = {
                             onItemClick(day)
                         },
@@ -117,7 +118,7 @@ private fun BackPressTwiceToExit(
 private fun HomeScreenPreview() {
     MemorizingVocaTheme {
         HomeScreen(
-            days = (1..10).associateWith { (it % 2 == 0) },
+            days = (1..10).associateWith { it % 2 },
             onItemClick = {},
         )
     }

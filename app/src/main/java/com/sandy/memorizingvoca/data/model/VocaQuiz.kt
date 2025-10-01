@@ -17,7 +17,7 @@ data class VocaQuiz(
     @Ignore
     val correctPercentage = (totalCount - wrongCount) * 100 / totalCount
     @Ignore
-    val quizName = if(day == 0) "북마크" else "Day"+String.format("%02d", day)
+    val quizName = if(day == 0) "북마크" else "DAY "+String.format("%02d", day)
     @Ignore
     val timeString = date.time()
 }
