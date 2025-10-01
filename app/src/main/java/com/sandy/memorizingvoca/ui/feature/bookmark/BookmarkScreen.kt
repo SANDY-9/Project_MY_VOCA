@@ -1,6 +1,5 @@
 package com.sandy.memorizingvoca.ui.feature.bookmark
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +11,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,8 +25,6 @@ import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkDaySticky
 import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkListHeader
 import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkSearchBar
 import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkTopBar
-import com.sandy.memorizingvoca.ui.theme.Gray10
-import com.sandy.memorizingvoca.ui.theme.Gray20
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.utils.rememberTTSManager
 
@@ -78,6 +77,7 @@ private fun BookmarkScreen(
     val focusRequester = remember { FocusRequester() }
 
     val ttsManager = rememberTTSManager()
+    val haptic = LocalHapticFeedback.current
 
     Column(
         modifier = modifier
@@ -144,6 +144,7 @@ private fun BookmarkScreen(
                             ttsManager.speak(voca.word)
                         },
                         onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             focusManager.clearFocus()
                             onNavigateDetails(voca.vocaId)
                         },

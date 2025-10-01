@@ -20,6 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,7 +49,9 @@ internal fun CalendarQuizListView(
             items(quizList) {
                 QuizListItem(
                     quiz = it,
-                    onItemClick = { onItemClick(it.date) },
+                    onItemClick = {
+                        onItemClick(it.date)
+                    },
                     onDeleteClick = { onDeleteItemClick(it) },
                 )
             }

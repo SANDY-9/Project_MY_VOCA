@@ -31,6 +31,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
@@ -109,9 +111,10 @@ private fun MainApp(
 private fun MyAppBottomNav(
     onItemClick: (MyAppBottomNavDestination) -> Unit,
     currentDestination: NavDestination?,
-    items: List<MyAppBottomNavDestination> = MyAppBottomNavDestination.entries,
     modifier: Modifier = Modifier,
+    items: List<MyAppBottomNavDestination> = MyAppBottomNavDestination.entries,
 ) {
+    val haptic = LocalHapticFeedback.current
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -129,7 +132,10 @@ private fun MyAppBottomNav(
                 val icon = if(selected) des.selectedIcon else des.unselectedIcon
                 Column(
                     modifier = modifier.size(55.dp).clickable {
-                        if(!selected) { onItemClick(des) }
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        if(!selected) {
+                            onItemClick(des)
+                        }
                     },
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,

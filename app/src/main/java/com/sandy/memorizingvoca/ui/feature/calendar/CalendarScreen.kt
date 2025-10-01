@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -88,6 +90,7 @@ private fun CalendarScreen(
     onCalendarFractionChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val haptic = LocalHapticFeedback.current
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -99,6 +102,7 @@ private fun CalendarScreen(
             month = calendar.month,
             dayOfWeeks = dayOfWeeks,
             onTodayButtonClick = {
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 onDateSelect(today)
             },
         )

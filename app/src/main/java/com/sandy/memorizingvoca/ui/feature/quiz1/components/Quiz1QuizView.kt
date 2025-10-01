@@ -24,6 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
@@ -118,6 +120,7 @@ private fun OptionsList(
     onOptionSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val haptic = LocalHapticFeedback.current
     Column(
         modifier = modifier.fillMaxWidth(0.85f),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -130,7 +133,10 @@ private fun OptionsList(
                 )
                 else -> OptionsItem(
                     text = option,
-                    onSelect = { onOptionSelect(index) },
+                    onSelect = {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onOptionSelect(index)
+                    },
                 )
             }
         }

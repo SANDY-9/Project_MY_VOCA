@@ -1,6 +1,5 @@
 package com.sandy.memorizingvoca.ui.feature.calendar.components
 
-import android.util.Log
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import com.sandy.memorizingvoca.data.model.Calendar
 import com.sandy.memorizingvoca.data.model.Date
@@ -152,6 +153,8 @@ internal fun CalendarPagerView(
         }
     }
 
+    val haptic = LocalHapticFeedback.current
+
     val isSmallCalendar = flexibleCalendarState.type == CalendarType.SMALL_CALENDAR
     Column(
         modifier = modifier
@@ -177,8 +180,14 @@ internal fun CalendarPagerView(
                 weekList = weekList,
                 weekIndex = if(isSmallCalendar) page else currentWeekIndex,
                 quizList = quizList,
-                onQuizItemClick = onQuizItemClick,
-                onDateSelect = onDateSelect,
+                onQuizItemClick = { id ->
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onQuizItemClick(id)
+                },
+                onDateSelect = { date ->
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onDateSelect(date)
+                },
             )
         }
         if(flexibleCalendarState.type != CalendarType.EXPANDED_CALENDAR) {
@@ -195,7 +204,10 @@ internal fun CalendarPagerView(
             ) { page ->
                 CalendarQuizListView(
                     quizList = quizList[page],
-                    onItemClick = onQuizItemClick,
+                    onItemClick = { id ->
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onQuizItemClick(id)
+                    },
                     onDeleteItemClick = onDeleteQuizClick,
                 )
             }

@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -79,6 +81,7 @@ private fun QuizResultScreen(
     modifier: Modifier = Modifier,
 ) {
     val ttsManager = rememberTTSManager()
+    val haptic = LocalHapticFeedback.current
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -116,6 +119,7 @@ private fun QuizResultScreen(
                         ttsManager.speak(voca.word)
                     },
                     onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onNavigateVocaDetails(voca.vocaId)
                     },
                     onBookmarkChange = { bookmarked ->

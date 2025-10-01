@@ -23,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
@@ -51,6 +53,7 @@ internal fun Quiz2QuizView(
     onSpeak: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val haptic = LocalHapticFeedback.current
     FlowRow (
         modifier = modifier
             .fillMaxSize()
@@ -76,6 +79,7 @@ internal fun Quiz2QuizView(
                         isAnswered = item.isAnswered,
                         onSpeak = onSpeak,
                         onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             onCardSelect(item)
                         },
                     )
@@ -85,6 +89,7 @@ internal fun Quiz2QuizView(
                         status = status,
                         isAnswered = item.isAnswered,
                         onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                             onCardSelect(item)
                         },
                     )

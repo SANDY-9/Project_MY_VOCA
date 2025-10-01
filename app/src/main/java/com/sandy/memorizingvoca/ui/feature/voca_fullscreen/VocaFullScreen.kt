@@ -10,6 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -111,6 +113,7 @@ private fun VocaFullScreen(
             }
     }
 
+    val haptic = LocalHapticFeedback.current
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -149,11 +152,13 @@ private fun VocaFullScreen(
             nextButtonEnabled = page < totalPage,
             onPrevButtonClick = {
                 scope.launch {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     pagerState.animateScrollToPage(pagerState.currentPage - 1)
                 }
             },
             onNextButtonClick = {
                 scope.launch {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
                 }
             },
