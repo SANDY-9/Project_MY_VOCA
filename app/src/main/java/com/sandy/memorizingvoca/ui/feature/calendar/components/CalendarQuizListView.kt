@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,11 +26,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.VocaQuiz
+import com.sandy.memorizingvoca.ui.common.MyTextButton
 import com.sandy.memorizingvoca.ui.extensions.percentageColor
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink100
-import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
 internal fun CalendarQuizListView(
@@ -116,15 +114,10 @@ private fun QuizListItem(
                     color = Color.Gray,
                 )
             }
-            TextButton(
+            MyTextButton(
+                title = "삭제",
                 onClick = onDeleteClick,
-            ) {
-                Text(
-                    text = "삭제",
-                    fontFamily = PyeoginGothic,
-                    color = Pink100,
-                )
-            }
+            )
         }
         HorizontalDivider(color = Gray30)
     }

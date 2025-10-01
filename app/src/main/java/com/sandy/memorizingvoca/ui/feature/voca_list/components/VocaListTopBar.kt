@@ -11,7 +11,6 @@ import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,12 +19,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sandy.memorizingvoca.ui.common.VocaBlindModeButton
+import com.sandy.memorizingvoca.ui.common.MyTextButton
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.resources.Visibility
 import com.sandy.memorizingvoca.ui.resources.VisibilityOff
 import com.sandy.memorizingvoca.ui.theme.Pink100
-import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
 internal fun VocaListTopBar(
@@ -70,39 +68,24 @@ internal fun VocaListTopBar(
         Spacer(
             modifier = modifier.weight(1f),
         )
-        TextButton (
+        MyTextButton(
+            title = "Full",
             onClick = {
                 onNavigateFullScreen(day)
             },
-        ) {
-            Text(
-                text = "Full",
-                fontFamily = PyeoginGothic,
-                color = Pink100,
-            )
-        }
-        TextButton (
+        )
+        MyTextButton(
+            title = "Quiz1",
             onClick = {
                 onNavigateQuiz1(day)
             },
-        ) {
-            Text(
-                text = "Quiz1",
-                fontFamily = PyeoginGothic,
-                color = Pink100,
-            )
-        }
-        TextButton (
+        )
+        MyTextButton(
+            title = "Quiz2",
             onClick = {
                 onNavigateQuiz2(day)
             },
-        ) {
-            Text(
-                text = "Quiz2",
-                fontFamily = PyeoginGothic,
-                color = Pink100,
-            )
-        }
+        )
         Spacer(modifier = modifier.width(8.dp))
     }
 }

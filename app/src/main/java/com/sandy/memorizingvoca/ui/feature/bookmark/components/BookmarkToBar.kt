@@ -2,16 +2,13 @@ package com.sandy.memorizingvoca.ui.feature.bookmark.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,12 +17,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sandy.memorizingvoca.ui.common.MyTextButton
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.resources.Visibility
 import com.sandy.memorizingvoca.ui.resources.VisibilityOff
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink100
-import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
 internal fun BookmarkTopBar(
@@ -78,37 +75,22 @@ internal fun BookmarkTopBar(
             Spacer(
                 modifier = modifier.weight(1f),
             )
-            TextButton(
+            MyTextButton(
+                title = "Full",
                 onClick = onNavigateFullScreen,
-            ) {
-                Text(
-                    text = "Full",
-                    fontFamily = PyeoginGothic,
-                    color = Pink100,
-                )
-            }
+            )
         }
         if(quiz1Enabled) {
-            TextButton(
+            MyTextButton(
+                title = "Quiz1",
                 onClick = onNavigateQuiz1,
-            ) {
-                Text(
-                    text = "Quiz1",
-                    fontFamily = PyeoginGothic,
-                    color = Pink100,
-                )
-            }
+            )
         }
         if(quiz2Enabled) {
-            TextButton(
+            MyTextButton(
+                title = "Quiz2",
                 onClick = onNavigateQuiz2,
-            ) {
-                Text(
-                    text = "Quiz2",
-                    fontFamily = PyeoginGothic,
-                    color = Pink100,
-                )
-            }
+            )
             Spacer(modifier = modifier.width(8.dp))
         }
     }
