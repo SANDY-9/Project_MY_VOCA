@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -29,91 +27,96 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.R
+import com.sandy.memorizingvoca.ui.extensions.clickEffect
+import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.music.components.EqualizerBackground
+import com.sandy.memorizingvoca.ui.music.components.HorizontalMusicBar
+import com.sandy.memorizingvoca.ui.music.components.PlayerContentView
+import com.sandy.memorizingvoca.ui.music.components.PlayerTimeHeader
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink100
-
 
 @Composable
 fun MiniMusicPlayer(
     modifier: Modifier = Modifier,
-    viewModel: PlayerViewModel = hiltViewModel(),
 ) {
-    MusicPlayerUI(modifier = modifier)
+    MiniMusicPlayerRoute(
+        modifier = modifier,
+    )
+}
+
+@Composable
+internal fun MiniMusicPlayerRoute(
+    viewModel: PlayerViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
+) {
+    val playerState by viewModel.playerState.collectAsStateWithLifecycle()
+    MusicPlayerUI(
+        isPlaying = playerState.isPlaying,
+        repeatMode = playerState.repeatMode,
+        dayTitle = playerState.dayTitle,
+        currentTime = playerState.currentTime,
+        totalTime = playerState.totalTime,
+        currentDuration = playerState.currentDuration,
+        onPlayingChange = viewModel::playPause,
+        onValueChange = viewModel::seekTo,
+        onNextButtonClick = viewModel::skipToNext,
+        onPrevButtonClick = viewModel::skipToPrevious,
+        onRepeatModeChange = viewModel::setRepeatMode,
+        modifier = modifier,
+    )
 }
 
 @Composable
 private fun MusicPlayerUI(
+    isPlaying: Boolean,
+    repeatMode: PlayerState.RepeatMode,
+    dayTitle: String,
+    currentDuration: Float,
+    currentTime: String,
+    totalTime: String,
+    onPlayingChange: () -> Unit,
+    onValueChange: (Float) -> Unit,
+    onNextButtonClick: () -> Unit,
+    onPrevButtonClick: () -> Unit,
+    onRepeatModeChange: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var value by remember { mutableStateOf(0.75f) }
     Box(
         modifier = modifier.fillMaxWidth()
-            .height(50.dp)
+            .height(54.dp)
             .clipToBounds()
             .background(
-                color = MaterialTheme.colorScheme.surface
+                color = MaterialTheme.colorScheme.surface,
             )
     ) {
-        EqualizerBackground(
-            modifier = modifier
-                .fillMaxHeight(0.45f)
-                .align(Alignment.BottomStart),
-        )
-        Column(
-            modifier = modifier
-        ) {
+        if(isPlaying) {
+            EqualizerBackground(
+                modifier = Modifier
+                    .fillMaxHeight(0.45f)
+                    .align(Alignment.BottomStart),
+            )
+        }
+        Column {
             HorizontalMusicBar(
-                value = value,
-                onValueChange = { value = it },
+                value = currentDuration,
+                onValueChange = onValueChange,
             )
-            Text(
-                modifier = modifier
-                    .align(Alignment.End)
-                    .padding(end = 4.dp),
-                text = "05:04",
-                fontSize = 10.sp,
-                lineHeight = 10.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color.Gray
+            PlayerTimeHeader(
+                currentTime = currentTime,
+                totalTime = totalTime,
             )
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    modifier = modifier.alignByBaseline(),
-                    text = "DAY 01",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.DarkGray,
-                )
-                Spacer(modifier = modifier.width(4.dp))
-                Icon(
-                    modifier = modifier.size(21.dp),
-                    painter = painterResource(R.drawable.repeat_one_24px),
-                    contentDescription = null,
-                    tint = Pink100,
-                )
-                Spacer(modifier = modifier.weight(1f))
-                Icon(
-                    painter = painterResource(R.drawable.skip_previous_24px),
-                    contentDescription = null,
-                    tint = Pink100,
-                )
-                Icon(
-                    painter = painterResource(R.drawable.pause_24px),
-                    contentDescription = null,
-                    tint = Pink100,
-                )
-                Icon(
-                    painter = painterResource(R.drawable.skip_next_24px),
-                    contentDescription = null,
-                    tint = Pink100,
-                )
-            }
+            PlayerContentView(
+                dayTitle = dayTitle,
+                isPlaying = isPlaying,
+                repeatMode = repeatMode,
+                onPlayingChange = clickEffect(onPlayingChange),
+                onNextButtonClick = clickEffect(onNextButtonClick),
+                onPrevButtonClick = clickEffect(onPrevButtonClick),
+                onRepeatModeChange = clickEffect(onRepeatModeChange),
+            )
         }
     }
 }
@@ -124,6 +127,18 @@ private fun MusicPlayerUI(
 @Composable
 private fun MusicPlayerUIPreview() {
     MemorizingVocaTheme {
-        MusicPlayerUI()
+        MusicPlayerUI(
+            isPlaying = true,
+            repeatMode = PlayerState.RepeatMode.REPEAT_MODE_OFF,
+            dayTitle = "DAY 01",
+            currentTime = "00:00",
+            totalTime = "05:04",
+            currentDuration = 0.5f,
+            onPlayingChange = {},
+            onValueChange = {},
+            onNextButtonClick = {},
+            onPrevButtonClick = {},
+            onRepeatModeChange = {},
+        )
     }
 }

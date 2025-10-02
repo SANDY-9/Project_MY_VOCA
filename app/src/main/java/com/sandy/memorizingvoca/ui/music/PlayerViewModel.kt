@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PlayerViewModel @Inject constructor(
+internal class PlayerViewModel @Inject constructor(
     private val mediaControllerFuture: ListenableFuture<MediaController>,
     @ApplicationContext context: Context,
 ): ViewModel() {
@@ -27,39 +27,51 @@ class PlayerViewModel @Inject constructor(
     private val _playerState = MutableStateFlow(PlayerState())
     val playerState = _playerState.asStateFlow()
 
+    private var mediaController: MediaController? = null
+    init {
+        mediaControllerFuture.addListener({
+            mediaController = mediaControllerFuture.get().apply {
+                setMediaItems(playerState.value.mediaItems)
+                addListener(playerListener)
+                repeatMode = Player.REPEAT_MODE_OFF
+                prepare()
+            }
+        }, ContextCompat.getMainExecutor(context))
+    }
+
     private val playerListener = object : Player.Listener {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             _playerState.value = playerState.value.copy(isPlaying = isPlaying)
+            when {
+                isPlaying -> startPositionUpdates()
+                else -> stopPositionUpdates()
+            }
         }
 
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
             super.onMediaItemTransition(mediaItem, reason)
+            val isRepeatModeOff = playerState.value.repeatMode.num == Player.REPEAT_MODE_OFF &&
+                    reason == Player.MEDIA_ITEM_TRANSITION_REASON_AUTO
+            if(isRepeatModeOff) {
+                seekTo(0f)
+                mediaController?.pause()
+                return
+            }
             _playerState.value = playerState.value.copy(
                 currentMediaItem = mediaItem,
                 currentMediaItemIndex = playerState.value.mediaItems.indexOfFirst { it == mediaItem },
                 totalDuration = mediaController?.duration?.coerceAtLeast(0) ?: 0
             )
         }
-    }
 
-    private var mediaController: MediaController? = null
-    init {
-        mediaControllerFuture.addListener({
-            mediaController = mediaControllerFuture.get().apply {
-                addListener(playerListener)
-                setMediaItems(playerState.value.mediaItems)
-                prepare()
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            if (playbackState == Player.STATE_READY) {
+                _playerState.value = playerState.value.copy(
+                    totalDuration = mediaController?.duration?.coerceAtLeast(0) ?: 0,
+                )
             }
-        }, ContextCompat.getMainExecutor(context))
-    }
-
-    // 재생/일시정지 토글
-    fun playPause() {
-        if (mediaController?.isPlaying == true) {
-            mediaController?.pause()
-        } else {
-            mediaController?.play()
         }
+
     }
 
     private var positionUpdateJob: Job? = null
@@ -67,34 +79,58 @@ class PlayerViewModel @Inject constructor(
         positionUpdateJob?.cancel() // 기존 작업이 있다면 취소
         positionUpdateJob = viewModelScope.launch {
             while (isActive) {
-                _playerState.value = _playerState.value.copy(
+                _playerState.value = playerState.value.copy(
                     currentPosition = mediaController?.currentPosition?.coerceAtLeast(0) ?: 0
                 )
                 delay(1000L) // 1초마다 업데이트
             }
         }
     }
+
     private fun stopPositionUpdates() {
         positionUpdateJob?.cancel()
     }
 
-    fun seekTo(position: Long) {
+    fun playPause() {
+        mediaController?.run {
+            if(isPlaying) pause() else play()
+        }
+    }
+
+    fun seekTo(value: Float) {
+        val position = (value * playerState.value.totalDuration).toLong()
+        _playerState.value = playerState.value.copy(
+            currentPosition = position
+        )
         mediaController?.seekTo(position)
     }
 
     fun skipToNext() {
+        if(playerState.value.currentMediaItemIndex == playerState.value.mediaItems.lastIndex) {
+            mediaController?.seekTo(0, 0)
+            return
+        }
         mediaController?.seekToNextMediaItem()
     }
 
     fun skipToPrevious() {
+        if(playerState.value.currentMediaItemIndex == 0) {
+            mediaController?.seekTo(playerState.value.mediaItems.lastIndex, 0)
+            return
+        }
         mediaController?.seekToPreviousMediaItem()
     }
 
-    // 반복 상태 토글
     fun setRepeatMode() {
-        // REPEAT_MODE_OFF, REPEAT_MODE_ONE, REPEAT_MODE_ALL
         val nextMode = (mediaController?.repeatMode?.plus(1))?.rem(3) ?: Player.REPEAT_MODE_OFF
         mediaController?.repeatMode = nextMode
+        _playerState.value = playerState.value.copy(
+            repeatMode = when(nextMode) {
+                Player.REPEAT_MODE_OFF -> PlayerState.RepeatMode.REPEAT_MODE_OFF
+                Player.REPEAT_MODE_ONE -> PlayerState.RepeatMode.REPEAT_MODE_ONE
+                else -> PlayerState.RepeatMode.REPEAT_MODE_ALL
+            }
+        )
     }
 
     override fun onCleared() {
@@ -102,5 +138,6 @@ class PlayerViewModel @Inject constructor(
         stopPositionUpdates()
         mediaController?.removeListener(playerListener)
         mediaController?.release()
+        MediaController.releaseFuture(mediaControllerFuture)
     }
 }

@@ -12,6 +12,10 @@ class MediaPlaybackService : MediaSessionService() {
     @Inject lateinit var exoPlayer: ExoPlayer
     @Inject lateinit var mediaSession: MediaSession
 
+    override fun onCreate() {
+        super.onCreate()
+    }
+
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession {
         return mediaSession
     }
