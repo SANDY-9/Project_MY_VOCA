@@ -1,4 +1,4 @@
-package com.sandy.memorizingvoca.ui.music
+package com.sandy.memorizingvoca.ui.music.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing

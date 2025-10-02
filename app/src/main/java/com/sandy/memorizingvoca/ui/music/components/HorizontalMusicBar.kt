@@ -1,4 +1,4 @@
-package com.sandy.memorizingvoca.ui.music
+package com.sandy.memorizingvoca.ui.music.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
@@ -23,17 +23,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.sandy.memorizingvoca.ui.theme.Gray30
-import com.sandy.memorizingvoca.ui.theme.Gray50
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink100
-import com.sandy.memorizingvoca.ui.theme.Pink40
 
 @Composable
 internal fun HorizontalMusicBar(
     value: Float,                          // 0f..1f
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
-    barColor: Color = Pink40,
+    barColor: Color = Pink100,
     trackHeight: Float = 4f,               // dp 단위 대신 Canvas에 px로 사용하므로 변환 필요하면 조정
 ) {
     // 내부에서 사용할 width(픽셀)
