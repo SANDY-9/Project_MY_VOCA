@@ -8,6 +8,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import com.google.common.util.concurrent.ListenableFuture
+import com.sandy.memorizingvoca.service.MediaPlaybackService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
@@ -21,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class PlayerViewModel @Inject constructor(
     private val mediaControllerFuture: ListenableFuture<MediaController>,
-    @ApplicationContext context: Context,
+    @ApplicationContext private val context: Context,
 ): ViewModel() {
 
     private val _playerState = MutableStateFlow(PlayerState())
@@ -160,5 +161,6 @@ internal class PlayerViewModel @Inject constructor(
         mediaController?.removeListener(playerListener)
         mediaController?.release()
         MediaController.releaseFuture(mediaControllerFuture)
+        MediaPlaybackService.destroyService(context = context)
     }
 }

@@ -10,16 +10,16 @@ import com.google.common.util.concurrent.ListenableFuture
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object ServiceModule {
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun providesExoPlayer(
         @ApplicationContext context: Context,
     ): ExoPlayer {
@@ -27,7 +27,7 @@ object ServiceModule {
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun providesMediaSession(
         @ApplicationContext context: Context,
         player: ExoPlayer,
@@ -36,7 +36,7 @@ object ServiceModule {
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun provideSessionToken(
         @ApplicationContext context: Context,
     ): SessionToken {
@@ -46,7 +46,7 @@ object ServiceModule {
 
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun provideMediaControllerFuture(
         @ApplicationContext context: Context,
         serviceToken: SessionToken,
