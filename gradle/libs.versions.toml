@@ -17,6 +17,8 @@ appcompat = "1.7.0"
 hilt = "2.54"
 kotlinxSerialization = "1.8.0"
 room = "2.8.0"
+media3Session = "1.8.0"
+media3Exoplayer = "1.8.0"
 
 [libraries]
 # test
@@ -62,6 +64,10 @@ kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-seria
 # jsoup
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 
+#media3
+androidx-media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3Session" }
+androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3Exoplayer" }
+
 [bundles]
 androidx = [
     "androidx-appcompat",
@@ -93,6 +99,10 @@ hilt = [
 room = [
     "room-runtime",
     "room-ktx",
+]
+media3 = [
+    "androidx-media3-session",
+    "androidx-media3-exoplayer"
 ]
 
 

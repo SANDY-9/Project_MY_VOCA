@@ -28,6 +28,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -59,6 +60,8 @@ dependencies {
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
+
+    implementation(libs.bundles.media3)
 
     // hilt
     implementation(libs.bundles.hilt)
