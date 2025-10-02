@@ -35,6 +35,7 @@ internal class PlayerViewModel @Inject constructor(
                 addListener(playerListener)
                 repeatMode = Player.REPEAT_MODE_OFF
                 prepare()
+                play()
             }
         }, ContextCompat.getMainExecutor(context))
     }
@@ -72,6 +73,16 @@ internal class PlayerViewModel @Inject constructor(
             }
         }
 
+        override fun onRepeatModeChanged(repeatMode: Int) {
+            super.onRepeatModeChanged(repeatMode)
+            _playerState.value = playerState.value.copy(
+                repeatMode = when(repeatMode) {
+                    Player.REPEAT_MODE_OFF -> PlayerState.RepeatMode.REPEAT_MODE_OFF
+                    Player.REPEAT_MODE_ONE -> PlayerState.RepeatMode.REPEAT_MODE_ONE
+                    else -> PlayerState.RepeatMode.REPEAT_MODE_ALL
+                }
+            )
+        }
     }
 
     private var positionUpdateJob: Job? = null
@@ -89,6 +100,23 @@ internal class PlayerViewModel @Inject constructor(
 
     private fun stopPositionUpdates() {
         positionUpdateJob?.cancel()
+    }
+
+    suspend fun initPlayer() {
+        if(mediaController?.isPlaying == true) return
+        mediaController?.run {
+            seekTo(0, 0)
+            repeatMode = Player.REPEAT_MODE_OFF
+            delay(200L)
+            play()
+        }
+    }
+
+    suspend fun closePlayer() {
+        stopPositionUpdates()
+        mediaController?.pause()
+        delay(300L)
+        mediaController?.seekTo(0, 0)
     }
 
     fun playPause() {
@@ -124,13 +152,6 @@ internal class PlayerViewModel @Inject constructor(
     fun setRepeatMode() {
         val nextMode = (mediaController?.repeatMode?.plus(1))?.rem(3) ?: Player.REPEAT_MODE_OFF
         mediaController?.repeatMode = nextMode
-        _playerState.value = playerState.value.copy(
-            repeatMode = when(nextMode) {
-                Player.REPEAT_MODE_OFF -> PlayerState.RepeatMode.REPEAT_MODE_OFF
-                Player.REPEAT_MODE_ONE -> PlayerState.RepeatMode.REPEAT_MODE_ONE
-                else -> PlayerState.RepeatMode.REPEAT_MODE_ALL
-            }
-        )
     }
 
     override fun onCleared() {

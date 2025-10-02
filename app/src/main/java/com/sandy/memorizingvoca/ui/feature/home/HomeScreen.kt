@@ -128,7 +128,9 @@ private fun HomeScreen(
                 targetOffsetX = { it },
             ),
         ) {
-            MyMiniMusicPlayer()
+            MyMiniMusicPlayer(
+                musicPlayerOn = musicPlayerOn,
+            )
         }
     }
 }
