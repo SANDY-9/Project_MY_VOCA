@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.sandy.memorizingvoca.data.repository.GetQuizRepository
 import com.sandy.memorizingvoca.data.repository.GetVocabularyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -26,5 +28,13 @@ internal class HomeViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(),
         initialValue = emptyMap(),
     )
+
+    private val _musicPlayer = MutableStateFlow(false)
+    val musicPlayer = _musicPlayer.asStateFlow()
+
+    fun onPlayerOnAndOffChange() {
+        _musicPlayer.value = !musicPlayer.value
+    }
+
 
 }

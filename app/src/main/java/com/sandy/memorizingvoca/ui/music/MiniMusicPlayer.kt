@@ -39,7 +39,7 @@ import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
-fun MiniMusicPlayer(
+fun MyMiniMusicPlayer(
     modifier: Modifier = Modifier,
 ) {
     MiniMusicPlayerRoute(
