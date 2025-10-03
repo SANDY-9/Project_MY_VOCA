@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -14,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sandy.memorizingvoca.ui.theme.Gray100
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 internal fun FullScreenButtonFooter(
@@ -37,7 +37,7 @@ internal fun FullScreenButtonFooter(
             modifier = modifier.align(Alignment.BottomStart),
             enabled = prevButtonEnabled,
             colors = ButtonDefaults.textButtonColors(
-                contentColor = Pink100,
+                contentColor = MaterialTheme.colorScheme.primary,
                 disabledContentColor = Gray100,
             ),
             onClick = onPrevButtonClick,
@@ -51,7 +51,7 @@ internal fun FullScreenButtonFooter(
             modifier = modifier.align(Alignment.BottomEnd),
             enabled = nextButtonEnabled,
             colors = ButtonDefaults.textButtonColors(
-                contentColor = Pink100,
+                contentColor = MaterialTheme.colorScheme.primary,
                 disabledContentColor = Gray100,
             ),
             onClick = onNextButtonClick,

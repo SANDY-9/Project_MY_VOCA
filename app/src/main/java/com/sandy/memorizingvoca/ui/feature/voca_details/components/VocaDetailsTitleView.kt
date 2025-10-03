@@ -20,8 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
-import com.sandy.memorizingvoca.ui.theme.Gray30
-import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
@@ -33,7 +31,7 @@ internal fun VocaDetailsTitleView(
     modifier: Modifier = Modifier,
 )  {
     val ttsManager = rememberTTSManager()
-    val highlightColor = if (highlighted) Pink80 else Color.Transparent
+    val highlightColor = if (highlighted) MaterialTheme.colorScheme.secondary else Color.Transparent
     Column(
         modifier = modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.surface),
     ) {
@@ -75,7 +73,7 @@ internal fun VocaDetailsTitleView(
         )
         Spacer(modifier = modifier.height(16.dp))
         HorizontalDivider(
-            color = Gray30,
+            color = MaterialTheme.colorScheme.outline,
         )
     }
 }

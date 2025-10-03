@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -15,14 +16,13 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.sandy.memorizingvoca.ui.theme.Pink40
 import kotlin.random.Random
 
 @Composable
 internal fun EqualizerBackground(
     barWidth: Dp = 5.dp,       // 막대 너비
     barSpacing: Dp = 4.dp,     // 막대 간격
-    barColor: Color = Pink40,
+    barColor: Color = MaterialTheme.colorScheme.tertiary,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(

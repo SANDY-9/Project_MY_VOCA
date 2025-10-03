@@ -1,43 +1,61 @@
 package com.sandy.memorizingvoca.ui.theme
 
+import android.app.Activity
 import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Pink40,
+    onSecondary = Color.LightGray,
+    onSurfaceVariant = Color.DarkGray,
+    outline = Color.DarkGray,
+    outlineVariant = DarkGray100,
+    tertiary = PinkDark40,
+    secondary = PinkDark80,
+    errorContainer = Color.DarkGray,
+    onPrimaryContainer = Gray20,
+    primaryContainer = PinkDark10,
+    surfaceVariant = Color.DarkGray,
+    scrim = PinkDark90,
+    surfaceContainer = CloudYellow,
+    onBackground = Color(0xFFFDFDFD),
+    onSurface = Color(0xFFFDFDFD),
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Pink80,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
+    primary = Pink100,
     surface = Color.White, //Pink10,
     background = Color.White,
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
+    onSecondary = Color.DarkGray,
+    onSurfaceVariant = Color.LightGray,
+    outline = Gray30,
+    primaryContainer = Pink10,
+    tertiary = Pink40,
+    secondary = Pink80,
+    scrim = Pink90,
+    errorContainer = Color.LightGray,
+    outlineVariant = Gray20,
+    surfaceVariant = Gray30,
+    onPrimaryContainer = Color.Gray,
+    surfaceContainer = PastelYellow,
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
-    */
 )
 
 @Composable
 fun MemorizingVocaTheme(
-    darkTheme: Boolean = false,
-    // Dynamic color is available on Android 12+
+    darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -49,6 +67,12 @@ fun MemorizingVocaTheme(
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
+    }
+
+    val view = LocalView.current
+    SideEffect {
+        val window = (view.context as Activity).window
+        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
     }
 
     MaterialTheme(

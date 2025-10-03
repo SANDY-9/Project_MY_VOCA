@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Word
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
-import com.sandy.memorizingvoca.ui.theme.Pink100
 import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
@@ -76,7 +76,7 @@ private fun WordItem(
         ) {
             Box(
                 modifier = modifier.size(5.dp).background(
-                    color = Pink100,
+                    color = MaterialTheme.colorScheme.primary,
                     shape = CircleShape,
                 )
             )

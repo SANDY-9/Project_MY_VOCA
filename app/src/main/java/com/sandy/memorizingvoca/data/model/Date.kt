@@ -1,8 +1,5 @@
 package com.sandy.memorizingvoca.data.model
 
-import androidx.compose.ui.graphics.Color
-import com.sandy.memorizingvoca.ui.theme.DarkBlue
-import com.sandy.memorizingvoca.ui.theme.DarkRed
 import com.sandy.memorizingvoca.utils.DateUtils
 import java.time.LocalDate
 
@@ -21,13 +18,11 @@ enum class DayOfWeek(
     val dayOfWeek: Int = 0,
     val desc: String = "",
     val fullName: String = "",
-    val color: Color = Color.DarkGray,
 ) {
     SUNDAY(
         desc = "일",
         fullName = "일요일",
         dayOfWeek = 0,
-        color = DarkRed,
     ),
     MONDAY(
         desc = "월",
@@ -58,7 +53,6 @@ enum class DayOfWeek(
         desc = "토",
         fullName = "토요일",
         dayOfWeek = 6,
-        color = DarkBlue
     );
 
     companion object {

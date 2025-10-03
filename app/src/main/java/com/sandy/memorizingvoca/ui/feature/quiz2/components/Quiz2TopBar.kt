@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.common.MyNavigationButton
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 internal fun Quiz2TopBar(
@@ -62,14 +62,14 @@ private fun ScoreView(
         Text(
             text = "정답 개수",
             fontSize = 14.sp,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onSecondary,
         )
         Spacer(modifier = modifier.width(8.dp))
         Text(
             text = "$correctCount",
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp,
-            color = Pink100,
+            color = MaterialTheme.colorScheme.primary,
         )
         Text(
             text = " / ",

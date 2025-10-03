@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,8 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Date
-import com.sandy.memorizingvoca.ui.theme.roundedCornerShape4
-import com.sandy.memorizingvoca.ui.theme.roundedCornerShape6
+import com.sandy.memorizingvoca.ui.extensions.color
 
 @Composable
 internal fun DateHeader(
@@ -25,12 +25,12 @@ internal fun DateHeader(
     modifier: Modifier = Modifier,
 ) {
     val backColor = when {
-        isToday -> if(otherMonth) Color.LightGray else date.dayOfWeek.color
+        isToday -> if(otherMonth) MaterialTheme.colorScheme.onSurfaceVariant else date.dayOfWeek.color()
         else -> Color.Transparent
     }
     val fontColor = when {
         isToday -> Color.White
-        else -> if(otherMonth) Color.LightGray else date.dayOfWeek.color
+        else -> if(otherMonth) MaterialTheme.colorScheme.onSurfaceVariant else date.dayOfWeek.color()
     }
     Box(
         modifier = modifier

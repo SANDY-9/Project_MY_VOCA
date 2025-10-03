@@ -3,6 +3,7 @@ package com.sandy.memorizingvoca.ui.common
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,7 +19,6 @@ import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.resources.Visibility
 import com.sandy.memorizingvoca.ui.resources.VisibilityOff
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 fun VocaBlindModeButton(
@@ -26,7 +26,7 @@ fun VocaBlindModeButton(
     onBlindModeChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val color = if(isBlindMode) Color.Gray else Pink100
+    val color = if(isBlindMode) Color.Gray else MaterialTheme.colorScheme.primary
     Column(
         modifier = modifier.noRippleClickable(
             onClick = {

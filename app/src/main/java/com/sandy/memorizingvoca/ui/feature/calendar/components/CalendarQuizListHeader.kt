@@ -52,7 +52,7 @@ internal fun CalendarQuizListHeader(
             )
             Spacer(modifier = modifier.width(16.dp),)
         }
-        HorizontalDivider(color = Gray30)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
     }
 }
 

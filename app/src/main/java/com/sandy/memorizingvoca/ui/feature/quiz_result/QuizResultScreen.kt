@@ -68,7 +68,7 @@ private fun QuizResultScreen(
     totalCount: Int?,
     percentage: Int?,
     date: String?,
-    incorrectedList: List<Vocabulary>,
+    incorrectedList: List<Vocabulary>?,
     blindMode: Boolean,
     onBlindModeChange: (Boolean) -> Unit,
     onNavigateBack: () -> Unit,
@@ -105,26 +105,28 @@ private fun QuizResultScreen(
                     onAllBookmarkClick = onAllBookmarkClick,
                 )
             }
-            items(incorrectedList) { voca ->
-                VocaWithBookmarkCard(
-                    word = voca.word,
-                    meaning = voca.meaning,
-                    highlighted = voca.highlighted,
-                    bookmarked = voca.bookmarked,
-                    blindMode = blindMode,
-                    onSpeak = {
-                        ttsManager.speak(voca.word)
-                    },
-                    onClick = {
-                        onNavigateVocaDetails(voca.vocaId)
-                    },
-                    onBookmarkChange = { bookmarked ->
-                        onBookmarkChange(voca, bookmarked)
-                    },
-                )
+            if(incorrectedList != null) {
+                items(incorrectedList) { voca ->
+                    VocaWithBookmarkCard(
+                        word = voca.word,
+                        meaning = voca.meaning,
+                        highlighted = voca.highlighted,
+                        bookmarked = voca.bookmarked,
+                        blindMode = blindMode,
+                        onSpeak = {
+                            ttsManager.speak(voca.word)
+                        },
+                        onClick = {
+                            onNavigateVocaDetails(voca.vocaId)
+                        },
+                        onBookmarkChange = { bookmarked ->
+                            onBookmarkChange(voca, bookmarked)
+                        },
+                    )
+                }
             }
         }
-        if(incorrectedList.isEmpty()) {
+        if(incorrectedList != null && incorrectedList.isEmpty()) {
             QuizPerfectScoreView()
         }
     }

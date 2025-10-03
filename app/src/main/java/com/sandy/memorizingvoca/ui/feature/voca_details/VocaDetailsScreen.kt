@@ -1,15 +1,12 @@
 package com.sandy.memorizingvoca.ui.feature.voca_details
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,9 +21,6 @@ import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaExampleVi
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaFamilyView
 import com.sandy.memorizingvoca.ui.feature.voca_details.components.VocaGrammarView
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink100
-import com.sandy.memorizingvoca.ui.theme.Pink80
-import com.sandy.memorizingvoca.utils.rememberTTSManager
 
 @Composable
 internal fun VocaDetailsRoute(

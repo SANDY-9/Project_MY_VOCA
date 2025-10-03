@@ -21,8 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
 import com.sandy.memorizingvoca.ui.extensions.singleClick
-import com.sandy.memorizingvoca.ui.theme.Gray30
-import com.sandy.memorizingvoca.ui.theme.Pink80
 
 @Composable
 fun VocaWithBookmarkCard (
@@ -36,7 +34,7 @@ fun VocaWithBookmarkCard (
     modifier: Modifier = Modifier,
     blindMode: Boolean = false,
 ) {
-    val highlightColor = if (highlighted) Pink80 else MaterialTheme.colorScheme.background
+    val highlightColor = if (highlighted) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.background
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -83,7 +81,7 @@ fun VocaWithBookmarkCard (
         }
         Spacer(modifier = modifier.height(16.dp))
         HorizontalDivider(
-            color = Gray30,
+            color = MaterialTheme.colorScheme.outline,
         )
     }
 }

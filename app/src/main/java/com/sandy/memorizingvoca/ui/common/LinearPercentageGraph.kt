@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -30,6 +31,8 @@ import com.sandy.memorizingvoca.ui.theme.Pink80
 fun LinearPercentageGraph(
     currentValue: Int,
     maxValue: Int,
+    graphColor: Color = MaterialTheme.colorScheme.secondary,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     modifier: Modifier = Modifier,
 ) {
     val animatedProgress by animateFloatAsState(
@@ -62,7 +65,7 @@ fun LinearPercentageGraph(
 
             drawPath(
                 path = backgroundBarPath,
-                color = Gray30,
+                color = backgroundColor,
             )
 
             // Clip progress bar to fit within the background bar
@@ -91,7 +94,7 @@ fun LinearPercentageGraph(
                 // Draw progress bar
                 drawPath(
                     path = progressBarPath,
-                    color = Pink80,
+                    color = graphColor,
                 )
 
             }

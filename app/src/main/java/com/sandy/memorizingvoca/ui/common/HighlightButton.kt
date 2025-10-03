@@ -2,6 +2,7 @@ package com.sandy.memorizingvoca.ui.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.resources.AutoFixHigh
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 fun VocaHighlightButton(
@@ -26,7 +26,7 @@ fun VocaHighlightButton(
         },
         imageVector = if(highlighted) Icons.Rounded.AutoFixHigh else Icons.Outlined.AutoFixHigh,
         contentDescription = null,
-        tint = if(highlighted) Pink100 else Color.LightGray,
+        tint = if(highlighted) MaterialTheme.colorScheme.primary else Color.LightGray,
     )
 }
 

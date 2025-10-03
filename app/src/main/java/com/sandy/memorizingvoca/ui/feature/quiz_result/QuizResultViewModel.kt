@@ -36,7 +36,7 @@ internal class QuizResultViewModel @Inject constructor(
     val incorrectedVocaList = getQuizRepository.getWrongVocaList(date).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = emptyList(),
+        initialValue = null,
     )
 
     init {
@@ -91,9 +91,9 @@ internal class QuizResultViewModel @Inject constructor(
     }
 
     fun addMultipleBookmark() = viewModelScope.launch {
-        val multipleList = incorrectedVocaList.value.filter { !it.bookmarked }.map {
+        val multipleList = incorrectedVocaList.value?.filter { !it.bookmarked }?.map {
             it.copy(bookmarked = true)
-        }
+        } ?: emptyList()
         if(multipleList.isEmpty()) return@launch
         bookmarkRepository.addMutipleBookmark(multipleList)
     }

@@ -1,10 +1,11 @@
 package com.sandy.memorizingvoca.ui.music
 
 import androidx.annotation.DrawableRes
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.media3.common.MediaItem
 import com.sandy.memorizingvoca.R
-import com.sandy.memorizingvoca.ui.theme.Pink100
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -26,24 +27,26 @@ data class PlayerState(
     enum class RepeatMode(
         val num: Int = -1,
         @DrawableRes val res: Int = -1,
-        val color : Color = Pink100,
     ) {
         REPEAT_MODE_OFF(
             num = 0,
             res = R.drawable.repeat_24px,
-            color = Color.Gray,
         ),
         REPEAT_MODE_ONE(
             num = 1,
             res = R.drawable.repeat_one_24px,
-            color = Pink100,
         ),
         REPEAT_MODE_ALL(
             num = 2,
             res = R.drawable.repeat_24px,
-            color = Pink100,
         ),
     }
+}
+
+@Composable
+internal fun PlayerState.RepeatMode.color(): Color = when(this) {
+    PlayerState.RepeatMode.REPEAT_MODE_OFF -> Color.Gray
+    else -> MaterialTheme.colorScheme.primary
 }
 
 private fun Long.formatDuration(): String {

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +23,6 @@ import com.sandy.memorizingvoca.data.model.Date
 import com.sandy.memorizingvoca.data.model.VocaQuiz
 import com.sandy.memorizingvoca.ui.extensions.clickableSelectOutline
 import com.sandy.memorizingvoca.ui.extensions.percentageColor
-import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.utils.DateUtils
 import java.time.LocalDate
@@ -75,7 +75,7 @@ internal fun NormalCalendar(
                     }
                 }
             }
-            HorizontalDivider(color = Gray30)
+            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
         }
     }
 }

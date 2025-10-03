@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.theme.Gray100
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 internal fun FullScreenPageHeader(
@@ -35,13 +35,13 @@ internal fun FullScreenPageHeader(
     ) {
         Text(
             text = "Page ",
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onSecondary,
         )
         Spacer(modifier = modifier.width(4.dp))
         Text(
             text = "$page",
             fontWeight = FontWeight.Bold,
-            color = Pink100,
+            color = MaterialTheme.colorScheme.primary,
         )
         Text(
             text = " / ",
@@ -59,7 +59,7 @@ internal fun FullScreenPageHeader(
             ),
             text = "RESET",
             fontWeight = FontWeight.Medium,
-            color = if(resetButtonEnabled) Pink100 else Gray100,
+            color = if(resetButtonEnabled) MaterialTheme.colorScheme.primary else Gray100,
         )
     }
 }

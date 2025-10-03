@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,7 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 internal fun Quiz2QuizHeader(
@@ -30,13 +30,13 @@ internal fun Quiz2QuizHeader(
     ) {
         Text(
             text = "Page ",
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onSecondary,
         )
         Spacer(modifier = modifier.width(4.dp))
         Text(
             text = "${index + 1}",
             fontWeight = FontWeight.Bold,
-            color = Pink100,
+            color = MaterialTheme.colorScheme.primary,
         )
         Text(
             text = " / ",

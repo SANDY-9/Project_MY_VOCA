@@ -24,8 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
 import com.sandy.memorizingvoca.ui.extensions.singleClick
-import com.sandy.memorizingvoca.ui.theme.Gray30
-import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
@@ -38,7 +36,7 @@ fun VocaSimpleListCard(
     onSpeak: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val highlightColor = if (highlighted) Pink80 else MaterialTheme.colorScheme.background
+    val highlightColor = if (highlighted) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.background
     Column(
         modifier = modifier
             .background(
@@ -79,7 +77,7 @@ fun VocaSimpleListCard(
             )
         }
         Spacer(modifier = modifier.height(16.dp))
-        HorizontalDivider(color = Gray30)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
     }
 }
 

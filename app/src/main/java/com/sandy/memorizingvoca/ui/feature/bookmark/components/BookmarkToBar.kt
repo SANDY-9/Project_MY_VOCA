@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +23,6 @@ import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.resources.Visibility
 import com.sandy.memorizingvoca.ui.resources.VisibilityOff
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 internal fun BookmarkTopBar(
@@ -53,7 +53,7 @@ internal fun BookmarkTopBar(
             text = "$bookmarkCount",
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
-            color = Pink100,
+            color = MaterialTheme.colorScheme.primary,
         )
         Text(
             text = ")",
@@ -70,7 +70,7 @@ internal fun BookmarkTopBar(
                     },
                 imageVector = if (blindMode) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
                 contentDescription = null,
-                tint = if (blindMode) Color.Gray else Pink100,
+                tint = if (blindMode) Color.Gray else MaterialTheme.colorScheme.primary,
             )
             Spacer(
                 modifier = modifier.weight(1f),
@@ -85,6 +85,9 @@ internal fun BookmarkTopBar(
                 title = "Quiz1",
                 onClick = onNavigateQuiz1,
             )
+            if(!quiz2Enabled) {
+                Spacer(modifier = modifier.width(8.dp))
+            }
         }
         if(quiz2Enabled) {
             MyTextButton(

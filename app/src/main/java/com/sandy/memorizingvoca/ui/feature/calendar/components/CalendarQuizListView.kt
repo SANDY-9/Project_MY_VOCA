@@ -30,6 +30,7 @@ import com.sandy.memorizingvoca.ui.extensions.percentageColor
 import com.sandy.memorizingvoca.ui.extensions.singleClick
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
+import androidx.compose.material3.MaterialTheme
 
 @Composable
 internal fun CalendarQuizListView(
@@ -106,7 +107,7 @@ private fun QuizListItem(
                             .padding(horizontal = 5.dp),
                         text = "${quiz.correctPercentage}%",
                         textAlign = TextAlign.Center,
-                        color = Color.DarkGray,
+                        color = MaterialTheme.colorScheme.onSecondary,
                     )
                 }
                 Spacer(modifier = modifier.height(4.dp))
@@ -121,7 +122,7 @@ private fun QuizListItem(
                 onClick = onDeleteClick,
             )
         }
-        HorizontalDivider(color = Gray30)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
     }
 }
 

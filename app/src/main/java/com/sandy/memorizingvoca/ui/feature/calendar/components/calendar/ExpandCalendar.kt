@@ -33,6 +33,7 @@ import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.utils.DateUtils
 import java.time.LocalDate
 import java.time.LocalDateTime
+import androidx.compose.material3.MaterialTheme
 
 @Composable
 internal fun ExpandCalendar(
@@ -81,7 +82,7 @@ internal fun ExpandCalendar(
                 }
             }
             if(week != calendar.days.lastIndex) {
-                HorizontalDivider(color = Gray30)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline)
             }
         }
     }
@@ -114,7 +115,7 @@ private fun ExpandCalendarItem(
             text = quiz.quizName,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onSecondary,
             fontSize = 12.sp,
         )
     }

@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.ExampleSentence
-import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
@@ -76,7 +75,7 @@ private fun ExampleItem(
             Text(
                 modifier = modifier.fillMaxWidth(),
                 text = AnnotatedString.fromHtml(htmlMean),
-                color = Color.DarkGray,
+                color = MaterialTheme.colorScheme.onSecondary,
                 textAlign = TextAlign.Justify,
                 style = TextStyle.Default.copy(
                     lineBreak = LineBreak.Paragraph,
@@ -87,7 +86,7 @@ private fun ExampleItem(
         }
         Spacer(modifier = modifier.height(4.dp))
         HorizontalDivider(
-            color = Gray30,
+            color = MaterialTheme.colorScheme.outline,
         )
     }
 }

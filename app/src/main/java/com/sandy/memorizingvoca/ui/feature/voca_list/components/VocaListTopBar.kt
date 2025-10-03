@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +23,6 @@ import com.sandy.memorizingvoca.ui.common.MyTextButton
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.resources.Visibility
 import com.sandy.memorizingvoca.ui.resources.VisibilityOff
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 internal fun VocaListTopBar(
@@ -56,7 +56,7 @@ internal fun VocaListTopBar(
             },
             imageVector = if(blindMode) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
             contentDescription = null,
-            tint = if(blindMode) Color.Gray else Pink100,
+            tint = if(blindMode) Color.Gray else MaterialTheme.colorScheme.primary,
         )
         Spacer(
             modifier = modifier.weight(1f),

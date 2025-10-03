@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -38,8 +39,6 @@ import com.sandy.memorizingvoca.ui.extensions.addFocusCleaner
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.theme.Gray20
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink100
-import com.sandy.memorizingvoca.ui.theme.Pink40
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape16
 
@@ -91,20 +90,20 @@ private fun BookmarkSearchTextField(
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            focusedContainerColor = Pink40,
-            unfocusedContainerColor = Gray20,
+            focusedContainerColor = MaterialTheme.colorScheme.tertiary,
+            unfocusedContainerColor = MaterialTheme.colorScheme.outlineVariant,
         ),
         textStyle = TextStyle.Default.copy(
             fontFamily = PyeoginGothic,
             fontWeight = FontWeight.Medium,
             fontSize = 18.sp,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onSecondary,
         ),
         singleLine = true,
         placeholder = {
             Text(
                 text = "단어/뜻 검색, 숫자 입력 시 Day 검색",
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontSize = 16.sp,
             )
         },
@@ -115,7 +114,7 @@ private fun BookmarkSearchTextField(
                 },
                 imageVector = Icons.Rounded.Search,
                 contentDescription = null,
-                tint = Pink100,
+                tint = MaterialTheme.colorScheme.primary,
             )
         },
         keyboardOptions = KeyboardOptions(

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,8 +23,6 @@ import com.sandy.memorizingvoca.ui.extensions.folderShape
 import com.sandy.memorizingvoca.ui.extensions.singleClick
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.PastelYellow
-import com.sandy.memorizingvoca.ui.theme.Pink10
 import com.sandy.memorizingvoca.ui.theme.Pink80
 
 @Composable
@@ -49,8 +48,19 @@ fun DayFolderCard(
                     bottom = 6.dp,
                 )
                 .folderShape(
-                    backgroundColor = if(exist) Pink80 else Gray30,
-                    folderColor = if(exist) Pink10 else PastelYellow,
+                    backgroundColor = if(exist) {
+                        MaterialTheme.colorScheme.secondary
+                    }
+                    else {
+                        MaterialTheme.colorScheme.surfaceVariant
+                    },
+                    folderColor = if(exist) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    }
+                    else {
+                        MaterialTheme.colorScheme.surfaceContainer
+                    },
+                    strokeColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 .clip(FolderShape())
                 .singleClick (onClick = onItemClick),
@@ -67,7 +77,7 @@ fun DayFolderCard(
         Text(
             text = "DAY " + String.format("%02d", day),
             fontSize = 13.sp,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onSecondary,
         )
     }
 

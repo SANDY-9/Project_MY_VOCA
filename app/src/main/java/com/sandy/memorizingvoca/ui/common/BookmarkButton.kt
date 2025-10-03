@@ -2,6 +2,7 @@ package com.sandy.memorizingvoca.ui.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.resources.Star
 import com.sandy.memorizingvoca.ui.resources.StarOutline
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 fun VocaBookmarkButton(
@@ -27,7 +27,7 @@ fun VocaBookmarkButton(
         },
         imageVector = if(bookmarked) Icons.Rounded.Star else Icons.Rounded.StarOutline,
         contentDescription = null,
-        tint = if(bookmarked) Pink100 else Color.LightGray,
+        tint = if(bookmarked) MaterialTheme.colorScheme.primary else Color.LightGray,
     )
 }
 

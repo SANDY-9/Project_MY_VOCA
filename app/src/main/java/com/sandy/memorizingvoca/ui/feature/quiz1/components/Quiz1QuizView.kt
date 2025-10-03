@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,9 +39,6 @@ import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
 import com.sandy.memorizingvoca.ui.feature.quiz1.Quiz1Status
 import com.sandy.memorizingvoca.ui.theme.DarkBlue
 import com.sandy.memorizingvoca.ui.theme.DarkRed
-import com.sandy.memorizingvoca.ui.theme.Pink100
-import com.sandy.memorizingvoca.ui.theme.Pink40
-import com.sandy.memorizingvoca.ui.theme.Pink80
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape16
 import com.sandy.memorizingvoca.utils.rememberAnswerEffectManager
@@ -80,7 +78,7 @@ internal fun Quiz1QuizView(
             text = questionNumTitle,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onSecondary,
         )
         Spacer(modifier = modifier.height(16.dp))
         Text(
@@ -154,8 +152,8 @@ private fun OptionsAnswerItem(
     isAnswered: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val backgroundColor = if(isAnswered) Pink80 else Color.LightGray
-    val borderColor = if(isAnswered) Pink100 else Color.Transparent
+    val backgroundColor = if(isAnswered) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.errorContainer
+    val borderColor = if(isAnswered) MaterialTheme.colorScheme.primary else Color.Transparent
     val textDecoration = if(isAnswered) TextDecoration.None else TextDecoration.LineThrough
     val fontWeight = if(isAnswered) FontWeight.Bold else FontWeight.Medium
     Box(
@@ -197,7 +195,7 @@ private fun OptionsItem(
             .fillMaxWidth()
             .height(60.dp)
             .background(
-                color = Pink40,
+                color = MaterialTheme.colorScheme.tertiary,
                 shape = roundedCornerShape16,
             )
             .clip(roundedCornerShape16)

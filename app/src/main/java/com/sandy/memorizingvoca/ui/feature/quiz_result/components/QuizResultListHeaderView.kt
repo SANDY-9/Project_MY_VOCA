@@ -30,9 +30,7 @@ import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
 import com.sandy.memorizingvoca.ui.resources.Visibility
 import com.sandy.memorizingvoca.ui.resources.VisibilityOff
-import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink100
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape16
 
 @Composable
@@ -61,7 +59,7 @@ internal fun QuizResultListHeaderView(
                 text = "${incorrectCount ?: 0}",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                color = Pink100,
+                color = MaterialTheme.colorScheme.primary,
             )
             Text(
                 text = ")",
@@ -77,15 +75,11 @@ internal fun QuizResultListHeaderView(
                     },
                 imageVector = if (blindMode) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
                 contentDescription = null,
-                tint = if (blindMode) Color.Gray else Pink100,
+                tint = if (blindMode) Color.Gray else MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = modifier.weight(1f))
             Box(
                 modifier = modifier
-                    .background(
-                        color = Color.White,
-                        shape = roundedCornerShape16,
-                    )
                     .border(
                         width = 1.dp,
                         color = Color.LightGray,
@@ -99,13 +93,13 @@ internal fun QuizResultListHeaderView(
             ) {
                 Text(
                     text = "전체북마크",
-                    color = Color.DarkGray,
+                    color = MaterialTheme.colorScheme.onSecondary,
                     fontWeight = FontWeight.Medium,
                 )
             }
         }
         Spacer(modifier = modifier.height(12.dp))
-        HorizontalDivider(color = Gray30)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
     }
 }
 

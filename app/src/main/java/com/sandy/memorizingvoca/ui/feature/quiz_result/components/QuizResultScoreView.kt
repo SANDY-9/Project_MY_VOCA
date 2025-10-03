@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.common.LinearPercentageGraph
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 internal fun QuizResultScoreView(
@@ -87,14 +86,14 @@ private fun ScoreView(
             text = "정답률",
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onSecondary,
         )
         Spacer(modifier = modifier.width(8.dp))
         Text(
             text = "$correctCount",
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
-            color = Pink100,
+            color = MaterialTheme.colorScheme.primary,
         )
         Text(
             text = " / ",

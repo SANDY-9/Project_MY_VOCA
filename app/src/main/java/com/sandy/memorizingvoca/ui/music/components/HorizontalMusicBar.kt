@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,14 +25,14 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 internal fun HorizontalMusicBar(
     value: Float,                          // 0f..1f
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
-    barColor: Color = Pink100,
+    barColor: Color = MaterialTheme.colorScheme.primary,
+    backColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     trackHeight: Float = 4f,               // dp 단위 대신 Canvas에 px로 사용하므로 변환 필요하면 조정
 ) {
     // 내부에서 사용할 width(픽셀)
@@ -71,7 +72,7 @@ internal fun HorizontalMusicBar(
             val trackStroke = trackHeight * density  // 트랙 높이를 px로 환산
             // 배경 트랙
             drawLine(
-                color = Gray30,
+                color = backColor,
                 start = Offset(0f, trackY),
                 end = Offset(size.width, trackY),
                 strokeWidth = trackStroke,

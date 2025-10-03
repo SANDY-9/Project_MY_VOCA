@@ -11,6 +11,12 @@ val Pink100 = Color(0xFFD0768F)
 val Pink40 = Color(0xFFF5DDE2)
 val Pink10 = Color(0xFFFFF7FA)
 
+
+val PinkDark90 = Color(0xFF753E51)
+val PinkDark80 = Color(0xFF8D5266)
+val PinkDark40 = Color(0xFF9D6E7F)
+val PinkDark10 = Color(0xFFC2A2AD)
+
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 
@@ -21,9 +27,12 @@ val Gray50 = Color(0xFFCBCBCB)
 val Gray70 = Color(0xFFBEBEBE)
 val Gray100 = Color(0xCE888888)
 
+val DarkGray100 = Color(0xCE2A2A2A)
+
 val DarkRed = Color(0xFFBE2525)
 val DarkBlue = Color(0xFF2847A2)
 val DarkBlueTransparent = Color(0xB42847A2)
 val DarkRedTransparent = Color(0x8FBE2525)
 
 val PastelYellow = Color(0xFFFFFDF6)
+val CloudYellow = Color(0xFFE7E1D6)

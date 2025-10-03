@@ -3,6 +3,7 @@ package com.sandy.memorizingvoca.ui.feature.voca_list
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,7 +16,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.feature.voca_list.components.VocaListTopBar
 import com.sandy.memorizingvoca.ui.feature.voca_list.components.VocaListView
-import com.sandy.memorizingvoca.ui.theme.Gray30
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
 @Composable
@@ -65,7 +65,7 @@ private fun VocaListScreen(
             onNavigateQuiz1 = onNavigateQuiz1,
             onNavigateQuiz2 = onNavigateQuiz2,
         )
-        HorizontalDivider(color = Gray30)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
         VocaListView(
             vocaList = vocaList,
             blindMode = blindMode,

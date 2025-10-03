@@ -1,6 +1,7 @@
 package com.sandy.memorizingvoca.ui
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.sandy.memorizingvoca.ui.feature.bookmark.navigation.BookmarkRoute
@@ -10,7 +11,6 @@ import com.sandy.memorizingvoca.ui.resources.Apps
 import com.sandy.memorizingvoca.ui.resources.Calendar
 import com.sandy.memorizingvoca.ui.resources.Star
 import com.sandy.memorizingvoca.ui.theme.Gray70
-import com.sandy.memorizingvoca.ui.theme.Pink100
 import kotlin.reflect.KClass
 
 internal enum class MyAppBottomNavDestination(
@@ -18,7 +18,6 @@ internal enum class MyAppBottomNavDestination(
     val unselectedIcon: ImageVector,
     val title: String,
     val route: KClass<*>,
-    val selectedColor: Color = Pink100,
     val unselectedColor: Color = Gray70,
 ) {
     HOME(

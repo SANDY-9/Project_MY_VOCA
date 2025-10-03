@@ -118,7 +118,7 @@ private fun MyAppBottomNav(
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
-        HorizontalDivider(color = Gray20)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         Row (
             modifier = modifier
                 .background(color = MaterialTheme.colorScheme.surface)
@@ -128,7 +128,7 @@ private fun MyAppBottomNav(
             Spacer(modifier = modifier.weight(1f))
             items.forEach { des ->
                 val selected = currentDestination.isCurrentRoute(des.route)
-                val color = if(selected) des.selectedColor else des.unselectedColor
+                val color = if(selected) MaterialTheme.colorScheme.primary else des.unselectedColor
                 val icon = if(selected) des.selectedIcon else des.unselectedIcon
                 Column(
                     modifier = modifier

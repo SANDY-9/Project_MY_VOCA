@@ -22,8 +22,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
@@ -39,7 +39,6 @@ import com.sandy.memorizingvoca.ui.feature.quiz2.VocaCardState
 import com.sandy.memorizingvoca.ui.feature.quiz2.VocaCardType
 import com.sandy.memorizingvoca.ui.theme.DarkRedTransparent
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink40
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape10
 import com.sandy.memorizingvoca.utils.rememberAnswerEffectManager
@@ -106,21 +105,24 @@ internal fun Quiz2QuizView(
     }
 }
 
-private val selectedBackgroundModifier = Modifier.background(
-    color = Pink40,
-    shape = roundedCornerShape10,
-)
+private fun Modifier.selectedBackground() = composed {
+    this.background(
+        color = MaterialTheme.colorScheme.tertiary,
+        shape = roundedCornerShape10,
+    )
+}
 
-private val unselectedBackgroundModifier = Modifier
-    .background(
-        color = Color.White,
-        shape = roundedCornerShape10,
-    )
-    .border(
-        width = 1.dp,
-        color = Color.LightGray,
-        shape = roundedCornerShape10,
-    )
+private fun Modifier.unselectedBackground() = composed {
+    this.background(
+            color = MaterialTheme.colorScheme.surface,
+            shape = roundedCornerShape10,
+        )
+        .border(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            shape = roundedCornerShape10,
+        )
+}
 
 
 @Composable
@@ -143,8 +145,8 @@ private fun VocaWordCard(
                 .padding(4.dp)
                 .fillMaxSize()
                 .then(
-                    if (selected) selectedBackgroundModifier
-                    else unselectedBackgroundModifier
+                    if (selected) Modifier.selectedBackground()
+                    else Modifier.unselectedBackground()
                 )
                 .clip(roundedCornerShape10)
                 .clickable {
@@ -160,7 +162,7 @@ private fun VocaWordCard(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 22.sp,
                 textAlign = TextAlign.Center,
-                color = Color.DarkGray,
+                color = MaterialTheme.colorScheme.onSecondary,
             )
             if(status == GameSetStatus.INCORRECTED && selected) {
                 Text(
@@ -194,8 +196,8 @@ private fun VocaMeaningCard(
                 .padding(4.dp)
                 .fillMaxSize()
                 .then(
-                    if (selected) selectedBackgroundModifier
-                    else unselectedBackgroundModifier
+                    if (selected) Modifier.selectedBackground()
+                    else Modifier.unselectedBackground()
                 )
                 .clip(roundedCornerShape10)
                 .clickable(onClick = onClick)

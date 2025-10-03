@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.sandy.memorizingvoca.data.model.VocabularyDetails
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink80
 
 internal interface VocaDetailsState {
     data object Loading: VocaDetailsState
@@ -31,7 +31,7 @@ internal fun VocaDetailsLoadingView(
         contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator(
-            color = Pink80,
+            color = MaterialTheme.colorScheme.secondary,
         )
     }
 }

@@ -11,18 +11,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.Word
-import com.sandy.memorizingvoca.ui.theme.Pink40
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape4
 
 @Composable
@@ -64,7 +62,7 @@ private fun VocaItemFlowRow(
         Box(modifier = modifier.width(56.dp)) {
             Text(
                 modifier = modifier.padding(top = 2.dp).background(
-                    color = Pink40,
+                    color = MaterialTheme.colorScheme.tertiary,
                     shape = roundedCornerShape4,
                 ).padding(horizontal = 4.dp),
                 text = title,
@@ -102,7 +100,7 @@ private fun VocaItem(
             text = title,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
-            color = Color.DarkGray,
+            color = MaterialTheme.colorScheme.onSecondary,
         )
         Text(
             modifier = modifier.alignByBaseline(),

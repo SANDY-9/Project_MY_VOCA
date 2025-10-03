@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,8 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink80
-import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import kotlinx.coroutines.delay
 
 @Composable
@@ -63,21 +62,20 @@ private fun SplashScreen(
     ) {
         Text(
             text = "영어,",
-            fontFamily = PyeoginGothic,
             fontWeight = FontWeight.Black,
             fontSize = 72.sp,
         )
         Text(
             text = "결국 단어가 8할이다",
-            fontFamily = PyeoginGothic,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
         )
         Spacer(modifier = modifier.height(16.dp))
         Text(
-            modifier = modifier.background(color = Pink80).padding(horizontal = 4.dp),
+            modifier = modifier
+                .background(color = MaterialTheme.colorScheme.secondary)
+                .padding(horizontal = 4.dp),
             text = "영어 단어 암기 프로젝트",
-            fontFamily = PyeoginGothic,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
         )

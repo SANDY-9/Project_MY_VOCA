@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,10 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.DayOfWeek
-import com.sandy.memorizingvoca.ui.theme.Gray30
+import com.sandy.memorizingvoca.ui.extensions.color
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink10
-import com.sandy.memorizingvoca.ui.theme.Pink100
 
 @Composable
 internal fun CalendarHeader(
@@ -55,7 +55,7 @@ internal fun CalendarHeader(
                     ),
                 text = "TODAY",
                 fontWeight = FontWeight.Medium,
-                color = Pink100,
+                color = MaterialTheme.colorScheme.primary,
             )
             Text(
                 modifier = modifier.align(Alignment.Center),
@@ -69,7 +69,7 @@ internal fun CalendarHeader(
             modifier = modifier
                 .fillMaxWidth()
                 .background(
-                    color = Pink10,
+                    color = MaterialTheme.colorScheme.primaryContainer,
                 )
                 .padding(
                     horizontal = 8.dp,
@@ -82,13 +82,13 @@ internal fun CalendarHeader(
                     text = dayOfWeek.desc,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Medium,
-                    color = dayOfWeek.color,
+                    color = dayOfWeek.color(),
                 )
             }
         }
         HorizontalDivider(
             modifier = modifier.padding(horizontal = 8.dp),
-            color = Gray30,
+            color = MaterialTheme.colorScheme.outline,
         )
     }
 }
