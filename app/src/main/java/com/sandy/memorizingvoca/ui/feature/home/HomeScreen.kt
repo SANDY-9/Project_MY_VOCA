@@ -4,14 +4,10 @@ import android.content.Context
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,6 +21,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,14 +37,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.ui.common.DayFolderCard
 import com.sandy.memorizingvoca.ui.common.MyTextButton
+import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.music.MyMiniMusicPlayer
+import com.sandy.memorizingvoca.ui.music.PlayerState
+import com.sandy.memorizingvoca.ui.music.PlayerViewModel
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
 @Composable
 internal fun HomeRoute(
     onAppFinish: () -> Unit,
-    onItemClick: (Int) -> Unit,
-    viewModel: HomeViewModel = hiltViewModel(),
+    onNavigateList: (Int) -> Unit,
+    playerViewModel: PlayerViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     BackPressTwiceToExit(
@@ -55,22 +56,41 @@ internal fun HomeRoute(
         onFinish = onAppFinish,
     )
 
-    val days by viewModel.days.collectAsStateWithLifecycle()
-    val musicPlayer by viewModel.musicPlayer.collectAsStateWithLifecycle()
+    val days by homeViewModel.days.collectAsStateWithLifecycle()
+    val musicPlayer by homeViewModel.musicPlayer.collectAsStateWithLifecycle()
+
+    val playerState by playerViewModel.playerState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(playerState.isPlaying) {
+        if(playerState.isPlaying) homeViewModel.onPlayerOnAndOffChange(true)
+    }
+
     HomeScreen(
         days = days,
+        playerState = playerState,
         musicPlayerOn = musicPlayer,
-        onMp3Click = viewModel::onPlayerOnAndOffChange,
-        onItemClick = onItemClick,
+        onMusicPlayerOnChange = homeViewModel::onPlayerOnAndOffChange,
+        onFolderItemClick = onNavigateList,
+        onPlayingChange = playerViewModel::playPause,
+        onDurationChange = playerViewModel::seekTo,
+        onNextButtonClick = playerViewModel::skipToNext,
+        onPrevButtonClick = playerViewModel::skipToPrevious,
+        onRepeatModeChange = playerViewModel::setRepeatMode,
     )
 }
 
 @Composable
 private fun HomeScreen(
     days: Map<Int, Int>,
+    playerState: PlayerState,
     musicPlayerOn: Boolean,
-    onMp3Click: () -> Unit,
-    onItemClick: (Int) -> Unit,
+    onMusicPlayerOnChange: (Boolean) -> Unit,
+    onFolderItemClick: (Int) -> Unit,
+    onPlayingChange: () -> Unit,
+    onDurationChange: (Float) -> Unit,
+    onNextButtonClick: () -> Unit,
+    onPrevButtonClick: () -> Unit,
+    onRepeatModeChange: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -91,7 +111,10 @@ private fun HomeScreen(
             Spacer(modifier = modifier.weight(1f))
             MyTextButton(
                 title = "♪ MP3",
-                onClick = onMp3Click,
+                onClick = clickEffect {
+                    onMusicPlayerOnChange(!musicPlayerOn)
+                    onPlayingChange()
+                },
             )
         }
         LazyVerticalGrid(
@@ -111,14 +134,14 @@ private fun HomeScreen(
                         count = count,
                         exist = count != 0,
                         onItemClick = {
-                            onItemClick(day)
+                            onFolderItemClick(day)
                         },
                     )
                 }
             }
         }
         AnimatedVisibility(
-            visible = musicPlayerOn,
+            visible = musicPlayerOn ?: false,
             enter = slideInHorizontally(
                 initialOffsetX = { it },
             ) + fadeIn(
@@ -129,7 +152,13 @@ private fun HomeScreen(
             ),
         ) {
             MyMiniMusicPlayer(
-                musicPlayerOn = musicPlayerOn,
+                playerState = playerState,
+                onPlayingChange = onPlayingChange,
+                onDurationChange = onDurationChange,
+                onNextButtonClick = onNextButtonClick,
+                onPrevButtonClick = onPrevButtonClick,
+                onRepeatModeChange = onRepeatModeChange,
+                onDismiss = { onMusicPlayerOnChange(false) },
             )
         }
     }
@@ -162,8 +191,14 @@ private fun HomeScreenPreview() {
         HomeScreen(
             days = (1..10).associateWith { it % 2 },
             musicPlayerOn = true,
-            onMp3Click = {},
-            onItemClick = {},
+            playerState = PlayerState(),
+            onMusicPlayerOnChange = {},
+            onFolderItemClick = {},
+            onPlayingChange = {},
+            onDurationChange = {},
+            onNextButtonClick = {},
+            onPrevButtonClick = {},
+            onRepeatModeChange = {},
         )
     }
 }

@@ -58,7 +58,7 @@ internal fun MyAppNavGraph(
 
         homeScreen(
             onAppFinish = onAppFinish,
-            onDayItemClick = navController::navigateToList
+            onNavigateList = navController::navigateToList
         )
 
         vocaListScreen(

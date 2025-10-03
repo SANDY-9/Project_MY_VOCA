@@ -32,9 +32,8 @@ internal class HomeViewModel @Inject constructor(
     private val _musicPlayer = MutableStateFlow(false)
     val musicPlayer = _musicPlayer.asStateFlow()
 
-    fun onPlayerOnAndOffChange() {
-        _musicPlayer.value = !musicPlayer.value
+    fun onPlayerOnAndOffChange(on: Boolean) {
+        _musicPlayer.value = on
     }
-
 
 }

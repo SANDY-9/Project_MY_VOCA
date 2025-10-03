@@ -8,7 +8,7 @@ import com.sandy.memorizingvoca.ui.theme.Pink100
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-internal data class PlayerState(
+data class PlayerState(
     val isPlaying: Boolean = false,
     val repeatMode: RepeatMode = RepeatMode.REPEAT_MODE_OFF,
     val currentPosition: Long = 0,
@@ -23,7 +23,7 @@ internal data class PlayerState(
     val currentDuration: Float = if(totalDuration == 0L) 0f else ( currentPosition.toFloat() / totalDuration.toFloat() )
     val totalTime: String = totalDuration.formatDuration()
     val dayTitle: String = "DAY " + String.format(Locale.ENGLISH, "%02d", currentMediaItemIndex + 1)
-    internal enum class RepeatMode(
+    enum class RepeatMode(
         val num: Int = -1,
         @DrawableRes val res: Int = -1,
         val color : Color = Pink100,

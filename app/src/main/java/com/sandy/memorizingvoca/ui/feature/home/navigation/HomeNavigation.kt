@@ -14,12 +14,12 @@ fun NavController.navigateToHome(navOptions: NavOptions) = navigate(route = Home
 
 fun NavGraphBuilder.homeScreen(
     onAppFinish: () -> Unit,
-    onDayItemClick: (Int) -> Unit,
+    onNavigateList: (Int) -> Unit,
 ) {
     composable<HomeRoute> {
         HomeRoute(
             onAppFinish = onAppFinish,
-            onItemClick = onDayItemClick,
+            onNavigateList = onNavigateList,
         )
     }
 }

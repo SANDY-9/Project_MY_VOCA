@@ -38,7 +38,6 @@ internal class PlayerViewModel @Inject constructor(
                 addListener(playerListener)
                 repeatMode = Player.REPEAT_MODE_OFF
                 prepare()
-                play()
             }
         }, ContextCompat.getMainExecutor(context))
     }

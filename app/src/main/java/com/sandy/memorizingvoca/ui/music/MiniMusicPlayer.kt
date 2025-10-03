@@ -4,67 +4,81 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.music.components.EqualizerBackground
 import com.sandy.memorizingvoca.ui.music.components.HorizontalMusicBar
 import com.sandy.memorizingvoca.ui.music.components.PlayerContentView
 import com.sandy.memorizingvoca.ui.music.components.PlayerTimeHeader
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import kotlinx.coroutines.delay
 
 @Composable
 fun MyMiniMusicPlayer(
-    musicPlayerOn: Boolean,
+    playerState: PlayerState,
+    onPlayingChange: () -> Unit,
+    onDurationChange: (Float) -> Unit,
+    onNextButtonClick: () -> Unit,
+    onPrevButtonClick: () -> Unit,
+    onRepeatModeChange: () -> Unit,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    MiniMusicPlayerRoute(
-        musicPlayerOn = musicPlayerOn,
-        modifier = modifier,
-    )
-}
-
-@Composable
-internal fun MiniMusicPlayerRoute(
-    musicPlayerOn: Boolean,
-    viewModel: PlayerViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier,
-) {
-    LaunchedEffect(musicPlayerOn) {
-        if(musicPlayerOn) {
-            viewModel.initPlayer()
-        }
-        else {
-            viewModel.closePlayer()
+    var swipeState by remember { mutableStateOf(SwipeToDismissBoxValue.Settled) }
+    LaunchedEffect(swipeState) {
+        if(swipeState == SwipeToDismissBoxValue.StartToEnd) {
+            onDismiss()
         }
     }
-    val playerState by viewModel.playerState.collectAsStateWithLifecycle()
-    MusicPlayerUI(
-        isPlaying = playerState.isPlaying,
-        repeatMode = playerState.repeatMode,
-        dayTitle = playerState.dayTitle,
-        currentTime = playerState.currentTime,
-        totalTime = playerState.totalTime,
-        currentDuration = playerState.currentDuration,
-        onPlayingChange = viewModel::playPause,
-        onValueChange = viewModel::seekTo,
-        onNextButtonClick = viewModel::skipToNext,
-        onPrevButtonClick = viewModel::skipToPrevious,
-        onRepeatModeChange = viewModel::setRepeatMode,
-        modifier = modifier,
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = {
+            swipeState = it
+            it == SwipeToDismissBoxValue.StartToEnd
+        }
     )
+    SwipeToDismissBox(
+        state = dismissState,
+        enableDismissFromEndToStart = false,
+        backgroundContent = {
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent),
+            )
+        }
+    ) {
+        MusicPlayerUI(
+            isPlaying = playerState.isPlaying,
+            repeatMode = playerState.repeatMode,
+            dayTitle = playerState.dayTitle,
+            currentDuration = playerState.currentDuration,
+            currentTime = playerState.currentTime,
+            totalTime = playerState.totalTime,
+            onPlayingChange = onPlayingChange,
+            onDurationChange = onDurationChange,
+            onNextButtonClick = onNextButtonClick,
+            onPrevButtonClick = onPrevButtonClick,
+            onRepeatModeChange = onRepeatModeChange,
+            modifier = modifier,
+        )
+    }
 }
 
 @Composable
@@ -76,14 +90,15 @@ private fun MusicPlayerUI(
     currentTime: String,
     totalTime: String,
     onPlayingChange: () -> Unit,
-    onValueChange: (Float) -> Unit,
+    onDurationChange: (Float) -> Unit,
     onNextButtonClick: () -> Unit,
     onPrevButtonClick: () -> Unit,
     onRepeatModeChange: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .height(54.dp)
             .clipToBounds()
             .background(
@@ -100,7 +115,7 @@ private fun MusicPlayerUI(
         Column {
             HorizontalMusicBar(
                 value = currentDuration,
-                onValueChange = onValueChange,
+                onValueChange = onDurationChange,
             )
             PlayerTimeHeader(
                 currentTime = currentTime,
@@ -133,7 +148,7 @@ private fun MusicPlayerUIPreview() {
             totalTime = "05:04",
             currentDuration = 0.5f,
             onPlayingChange = {},
-            onValueChange = {},
+            onDurationChange = {},
             onNextButtonClick = {},
             onPrevButtonClick = {},
             onRepeatModeChange = {},
