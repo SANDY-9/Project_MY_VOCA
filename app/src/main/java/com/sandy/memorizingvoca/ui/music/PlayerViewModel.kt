@@ -1,12 +1,14 @@
 package com.sandy.memorizingvoca.ui.music
 
 import android.content.Context
+import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
+import androidx.media3.session.SessionCommand
 import com.google.common.util.concurrent.ListenableFuture
 import com.sandy.memorizingvoca.service.MediaPlaybackService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -106,6 +108,7 @@ internal class PlayerViewModel @Inject constructor(
     suspend fun initPlayer() {
         if(mediaController?.isPlaying == true) return
         mediaController?.run {
+            prepare()
             seekTo(0, 0)
             repeatMode = Player.REPEAT_MODE_OFF
             delay(200L)
@@ -113,11 +116,13 @@ internal class PlayerViewModel @Inject constructor(
         }
     }
 
-    suspend fun closePlayer() {
+    fun closePlayer() {
         stopPositionUpdates()
-        mediaController?.pause()
-        delay(300L)
-        mediaController?.seekTo(0, 0)
+        val sessionCommand = SessionCommand(
+            MediaPlaybackService.ACTION_CLOSE_PLAYER_AND_NOTIFICATION,
+            Bundle.EMPTY,
+        )
+        mediaController?.sendCustomCommand(sessionCommand, Bundle.EMPTY)
     }
 
     fun playPause() {

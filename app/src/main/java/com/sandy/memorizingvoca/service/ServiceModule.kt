@@ -2,9 +2,7 @@ package com.sandy.memorizingvoca.service
 
 import android.content.ComponentName
 import android.content.Context
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaController
-import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.Module
@@ -17,23 +15,6 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Module
 @InstallIn(ViewModelComponent::class)
 object ServiceModule {
-
-    @Provides
-    @ViewModelScoped
-    fun providesExoPlayer(
-        @ApplicationContext context: Context,
-    ): ExoPlayer {
-        return ExoPlayer.Builder(context).build()
-    }
-
-    @Provides
-    @ViewModelScoped
-    fun providesMediaSession(
-        @ApplicationContext context: Context,
-        player: ExoPlayer,
-    ): MediaSession {
-        return MediaSession.Builder(context, player).build()
-    }
 
     @Provides
     @ViewModelScoped
