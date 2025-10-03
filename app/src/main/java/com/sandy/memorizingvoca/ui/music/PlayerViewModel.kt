@@ -34,10 +34,22 @@ internal class PlayerViewModel @Inject constructor(
     init {
         mediaControllerFuture.addListener({
             mediaController = mediaControllerFuture.get().apply {
-                setMediaItems(playerState.value.mediaItems)
+                if(mediaItemCount == 0) {
+                    setMediaItems(playerState.value.mediaItems)
+                    repeatMode = Player.REPEAT_MODE_OFF
+                    prepare()
+                }
+                else {
+                    _playerState.value = PlayerState(
+                        isPlaying = isPlaying,
+                        repeatMode = repeatMode.state(),
+                        currentPosition = currentPosition,
+                        totalDuration = duration,
+                        currentMediaItemIndex = currentMediaItemIndex,
+                        currentMediaItem = currentMediaItem,
+                    )
+                }
                 addListener(playerListener)
-                repeatMode = Player.REPEAT_MODE_OFF
-                prepare()
             }
         }, ContextCompat.getMainExecutor(context))
     }
@@ -78,12 +90,16 @@ internal class PlayerViewModel @Inject constructor(
         override fun onRepeatModeChanged(repeatMode: Int) {
             super.onRepeatModeChanged(repeatMode)
             _playerState.value = playerState.value.copy(
-                repeatMode = when(repeatMode) {
-                    Player.REPEAT_MODE_OFF -> PlayerState.RepeatMode.REPEAT_MODE_OFF
-                    Player.REPEAT_MODE_ONE -> PlayerState.RepeatMode.REPEAT_MODE_ONE
-                    else -> PlayerState.RepeatMode.REPEAT_MODE_ALL
-                }
+                repeatMode = repeatMode.state()
             )
+        }
+    }
+
+    private fun Int.state(): PlayerState.RepeatMode {
+        return when(this) {
+            Player.REPEAT_MODE_OFF -> PlayerState.RepeatMode.REPEAT_MODE_OFF
+            Player.REPEAT_MODE_ONE -> PlayerState.RepeatMode.REPEAT_MODE_ONE
+            else -> PlayerState.RepeatMode.REPEAT_MODE_ALL
         }
     }
 
@@ -126,7 +142,13 @@ internal class PlayerViewModel @Inject constructor(
 
     fun playPause() {
         mediaController?.run {
-            if(isPlaying) pause() else play()
+            if(isPlaying) {
+                pause()
+            }
+            else {
+                prepare()
+                play()
+            }
         }
     }
 
