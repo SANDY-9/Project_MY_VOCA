@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sandy.memorizingvoca.data.model.VocabularyDetails
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
-internal interface VocaDetailsState {
+internal sealed interface VocaDetailsState {
     data object Loading: VocaDetailsState
     data class Success(val details: VocabularyDetails): VocaDetailsState
     data object Fail: VocaDetailsState

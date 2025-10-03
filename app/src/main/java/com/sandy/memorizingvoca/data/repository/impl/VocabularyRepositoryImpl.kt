@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class VocabularyRepositoryImpl @Inject constructor(
+internal class VocabularyRepositoryImpl @Inject constructor(
     private val dao: VocabularyDao,
 ): VocabularyRepository {
     override suspend fun addVocabularyList(vocaList: List<Vocabulary>) = withContext(Dispatchers.IO) {

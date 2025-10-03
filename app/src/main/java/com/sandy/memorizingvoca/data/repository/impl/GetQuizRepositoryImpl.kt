@@ -15,7 +15,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
 
-class GetQuizRepositoryImpl @Inject constructor(
+internal class GetQuizRepositoryImpl @Inject constructor(
     private val dao: QuizDao,
 ) : GetQuizRepository {
 

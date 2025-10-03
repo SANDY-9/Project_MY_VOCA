@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class BookmarkRepositoryImpl @Inject constructor(
+internal class BookmarkRepositoryImpl @Inject constructor(
     private val dao: VocabularyDao,
 ) : BookmarkRepository {
 

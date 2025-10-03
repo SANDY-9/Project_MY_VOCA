@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class QuizRepositoryImpl @Inject constructor(
+internal class QuizRepositoryImpl @Inject constructor(
     private val dao: QuizDao
 ) : QuizRepository {
     override suspend fun addNewQuizResult(

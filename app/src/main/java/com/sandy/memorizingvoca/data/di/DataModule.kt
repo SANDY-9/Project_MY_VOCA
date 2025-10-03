@@ -21,7 +21,7 @@ import dagger.hilt.components.SingletonComponent
 
 @InstallIn(SingletonComponent::class)
 @Module
-abstract class DataModule {
+internal abstract class DataModule {
 
     @Binds
     abstract fun bindsBookmarkRepository(

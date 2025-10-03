@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class HighlightRepositoryImpl @Inject constructor(
+internal class HighlightRepositoryImpl @Inject constructor(
     private val dao: VocabularyDao,
 ) : HighlightRepository {
     override fun getHighlightList(day: Int): Flow<Map<Int, List<Vocabulary>>> {

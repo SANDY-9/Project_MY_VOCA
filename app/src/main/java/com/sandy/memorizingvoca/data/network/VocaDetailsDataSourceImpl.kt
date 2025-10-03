@@ -7,7 +7,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import javax.inject.Inject
 
-class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
+internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
 
     override suspend fun getVocabularyDetails(word: String): VocabularyDetails {
         val doc = getDocumentVocaDetails(word.toQuery())

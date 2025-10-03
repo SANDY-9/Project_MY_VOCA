@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GetVocabularyRepositoryImpl @Inject constructor(
+internal class GetVocabularyRepositoryImpl @Inject constructor(
     private val dao: VocabularyDao,
     private val vocaDetailsDataSource: VocaDetailsDataSource,
 ) : GetVocabularyRepository {
