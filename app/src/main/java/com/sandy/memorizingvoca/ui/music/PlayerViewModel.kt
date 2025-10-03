@@ -1,14 +1,12 @@
 package com.sandy.memorizingvoca.ui.music
 
 import android.content.Context
-import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
-import androidx.media3.session.SessionCommand
 import com.google.common.util.concurrent.ListenableFuture
 import com.sandy.memorizingvoca.service.MediaPlaybackService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,26 +30,32 @@ internal class PlayerViewModel @Inject constructor(
 
     private var mediaController: MediaController? = null
     init {
-        mediaControllerFuture.addListener({
-            mediaController = mediaControllerFuture.get().apply {
-                if(mediaItemCount == 0) {
-                    setMediaItems(playerState.value.mediaItems)
-                    repeatMode = Player.REPEAT_MODE_OFF
-                    prepare()
-                }
-                else {
-                    _playerState.value = PlayerState(
-                        isPlaying = isPlaying,
-                        repeatMode = repeatMode.state(),
-                        currentPosition = currentPosition,
-                        totalDuration = duration,
-                        currentMediaItemIndex = currentMediaItemIndex,
-                        currentMediaItem = currentMediaItem,
-                    )
-                }
-                addListener(playerListener)
+        mediaControllerFuture.addListener(
+            { mediaController = mediaControllerFuture.get().setupPlayer() },
+            ContextCompat.getMainExecutor(context)
+        )
+    }
+
+    private fun MediaController.setupPlayer(): MediaController = this.apply {
+        if(mediaItemCount == 0) {
+            setMediaItems(playerState.value.mediaItems)
+            repeatMode = Player.REPEAT_MODE_OFF
+            prepare()
+        }
+        else {
+            _playerState.value = PlayerState(
+                isPlaying = isPlaying,
+                repeatMode = repeatMode.state(),
+                currentPosition = currentPosition,
+                totalDuration = duration,
+                currentMediaItemIndex = currentMediaItemIndex,
+                currentMediaItem = currentMediaItem,
+            )
+            if(isPlaying) {
+                startPositionUpdates()
             }
-        }, ContextCompat.getMainExecutor(context))
+        }
+        addListener(playerListener)
     }
 
     private val playerListener = object : Player.Listener {
@@ -120,24 +124,23 @@ internal class PlayerViewModel @Inject constructor(
         positionUpdateJob?.cancel()
     }
 
-    suspend fun initPlayer() {
+    suspend fun openPlayer() {
         if(mediaController?.isPlaying == true) return
         mediaController?.run {
             prepare()
             seekTo(0, 0)
-            repeatMode = Player.REPEAT_MODE_OFF
             delay(200L)
             play()
         }
     }
 
-    fun closePlayer() {
-        stopPositionUpdates()
-        val sessionCommand = SessionCommand(
-            MediaPlaybackService.ACTION_CLOSE_PLAYER_AND_NOTIFICATION,
-            Bundle.EMPTY,
-        )
-        mediaController?.sendCustomCommand(sessionCommand, Bundle.EMPTY)
+    suspend fun closePlayer() {
+        if(mediaController?.isPlaying == false) return
+        mediaController?.run {
+            delay(200L)
+            stop()
+            seekTo(0, 0)
+        }
     }
 
     fun playPause() {

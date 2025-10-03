@@ -57,25 +57,33 @@ internal fun HomeRoute(
     )
 
     val days by homeViewModel.days.collectAsStateWithLifecycle()
-    val musicPlayer by homeViewModel.musicPlayer.collectAsStateWithLifecycle()
+    val musicPlayerOn by homeViewModel.musicPlayer.collectAsStateWithLifecycle()
 
     val playerState by playerViewModel.playerState.collectAsStateWithLifecycle()
 
     LaunchedEffect(playerState.isPlaying) {
-        if(playerState.isPlaying) homeViewModel.onPlayerOnAndOffChange(true)
+        if(playerState.isPlaying) {
+            homeViewModel.onPlayerOnAndOffChange(true)
+        }
     }
 
+    LaunchedEffect(musicPlayerOn) {
+        when {
+            musicPlayerOn -> playerViewModel.openPlayer()
+            else -> playerViewModel.closePlayer()
+        }
+    }
     HomeScreen(
         days = days,
         playerState = playerState,
-        musicPlayerOn = musicPlayer,
+        musicPlayerOn = musicPlayerOn,
         onMusicPlayerOnChange = homeViewModel::onPlayerOnAndOffChange,
-        onFolderItemClick = onNavigateList,
         onPlayingChange = playerViewModel::playPause,
         onDurationChange = playerViewModel::seekTo,
         onNextButtonClick = playerViewModel::skipToNext,
         onPrevButtonClick = playerViewModel::skipToPrevious,
         onRepeatModeChange = playerViewModel::setRepeatMode,
+        onFolderItemClick = onNavigateList,
     )
 }
 
@@ -113,7 +121,6 @@ private fun HomeScreen(
                 title = "♪ MP3",
                 onClick = clickEffect {
                     onMusicPlayerOnChange(!musicPlayerOn)
-                    onPlayingChange()
                 },
             )
         }
