@@ -126,8 +126,8 @@ private fun MusicPlayerUI(
                 isPlaying = isPlaying,
                 repeatMode = repeatMode,
                 onPlayingChange = clickEffect(onPlayingChange),
-                onNextButtonClick = clickEffect(onNextButtonClick),
-                onPrevButtonClick = clickEffect(onPrevButtonClick),
+                onNextButtonClick = onNextButtonClick,
+                onPrevButtonClick = onPrevButtonClick,
                 onRepeatModeChange = clickEffect(onRepeatModeChange),
             )
         }

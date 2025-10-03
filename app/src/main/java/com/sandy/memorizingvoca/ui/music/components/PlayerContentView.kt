@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.music.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,8 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.R
-import com.sandy.memorizingvoca.ui.extensions.clickEffect
-import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
+import com.sandy.memorizingvoca.ui.extensions.longPressClickable
 import com.sandy.memorizingvoca.ui.music.PlayerState
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.Pink100
@@ -64,9 +64,12 @@ internal fun PlayerContentView(
             )
         }
         Spacer(modifier = modifier.weight(1f))
-        IconButton(
-            modifier = modifier.size(30.dp),
-            onClick = onPrevButtonClick,
+        Box(
+            modifier = modifier.size(30.dp).longPressClickable(
+                onClick = onPrevButtonClick,
+                onLongPress = onPrevButtonClick,
+            ),
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
                 painter = painterResource(R.drawable.skip_previous_24px),
@@ -87,9 +90,12 @@ internal fun PlayerContentView(
                 tint = Pink100,
             )
         }
-        IconButton(
-            modifier = modifier.size(30.dp),
-            onClick = onNextButtonClick,
+        Box(
+            modifier = modifier.size(30.dp).longPressClickable(
+                onClick = onNextButtonClick,
+                onLongPress = onNextButtonClick,
+            ),
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
                 painter = painterResource(R.drawable.skip_next_24px),

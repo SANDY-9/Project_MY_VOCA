@@ -60,7 +60,10 @@ internal class PlayerViewModel @Inject constructor(
 
     private val playerListener = object : Player.Listener {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
-            _playerState.value = playerState.value.copy(isPlaying = isPlaying)
+            val isBuffering = mediaController?.playbackState == Player.STATE_BUFFERING
+            _playerState.value = playerState.value.copy(
+                isPlaying = if(isBuffering) playerState.value.isPlaying else isPlaying
+            )
             when {
                 isPlaying -> startPositionUpdates()
                 else -> stopPositionUpdates()
@@ -79,7 +82,6 @@ internal class PlayerViewModel @Inject constructor(
             _playerState.value = playerState.value.copy(
                 currentMediaItem = mediaItem,
                 currentMediaItemIndex = playerState.value.mediaItems.indexOfFirst { it == mediaItem },
-                totalDuration = mediaController?.duration?.coerceAtLeast(0) ?: 0
             )
         }
 
@@ -143,15 +145,12 @@ internal class PlayerViewModel @Inject constructor(
         }
     }
 
-    fun playPause() {
-        mediaController?.run {
-            if(isPlaying) {
-                pause()
-            }
-            else {
-                prepare()
-                play()
-            }
+    fun playPause() = mediaController?.run {
+        if (isPlaying) {
+            pause()
+        } else {
+            prepare()
+            play()
         }
     }
 
@@ -163,20 +162,22 @@ internal class PlayerViewModel @Inject constructor(
         mediaController?.seekTo(position)
     }
 
-    fun skipToNext() {
-        if(playerState.value.currentMediaItemIndex == playerState.value.mediaItems.lastIndex) {
+    fun skipToNext() = mediaController?.run {
+        seekTo(0f)
+        if (playerState.value.currentMediaItemIndex == playerState.value.mediaItems.lastIndex) {
             mediaController?.seekTo(0, 0)
-            return
+            return@run
         }
-        mediaController?.seekToNextMediaItem()
+        seekToNextMediaItem()
     }
 
-    fun skipToPrevious() {
+    fun skipToPrevious() = mediaController?.run {
+        seekTo(0f)
         if(playerState.value.currentMediaItemIndex == 0) {
-            mediaController?.seekTo(playerState.value.mediaItems.lastIndex, 0)
-            return
+            seekTo(playerState.value.mediaItems.lastIndex, 0)
+            return@run
         }
-        mediaController?.seekToPreviousMediaItem()
+        seekToPreviousMediaItem()
     }
 
     fun setRepeatMode() {
