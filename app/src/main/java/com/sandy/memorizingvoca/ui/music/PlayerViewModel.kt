@@ -40,7 +40,6 @@ internal class PlayerViewModel @Inject constructor(
         if(mediaItemCount == 0) {
             setMediaItems(playerState.value.mediaItems)
             repeatMode = Player.REPEAT_MODE_OFF
-            prepare()
         }
         else {
             _playerState.value = PlayerState(
@@ -127,12 +126,14 @@ internal class PlayerViewModel @Inject constructor(
     }
 
     suspend fun openPlayer() {
-        if(mediaController?.isPlaying == true) return
         mediaController?.run {
-            prepare()
-            seekTo(0, 0)
-            delay(200L)
-            play()
+            if(isPlaying) return
+            if(playbackState == Player.STATE_IDLE) {
+                prepare()
+                seekTo(0, 0)
+                delay(200L)
+                play()
+            }
         }
     }
 
