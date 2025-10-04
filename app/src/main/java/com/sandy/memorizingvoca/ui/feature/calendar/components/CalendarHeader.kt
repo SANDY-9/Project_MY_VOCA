@@ -23,9 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.DayOfWeek
-import com.sandy.memorizingvoca.ui.extensions.color
+import com.sandy.memorizingvoca.ui.extensions.onColor
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
-import com.sandy.memorizingvoca.ui.theme.Pink10
 
 @Composable
 internal fun CalendarHeader(
@@ -82,7 +81,7 @@ internal fun CalendarHeader(
                     text = dayOfWeek.desc,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Medium,
-                    color = dayOfWeek.color(),
+                    color = dayOfWeek.onColor(),
                 )
             }
         }

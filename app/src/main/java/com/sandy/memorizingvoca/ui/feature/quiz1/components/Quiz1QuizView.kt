@@ -37,8 +37,6 @@ import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickableNotSound
 import com.sandy.memorizingvoca.ui.feature.quiz1.Quiz1Status
-import com.sandy.memorizingvoca.ui.theme.DarkBlue
-import com.sandy.memorizingvoca.ui.theme.DarkRed
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape16
 import com.sandy.memorizingvoca.utils.rememberAnswerEffectManager
@@ -152,7 +150,7 @@ private fun OptionsAnswerItem(
     isAnswered: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val backgroundColor = if(isAnswered) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.errorContainer
+    val backgroundColor = if(isAnswered) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurfaceVariant
     val borderColor = if(isAnswered) MaterialTheme.colorScheme.primary else Color.Transparent
     val textDecoration = if(isAnswered) TextDecoration.None else TextDecoration.LineThrough
     val fontWeight = if(isAnswered) FontWeight.Bold else FontWeight.Medium
@@ -228,13 +226,13 @@ private fun AnswerResultIncorrect(
                 text = "X",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = DarkRed,
+                color = MaterialTheme.colorScheme.error,
             )
             Text(
                 text = "틀렸습니다!",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
-                color = DarkRed,
+                color = MaterialTheme.colorScheme.error,
             )
         }
     }
@@ -253,13 +251,13 @@ private fun AnswerResultCorrect(
             text = "O",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = DarkBlue,
+            color = MaterialTheme.colorScheme.errorContainer,
         )
         Text(
             text = "정답입니다!",
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
-            color = DarkBlue,
+            color = MaterialTheme.colorScheme.errorContainer,
         )
     }
 }
