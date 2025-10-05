@@ -37,7 +37,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.ui.common.DayFolderCard
 import com.sandy.memorizingvoca.ui.common.MyTextButton
-import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.music.MyMiniMusicPlayer
 import com.sandy.memorizingvoca.ui.music.PlayerState
 import com.sandy.memorizingvoca.ui.music.PlayerViewModel
@@ -119,7 +118,7 @@ private fun HomeScreen(
             Spacer(modifier = modifier.weight(1f))
             MyTextButton(
                 title = "♪ MP3",
-                onClick = clickEffect {
+                onClick = {
                     onMusicPlayerOnChange(!musicPlayerOn)
                 },
             )

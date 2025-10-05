@@ -147,7 +147,7 @@ private fun BookmarkScreen(
                             focusManager.clearFocus()
                             ttsManager.speak(voca.word)
                         },
-                        onClick = clickEffect {
+                        onClick = {
                             focusManager.clearFocus()
                             onNavigateDetails(voca.vocaId)
                         },
