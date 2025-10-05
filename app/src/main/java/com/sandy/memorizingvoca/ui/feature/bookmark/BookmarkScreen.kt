@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.bookmark
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,8 +34,13 @@ internal fun BookmarkRoute(
     onNavigateQuiz1: () -> Unit,
     onNavigateQuiz2: () -> Unit,
     onNavigateDetails: (Int) -> Unit,
+    navigateBack: () -> Unit,
     viewModel: BookmarkViewModel = hiltViewModel(),
 ) {
+    BackHandler {
+        navigateBack()
+    }
+    
     val bookmarkUiState by viewModel.bookmarkUiState.collectAsStateWithLifecycle()
     BookmarkScreen(
         bookmarkCount = bookmarkUiState.bookmarkCount,

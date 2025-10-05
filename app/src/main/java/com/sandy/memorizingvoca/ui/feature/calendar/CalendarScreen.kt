@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.calendar
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -23,10 +24,13 @@ import java.time.LocalDateTime
 
 @Composable
 internal fun CalendarRoute(
-    navigateQuizResult: (String) -> Unit,
+    onNavigateQuizResult: (String) -> Unit,
+    onNavigateBack: () -> Unit,
     viewModel: CalendarViewModel = hiltViewModel(),
 ) {
-
+    BackHandler {
+        onNavigateBack()
+    }
     val uiState by viewModel.calendarUiState.collectAsStateWithLifecycle()
 
     CalendarScreen(
@@ -51,7 +55,7 @@ internal fun CalendarRoute(
         onCalendarPageChange = viewModel::onCalendarPageChange,
         onSmallCalendarPageChange = viewModel::onSmallCalendarPageChange,
         onListPageChange = viewModel::onListPageChange,
-        onQuizItemClick = navigateQuizResult,
+        onQuizItemClick = onNavigateQuizResult,
         onDeleteQuizClick = viewModel::deleteQuiz,
         onDeleteListClick = viewModel::deleteMultipleQuiz,
         onAllQuizClear = viewModel::clearCalendar,

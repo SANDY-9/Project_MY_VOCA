@@ -22,6 +22,7 @@ fun NavGraphBuilder.bookmarkScreen(
     onNavigateQuiz1: (Int) -> Unit,
     onNavigateQuiz2: (Int) -> Unit,
     onNavigateDetails: (Int) -> Unit,
+    onNavigateBack: () -> Unit,
 ) {
     composable<BookmarkRoute> {
         BookmarkRoute(
@@ -35,6 +36,7 @@ fun NavGraphBuilder.bookmarkScreen(
                 onNavigateQuiz2(BOOKMARK_DAY_NUMBER)
             },
             onNavigateDetails = onNavigateDetails,
+            navigateBack = onNavigateBack,
         )
     }
 }

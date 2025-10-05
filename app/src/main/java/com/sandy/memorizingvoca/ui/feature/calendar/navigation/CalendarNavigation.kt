@@ -11,17 +11,19 @@ import kotlinx.serialization.Serializable
 object CalendarRoute
 
 fun NavController.navigateToCalendar(
-    navOptions: NavOptions
+    navOptions: NavOptions? = null
 ) {
     navigate(route = CalendarRoute, navOptions)
 }
 
 fun NavGraphBuilder.calendarScreen(
-    navigateQuizResult: (String) -> Unit,
+    onNavigateQuizResult: (String) -> Unit,
+    onNavigateBack: () -> Unit,
 ) {
     composable<CalendarRoute> {
         CalendarRoute(
-            navigateQuizResult = navigateQuizResult,
+            onNavigateQuizResult = onNavigateQuizResult,
+            onNavigateBack = onNavigateBack,
         )
     }
 }

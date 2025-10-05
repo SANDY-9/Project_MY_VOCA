@@ -10,6 +10,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.sandy.memorizingvoca.ui.feature.bookmark.navigation.bookmarkScreen
 import com.sandy.memorizingvoca.ui.feature.calendar.navigation.calendarScreen
+import com.sandy.memorizingvoca.ui.feature.home.navigation.HomeRoute
 import com.sandy.memorizingvoca.ui.feature.home.navigation.homeScreen
 import com.sandy.memorizingvoca.ui.feature.home.navigation.navigateToHome
 import com.sandy.memorizingvoca.ui.feature.quiz1.navigation.Quiz1Route
@@ -29,11 +30,13 @@ import com.sandy.memorizingvoca.ui.feature.voca_fullscreen.navigation.vocaFullSc
 import com.sandy.memorizingvoca.ui.feature.voca_list.navigation.navigateToList
 import com.sandy.memorizingvoca.ui.feature.voca_list.navigation.vocaListScreen
 
+
 @Composable
 internal fun MyAppNavGraph(
     navController: NavHostController,
     startDestination: Any,
     onAppFinish: () -> Unit,
+    onNavigateBackTopLevel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -59,6 +62,21 @@ internal fun MyAppNavGraph(
         homeScreen(
             onAppFinish = onAppFinish,
             onNavigateList = navController::navigateToList
+        )
+
+        bookmarkScreen(
+            onNavigateFullScreen = navController::navigateToVocaFullScreen,
+            onNavigateQuiz1 = navController::navigateToQuiz1,
+            onNavigateQuiz2 = navController::navigateToQuiz2,
+            onNavigateDetails = navController::navigateToDetails,
+            onNavigateBack = onNavigateBackTopLevel,
+        )
+
+        calendarScreen(
+            onNavigateQuizResult = { date ->
+                navController.navigateToQuizResult(date, null)
+            },
+            onNavigateBack = onNavigateBackTopLevel,
         )
 
         vocaListScreen(
@@ -96,19 +114,6 @@ internal fun MyAppNavGraph(
         quizResultScreen(
             onNavigateBack = navController::navigateUp,
             onNavigateVocaDetails = navController::navigateToDetails,
-        )
-
-        bookmarkScreen(
-            onNavigateFullScreen = navController::navigateToVocaFullScreen,
-            onNavigateQuiz1 = navController::navigateToQuiz1,
-            onNavigateQuiz2 = navController::navigateToQuiz2,
-            onNavigateDetails = navController::navigateToDetails,
-        )
-
-        calendarScreen(
-            navigateQuizResult = { date ->
-                navController.navigateToQuizResult(date, null)
-            }
         )
 
     }

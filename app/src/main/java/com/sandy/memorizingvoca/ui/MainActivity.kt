@@ -41,7 +41,6 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.rememberNavController
 import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.feature.splash.navigation.SplashRoute
-import com.sandy.memorizingvoca.ui.theme.Gray20
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.reflect.KClass
@@ -54,7 +53,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val myAppState = rememberMyAppState()
             MemorizingVocaTheme {
-                MainApp(
+                MyApp(
                     appState = myAppState,
                     startDestination = SplashRoute,
                     onAppFinish = ::finishAffinity,
@@ -65,7 +64,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun MainApp(
+private fun MyApp(
     appState: MyAppState,
     startDestination: Any,
     onAppFinish: () -> Unit,
@@ -85,6 +84,7 @@ private fun MainApp(
                 navController = appState.navController,
                 startDestination = startDestination,
                 onAppFinish = onAppFinish,
+                onNavigateBackTopLevel = appState::navigateBackTopLevel,
             )
             AnimatedVisibility(
                 visible = bottomNavVisible,
@@ -167,7 +167,7 @@ private fun NavDestination?.isCurrentRoute(route: KClass<*>) = this?.hasRoute(ro
 @Preview(showBackground = true)
 @Composable
 private fun MainAppPreview() {
-    MainApp(
+    MyApp(
         appState = MyAppState(
             navController = rememberNavController(),
         ),
