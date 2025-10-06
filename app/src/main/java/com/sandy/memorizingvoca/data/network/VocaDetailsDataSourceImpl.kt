@@ -10,7 +10,7 @@ import javax.inject.Inject
 internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
 
     override suspend fun getVocabularyDetails(word: String): VocabularyDetails {
-        val doc = getDocumentVocaDetails(word.toQuery())
+        val doc = getDocument(word.toQuery())
         val grammar = extractGrammar(doc)
         val wordFamily = extractWordList(doc, WORD_FAMILY_SELECT_QUERY)
         val similarWord = extractWordList(doc, SIMILAR_WORD_SELECT_QUERY)
@@ -31,7 +31,7 @@ internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsData
             .replace(Regex(REGEX_SMALL_BRACKET_PATTERN), "")
     }
 
-    private fun getDocumentVocaDetails(word: String): Document {
+    private fun getDocument(word: String): Document {
         val url = WORD_SEARCH_URL + word
         val path = Jsoup.connect(url).get()
             .select(PATH_FIND_QUERY)
@@ -94,7 +94,8 @@ internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsData
         return fold(mutableListOf()) { acc, word ->
             if (word.length == 1 && acc.isNotEmpty()) {
                 acc[acc.lastIndex] = acc.last() + word
-            } else {
+            }
+            else {
                 acc.add(word)
             }
             acc

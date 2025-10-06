@@ -45,6 +45,6 @@ internal class GetQuizRepositoryImpl @Inject constructor(
     }
 
     override fun getAllDaysWithCount(): Flow<List<DayCount>> {
-        return dao.getAllDaysWithCount()
+        return dao.getAllDaysWithCount().flowOn(Dispatchers.IO)
     }
 }

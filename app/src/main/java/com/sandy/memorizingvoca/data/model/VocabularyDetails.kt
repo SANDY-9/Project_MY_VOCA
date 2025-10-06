@@ -9,35 +9,22 @@ data class VocabularyDetails(
     val exampleList: List<ExampleSentence>,
 )
 
+data class Word(
+    val word: String,
+    val mean: String,
+)
+
 data class ExampleSentence(
     val sentence: String,
     val mean: String,
     val emphWords: List<String>,
 ) {
-    val highlightedEmphWordsSentence
-        get(): String {
-            var result = sentence
-            for (word in emphWords) {
-                if (result.contains(word)) {
-                    result = result.replace(word, "<b>$word</b>")
-                }
-            }
-            return result
-        }
-
-    val highlightedEmphWordsMean
-        get(): String {
-            var result = mean
-            for (word in emphWords) {
-                if (result.contains(word)) {
-                    result = result.replace(word, "<b>$word</b>")
-                }
-            }
-            return result
-        }
+    val highlightedEmphWordsSentence = sentence.highlightedWord(emphWords)
+    val highlightedEmphWordsMean= sentence.highlightedWord(emphWords)
 }
 
-data class Word(
-    val word: String,
-    val mean: String,
-)
+private fun String.highlightedWord(emphWords: List<String>): String {
+    return emphWords.fold(this) { acc, word ->
+        acc.replace(word, "<b>$word</b>")
+    }
+}

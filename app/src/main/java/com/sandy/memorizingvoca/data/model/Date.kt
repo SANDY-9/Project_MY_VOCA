@@ -1,13 +1,11 @@
 package com.sandy.memorizingvoca.data.model
 
-import com.sandy.memorizingvoca.utils.DateUtils
 import java.time.LocalDate
 
 
 data class Date(
     val localDate: LocalDate = LocalDate.now(),
 ) {
-    val weekIndex: Int = DateUtils.getWeekIndexOfMonthForLocale(localDate)
     val year: Int = localDate.year
     val month: Int = localDate.monthValue
     val day: Int = localDate.dayOfMonth

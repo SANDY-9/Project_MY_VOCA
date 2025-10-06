@@ -24,7 +24,7 @@ internal class GetVocabularyRepositoryImpl @Inject constructor(
     }
 
     override fun getVocabulary(vocaId: Int): Flow<Vocabulary> {
-        return dao.getVocabulary(vocaId)
+        return dao.getVocabulary(vocaId).flowOn(Dispatchers.IO)
     }
 
     override suspend fun getVocabularyDetails(word: String): VocabularyDetails = withContext(Dispatchers.IO) {

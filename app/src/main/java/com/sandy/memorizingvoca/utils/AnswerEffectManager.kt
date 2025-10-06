@@ -25,7 +25,7 @@ class AnswerEffectManager(
         context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     }
 
-    private var mediaPlayer = MediaPlayer.create(context, soundResId)
+    private val mediaPlayer = MediaPlayer.create(context, soundResId)
 
     fun vibrate(duration: Long = 500L) {
         if(vibrator.hasVibrator()) {
