@@ -73,7 +73,6 @@ internal fun ExpandCalendar(
                             ExpandCalendarItem(
                                 quiz = quiz,
                                 onItemClick = singleClick {
-                                    onDateSelect(date)
                                     onQuizItemClick(quiz.date)
                                 },
                             )

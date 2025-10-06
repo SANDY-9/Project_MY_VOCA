@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun singleClick(
-    intervalMillis: Long = 500L,
+    intervalMillis: Long = 700L,
     onClick: () -> Unit,
 ): () -> Unit {
     var lastClickTime by remember { mutableLongStateOf(0L) }
@@ -26,7 +26,7 @@ fun singleClick(
 
 @Composable
 fun Modifier.singleClick(
-    interval: Long = 500L,
+    interval: Long = 700L,
     onClick: () -> Unit
 ): Modifier {
     var lastClickTime by remember { mutableLongStateOf(0L) }
