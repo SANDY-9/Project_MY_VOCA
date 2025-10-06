@@ -20,7 +20,7 @@ data class ExampleSentence(
     val emphWords: List<String>,
 ) {
     val highlightedEmphWordsSentence = sentence.highlightedWord(emphWords)
-    val highlightedEmphWordsMean= sentence.highlightedWord(emphWords)
+    val highlightedEmphWordsMean= mean.highlightedWord(emphWords)
 }
 
 private fun String.highlightedWord(emphWords: List<String>): String {
