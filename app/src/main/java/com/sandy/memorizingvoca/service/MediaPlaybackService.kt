@@ -32,7 +32,6 @@ class MediaPlaybackService : MediaSessionService() {
     }
 
     companion object {
-        const val ACTION_CLOSE_PLAYER_AND_NOTIFICATION = "ACTION_CLOSE_PLAYER"
         fun destroyService(context: Context) {
             val intent = Intent(context, MediaPlaybackService::class.java)
             context.stopService(intent)

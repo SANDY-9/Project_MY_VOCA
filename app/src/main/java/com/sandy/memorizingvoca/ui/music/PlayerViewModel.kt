@@ -125,27 +125,6 @@ internal class PlayerViewModel @Inject constructor(
         positionUpdateJob?.cancel()
     }
 
-    suspend fun openPlayer() {
-        mediaController?.run {
-            if(isPlaying) return
-            if(playbackState == Player.STATE_IDLE) {
-                prepare()
-                seekTo(0, 0)
-                delay(200L)
-                play()
-            }
-        }
-    }
-
-    suspend fun closePlayer() {
-        if(mediaController?.isPlaying == false) return
-        mediaController?.run {
-            delay(200L)
-            stop()
-            seekTo(0, 0)
-        }
-    }
-
     fun playPause() = mediaController?.run {
         if (isPlaying) {
             pause()
@@ -184,6 +163,24 @@ internal class PlayerViewModel @Inject constructor(
     fun setRepeatMode() {
         val nextMode = (mediaController?.repeatMode?.plus(1))?.rem(3) ?: Player.REPEAT_MODE_OFF
         mediaController?.repeatMode = nextMode
+    }
+
+    suspend fun onPlayer() {
+        if(mediaController?.isPlaying == true) return
+        mediaController?.run {
+            prepare()
+            seekTo(0, 0)
+            delay(200L)
+            play()
+        }
+    }
+
+    suspend fun offPlayer() {
+        mediaController?.run {
+            seekTo(0, 0)
+            stop()
+            delay(200L)
+        }
     }
 
     override fun onCleared() {

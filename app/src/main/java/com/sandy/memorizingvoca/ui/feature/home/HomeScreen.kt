@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,9 +56,7 @@ internal fun HomeRoute(
         onFinish = onAppFinish,
     )
 
-    val days by homeViewModel.days.collectAsStateWithLifecycle()
-    val musicPlayerOn by homeViewModel.musicPlayer.collectAsStateWithLifecycle()
-
+    val homeState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
     val playerState by playerViewModel.playerState.collectAsStateWithLifecycle()
 
     LaunchedEffect(playerState.isPlaying) {
@@ -66,16 +65,25 @@ internal fun HomeRoute(
         }
     }
 
-    LaunchedEffect(musicPlayerOn) {
-        when {
-            musicPlayerOn -> playerViewModel.openPlayer()
-            else -> playerViewModel.closePlayer()
+    LaunchedEffect(homeState.playerVisibleClick) {
+        homeState.playerVisibleClick?.let {
+            when {
+                homeState.playerVisible -> playerViewModel.onPlayer()
+                else -> playerViewModel.offPlayer()
+            }
         }
     }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            homeViewModel.initVisibleClickState()
+        }
+    }
+
     HomeScreen(
-        days = days,
+        days = homeState.days,
         playerState = playerState,
-        musicPlayerOn = musicPlayerOn,
+        musicPlayerOn = homeState.playerVisible,
         onMusicPlayerOnChange = homeViewModel::onPlayerOnAndOffChange,
         onPlayingChange = playerViewModel::playPause,
         onDurationChange = playerViewModel::seekTo,
