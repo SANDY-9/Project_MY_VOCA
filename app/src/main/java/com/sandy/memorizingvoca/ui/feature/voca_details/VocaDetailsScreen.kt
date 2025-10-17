@@ -88,6 +88,10 @@ private fun VocaDetailsScreen(
                             item = wordFamily,
                         )
                         VocaFamilyView(
+                            title = "복합어・숙어",
+                            item = includeWord,
+                        )
+                        VocaFamilyView(
                             title = "반의어",
                             item = oppositeWord,
                         )
@@ -242,6 +246,7 @@ private fun VocaDetailsScreenPreview() {
                         ),
                     ),
                     exampleList = emptyList(),
+                    includeWord = emptyList(),
                 ),
             ),
             onNavigateBack = {},

@@ -4,6 +4,7 @@ data class VocabularyDetails(
     val word: String,
     val grammar: Map<String, List<Word>>,
     val wordFamily: List<Word>,
+    val includeWord: List<Word>,
     val similarWord: List<Word>,
     val oppositeWord: List<Word>,
     val exampleList: List<ExampleSentence>,

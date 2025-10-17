@@ -11,24 +11,24 @@ internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsData
 
     override suspend fun getVocabularyDetails(word: String): VocabularyDetails {
         val doc = getDocument(word.toQuery())
-        val grammar = extractGrammar(doc)
-        val wordFamily = extractWordList(doc, WORD_FAMILY_SELECT_QUERY)
-        val similarWord = extractWordList(doc, SIMILAR_WORD_SELECT_QUERY)
-        val oppositeWord = extractWordList(doc, OPPOSITE_WORD_SELECT_QUERY)
-        val exampleList = extractExampleSentences(doc)
-        return VocabularyDetails(
-            word = word,
-            grammar = grammar,
-            wordFamily = wordFamily,
-            similarWord = similarWord,
-            oppositeWord = oppositeWord,
-            exampleList = exampleList,
-        )
+        return with(doc) {
+            VocabularyDetails(
+                word = word,
+                grammar = extractGrammar(),
+                wordFamily = extractWordList(cssQuery = WORD_FAMILY_SELECT_QUERY),
+                includeWord = extractWordList(cssQuery = INCLUDE_WORD_SELECT_QUERY),
+                similarWord = extractWordList(cssQuery = SIMILAR_WORD_SELECT_QUERY),
+                oppositeWord = extractWordList(cssQuery = OPPOSITE_WORD_SELECT_QUERY),
+                exampleList = extractExampleSentences(),
+            )
+        }
     }
 
+    private val largeBracketRegex = Regex(REGEX_LARGE_BRACKET_PATTERN)
+    private val smallBracketRegex = Regex(REGEX_SMALL_BRACKET_PATTERN)
     private fun String.toQuery(): String {
-        return replace(Regex(REGEX_LARGE_BRACKET_PATTERN), "")
-            .replace(Regex(REGEX_SMALL_BRACKET_PATTERN), "")
+        return replace(largeBracketRegex, "")
+            .replace(smallBracketRegex, "")
     }
 
     private fun getDocument(word: String): Document {
@@ -51,8 +51,8 @@ internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsData
         return replace(" ", "").replace("-","")
     }
 
-    private fun extractGrammar(doc: Document): Map<String, List<Word>> {
-        return doc.select(GRAMMAR_SORT_SELECT_QUERY)
+    private fun Document.extractGrammar(): Map<String, List<Word>> {
+        return this.select(GRAMMAR_SORT_SELECT_QUERY)
             .select(GRAMMAR_GROUP_SELECT_QUERY).associate { element ->
                 val wordClass = element.select(STRONG_TAG).text()
                 val wordList = element.select(GRAMMAR_WORD_LIST_SELECT_QUERY).map {
@@ -65,8 +65,8 @@ internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsData
             }
     }
 
-    private fun extractWordList(doc: Document, cssQuery: String): List<Word> {
-        return doc.select(cssQuery).map {
+    private fun Document.extractWordList(cssQuery: String): List<Word> {
+        return this.select(cssQuery).map {
             Word(
                 word = it.select(A_TAG).text(),
                 mean = it.select(SPAN_TAG).text()
@@ -74,11 +74,10 @@ internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsData
         }
     }
 
-    private fun extractExampleSentences(
-        doc: Document,
+    private fun Document.extractExampleSentences(
         limit: Int = 3,
     ): List<ExampleSentence> {
-        return doc.select(EXAMPLE_LIST_SELECT_QUERY).shuffled().take(limit).map {
+        return this.select(EXAMPLE_LIST_SELECT_QUERY).shuffled().take(limit).map {
             val emphWords = it.select(EMPH_WORD_SELECT_QUERY).map { it.text() }.combine()
             val sentence = it.selectFirst(ENGLISH_SENTENCE_SELECT_QUERY)?.text() ?: ""
             val mean = it.selectFirst(KOREAN_MEAN_SELECT_QUERY)?.text() ?: ""
@@ -114,6 +113,7 @@ internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsData
         const val WORD_FAMILY_SELECT_QUERY = "ul[id=WORD_FAMILY] li"
         const val SIMILAR_WORD_SELECT_QUERY = "ul[id=SIMILAR_WORD] li"
         const val OPPOSITE_WORD_SELECT_QUERY = "ul[id=OPPOSITE_WORD] li"
+        const val INCLUDE_WORD_SELECT_QUERY = "ul[id=INCLUDE_WORD] li"
         const val EXAMPLE_LIST_SELECT_QUERY = "ul[class=list_example] li"
 
         const val EMPH_WORD_SELECT_QUERY = "span[class=txt_emph1]"

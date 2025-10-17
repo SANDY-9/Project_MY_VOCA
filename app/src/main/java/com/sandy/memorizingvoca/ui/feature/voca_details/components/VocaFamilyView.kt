@@ -30,8 +30,8 @@ internal fun VocaFamilyView(
     item: List<Word>,
     modifier: Modifier = Modifier,
 ) {
-    val ttsManager = rememberTTSManager()
     if(item.isNotEmpty()) {
+        val ttsManager = rememberTTSManager()
         Column(
             modifier = modifier
                 .fillMaxWidth()
