@@ -8,6 +8,6 @@ internal data class BookmarkUiState(
     val bookmarkCount: Int = 0,
     val itemCount: Int = 0,
     val blindMode: Boolean = false,
-    val query: String? = null,
+    val query: String = "",
     val currentQueryTitle: String = "전체",
 )

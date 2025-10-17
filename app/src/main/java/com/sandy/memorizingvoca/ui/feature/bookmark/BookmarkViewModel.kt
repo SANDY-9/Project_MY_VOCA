@@ -44,10 +44,10 @@ internal class BookmarkViewModel @Inject constructor(
     }
 
     private fun getFilteredBookmarkMap(
-        query: String?,
+        query: String,
         originalList: List<Vocabulary> = bookmarkUiState.value.bookmarkList,
     ): Map<Int, List<Vocabulary>> {
-        if(query == null) return originalList.bookmarkMap()
+        if(query.isBlank()) return originalList.bookmarkMap()
         try {
             // query가 숫자일 경우
             val day = query.toInt()
@@ -94,8 +94,8 @@ internal class BookmarkViewModel @Inject constructor(
     private fun resetBookmarkList() {
         _bookmarkUiState.update {
             it.copy(
-                filteredBookmarkMapByDay = getFilteredBookmarkMap(null),
-                query = null,
+                filteredBookmarkMapByDay = getFilteredBookmarkMap(""),
+                query = "",
                 itemCount = bookmarkUiState.value.bookmarkCount,
                 currentQueryTitle = "전체"
             )

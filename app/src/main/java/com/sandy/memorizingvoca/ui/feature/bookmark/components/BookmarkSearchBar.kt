@@ -14,17 +14,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -37,32 +33,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.ui.extensions.addFocusCleaner
 import com.sandy.memorizingvoca.ui.extensions.noRippleClickable
-import com.sandy.memorizingvoca.ui.theme.Gray20
 import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 import com.sandy.memorizingvoca.ui.theme.roundedCornerShape16
 
 @Composable
 internal fun BookmarkSearchBar(
-    query: String?,
+    query: String,
     focusManager: FocusManager,
     focusRequester: FocusRequester,
     onSearchVoca: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var input by rememberSaveable { mutableStateOf(query ?: "") }
-    LaunchedEffect(query) {
-        input = query ?: ""
-    }
     Box(
         modifier = modifier.fillMaxWidth().padding(horizontal = 8.dp),
     ) {
         BookmarkSearchTextField(
-            input = query ?: "",
+            input = query,
             focusManager = focusManager,
             focusRequester = focusRequester,
             onInputChange = onSearchVoca,
-            onSearch = { onSearchVoca(input) },
+            onSearch = { onSearchVoca(query) },
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.sandy.memorizingvoca.ui.feature.bookmark
 
+import android.view.ViewTreeObserver
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,19 +9,25 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sandy.memorizingvoca.data.model.Vocabulary
 import com.sandy.memorizingvoca.ui.common.VocaWithBookmarkCard
 import com.sandy.memorizingvoca.ui.extensions.addFocusCleaner
-import com.sandy.memorizingvoca.ui.extensions.clickEffect
 import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkDayStickyHeader
 import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkListHeader
 import com.sandy.memorizingvoca.ui.feature.bookmark.components.BookmarkSearchBar
@@ -64,7 +71,7 @@ internal fun BookmarkRoute(
 private fun BookmarkScreen(
     bookmarkCount: Int,
     blindMode: Boolean,
-    query: String?,
+    query: String,
     queryTitle: String,
     itemCount: Int,
     bookmarkList: Map<Int, List<Vocabulary>>,
@@ -77,11 +84,26 @@ private fun BookmarkScreen(
     onNavigateQuiz2: () -> Unit,
     onNavigateDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    focusManager: FocusManager = LocalFocusManager.current,
 ) {
-    val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
     val ttsManager = rememberTTSManager()
+
+    val view = LocalView.current
+    DisposableEffect(view) {
+        val listener = ViewTreeObserver.OnGlobalLayoutListener {
+            val isKeyboardOpen = ViewCompat.getRootWindowInsets(view)
+                ?.isVisible(WindowInsetsCompat.Type.ime()) ?: true
+            if (!isKeyboardOpen) {
+                focusManager.clearFocus()
+            }
+        }
+        view.viewTreeObserver.addOnGlobalLayoutListener(listener)
+        onDispose {
+            view.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        }
+    }
 
     Column(
         modifier = modifier
