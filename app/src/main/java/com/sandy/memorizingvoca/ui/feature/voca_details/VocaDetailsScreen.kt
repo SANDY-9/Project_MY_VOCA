@@ -74,11 +74,11 @@ private fun VocaDetailsScreen(
                     word = voca?.word ?: "",
                     meaning = voca?.meaning ?: "",
                     highlighted = voca?.highlighted ?: false,
-                    pron = voca?.pron ?: "",
+                    pron = voca?.pron,
                 )
             }
             if(vocaDetailsState is VocaDetailsState.Success) {
-                with(vocaDetailsState.details) {
+                vocaDetailsState.details?.run {
                     item {
                         VocaGrammarView(
                             item = grammar,
@@ -102,10 +102,8 @@ private fun VocaDetailsScreen(
                         VocaExampleView(
                             item = exampleList,
                         )
+                        SourcesText()
                     }
-                }
-                item {
-                    SourcesText()
                 }
             }
         }

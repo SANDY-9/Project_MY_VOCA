@@ -18,7 +18,7 @@ import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 
 internal sealed interface VocaDetailsState {
     data object Loading: VocaDetailsState
-    data class Success(val details: VocabularyDetails): VocaDetailsState
+    data class Success(val details: VocabularyDetails?): VocaDetailsState
     data object Fail: VocaDetailsState
 }
 
