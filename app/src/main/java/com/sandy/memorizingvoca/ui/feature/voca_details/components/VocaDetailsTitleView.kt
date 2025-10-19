@@ -29,7 +29,7 @@ internal fun VocaDetailsTitleView(
     word: String,
     meaning: String,
     highlighted: Boolean,
-    pron: String,
+    pron: String?,
     modifier: Modifier = Modifier,
 )  {
     val ttsManager = rememberTTSManager()
@@ -55,9 +55,8 @@ internal fun VocaDetailsTitleView(
                 text = word,
                 fontWeight = FontWeight.Black,
                 fontSize = 32.sp,
-
-                )
-            if(pron.isNotBlank()) {
+            )
+            if(pron != null) {
                 Text(
                     modifier = modifier.alignByBaseline(),
                     text = pron,

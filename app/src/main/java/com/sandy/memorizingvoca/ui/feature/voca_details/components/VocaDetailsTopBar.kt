@@ -47,15 +47,17 @@ internal fun VocaDetailsTopBar(
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
         )
-        VocaHighlightButton(
-            highlighted = voca?.highlighted ?: false,
-            onHighlightChange = onHighlightChange,
-        )
-        Spacer(modifier = modifier.width(8.dp))
-        VocaBookmarkButton(
-            bookmarked = voca?.bookmarked ?: false,
-            onBookmarkChange = onBookmarkChange,
-        )
+        if(voca != null) {
+            VocaHighlightButton(
+                highlighted = voca.highlighted,
+                onHighlightChange = onHighlightChange,
+            )
+            Spacer(modifier = modifier.width(8.dp))
+            VocaBookmarkButton(
+                bookmarked = voca.bookmarked,
+                onBookmarkChange = onBookmarkChange,
+            )
+        }
     }
 }
 

@@ -9,8 +9,9 @@ import javax.inject.Inject
 
 internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsDataSource {
 
-    override suspend fun getVocabularyDetails(word: String): VocabularyDetails {
+    override suspend fun getVocabularyDetails(word: String): VocabularyDetails? {
         val doc = getDocument(word.toQuery())
+        if(doc == null) return null
         return with(doc) {
             VocabularyDetails(
                 word = word,
@@ -31,19 +32,18 @@ internal class VocaDetailsDataSourceImpl @Inject constructor() : VocaDetailsData
             .replace(smallBracketRegex, "")
     }
 
-    private fun getDocument(word: String): Document {
+    private fun getDocument(word: String): Document? {
         val url = WORD_SEARCH_URL + word
         val path = Jsoup.connect(url).get()
             .select(PATH_FIND_QUERY)
-            .first {
+            .firstOrNull {
                 val elementText = it.text().compare()
                 val wordText = word.compare()
-                elementText == wordText ||
-                        elementText.contains(wordText) ||
-                        wordText.contains(elementText)
+                elementText.contains(wordText) || wordText.contains(elementText)
             }
-            .select(A_TAG)
-            .attr(HREF_ATTR)
+            ?.select(A_TAG)
+            ?.attr(HREF_ATTR)
+            ?: return null
         return Jsoup.connect(WORD_BASE_URL + path).get()
     }
 
