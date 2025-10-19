@@ -57,11 +57,13 @@ internal fun VocaDetailsTitleView(
                 fontSize = 32.sp,
 
                 )
-            Text(
-                modifier = modifier.alignByBaseline(),
-                text = pron,
-                color = Color.Gray,
-            )
+            if(pron.isNotBlank()) {
+                Text(
+                    modifier = modifier.alignByBaseline(),
+                    text = pron,
+                    color = Color.Gray,
+                )
+            }
         }
         Spacer(modifier = modifier.height(12.dp))
         Text(

@@ -1,11 +1,12 @@
 package com.sandy.memorizingvoca.ui.feature.voca_details.components
 
+import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,10 +18,12 @@ import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sandy.memorizingvoca.data.model.ExampleSentence
+import com.sandy.memorizingvoca.ui.theme.MemorizingVocaTheme
 import com.sandy.memorizingvoca.ui.theme.PyeoginGothic
 
 @Composable
@@ -35,6 +38,7 @@ internal fun VocaExampleView(
                 .padding(16.dp,)
         ) {
             Text(
+                modifier = modifier.padding(bottom = 8.dp),
                 text = "예문",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
@@ -58,60 +62,64 @@ private fun ExampleItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 16.dp),
+            .padding(vertical = 8.dp),
     ) {
         Text(
-            modifier = modifier.fillMaxWidth(1f),
+            modifier = modifier.fillMaxWidth(),
             text = AnnotatedString.fromHtml(htmlSentence),
             fontSize = 16.sp,
             style = TextStyle.Default.copy(
                 lineBreak = LineBreak.Paragraph,
                 fontFamily = PyeoginGothic,
                 hyphens = Hyphens.Auto,
+                letterSpacing = (-0.4).sp,
             ),
         )
         Spacer(modifier = modifier.height(8.dp))
         if(htmlMean.isNotBlank()) {
             Text(
-                modifier = modifier.fillMaxWidth(),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                    )
+                    .padding(4.dp),
                 text = AnnotatedString.fromHtml(htmlMean),
                 color = MaterialTheme.colorScheme.onSecondary,
                 textAlign = TextAlign.Justify,
                 style = TextStyle.Default.copy(
                     lineBreak = LineBreak.Paragraph,
                     fontFamily = PyeoginGothic,
+                    hyphens = Hyphens.Auto,
                 ),
             )
-            Spacer(modifier = modifier.height(12.dp))
         }
-        Spacer(modifier = modifier.height(4.dp))
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outline,
-        )
     }
 }
 
 @Composable
 @Preview
 private fun VocaExampleViewPreview() {
-    VocaExampleView(
-        item = listOf(
-            ExampleSentence(
-                sentence = "As the U.S. withdrew a majority of its troops from Afghanistan in August, the Taliban have once again taken power in the country.",
-                mean = "미국이 지난 8월 아프가니스탄에서 대부분의 군대를 철수하자 탈레반이 또 다시 집권했다.",
-                emphWords = emptyList(),
-            ),
-            ExampleSentence(
-                sentence = "There is no earnest conversation.",
-                mean = "솔직한 대화도 없고",
-                emphWords = emptyList(),
-            ),
-            ExampleSentence(
-                sentence = "Third, conditioner prevents static from accumulating on clothes during the winter season.",
-                mean = "셋째, 컨디셔너는 겨울철 옷에 정전기가 쌓이는 것을 방지합니다.",
-                emphWords = emptyList(),
-            ),
-        )
+    MemorizingVocaTheme {
+        VocaExampleView(
+            item = listOf(
+                ExampleSentence(
+                    sentence = "As the U.S. withdrew a majority of its troops from Afghanistan in August, the Taliban have once again taken power in the country.",
+                    mean = "미국이 지난 8월 아프가니스탄에서 대부분의 군대를 철수하자 탈레반이 또 다시 집권했다.",
+                    emphWords = emptyList(),
+                ),
+                ExampleSentence(
+                    sentence = "There is no earnest conversation.",
+                    mean = "솔직한 대화도 없고",
+                    emphWords = emptyList(),
+                ),
+                ExampleSentence(
+                    sentence = "Third, conditioner prevents static from accumulating on clothes during the winter season.",
+                    mean = "셋째, 컨디셔너는 겨울철 옷에 정전기가 쌓이는 것을 방지합니다.",
+                    emphWords = emptyList(),
+                ),
+            )
 
-    )
+        )
+    }
 }
